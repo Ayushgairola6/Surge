@@ -59,7 +59,7 @@ import AccountLoader from '../components/AccountLoading'
 
             // addFallbackImage
              function addFallbackImage(event){
-                    event.target.src = "/SurgeLogo.jpeg"
+                    event.target.src = "/NoImage.jpg"
                 }
        
 
@@ -88,7 +88,7 @@ import AccountLoader from '../components/AccountLoading'
                         {User.posts.map((post)=>{
                             return <>
                                 <div key={post.id} className="flex flex-col items-center justify-center  border border-black rounded-xl min-h-56 min-w-48 max-h-56 overflow-y-scroll hide-scrollbar max-w-48 text-center font-mono font-semibold text-md text-center">
-                            <img className="h-[70%] w-full" src={post.image}  onError={addFallbackImage} alt=""/>
+                            <img className="h-[70%] w-full" src={post.image?post.image:"/NoImage.jpg"}  onError={addFallbackImage} alt=""/>
                             <span className="text-xl uppercase">{post.title}</span>
                             <span>{post.body}</span>
                         </div>

@@ -20,6 +20,7 @@ const DetailedPost =  ({id}) => {
     const [currPost,setCurrPost] = useState(null);
     const [ShowComment,setShowComment] = useState(false);
    // accessing the id of the post from the /:id params
+   const user = useSelector(state=>state.auth.user)
     const token = localStorage.getItem("userdata");
 
              useEffect(()=>{
@@ -121,18 +122,18 @@ function dislikePost() {
             <div  className="relative border border-gray-300  h-fit rounded-lg  p-1 font-sans  w-full h-full">
                     {/*Post title*/}
                     <span className="flex items-center justify-start  gap-4 pl-3 ">
-                        <img className="h-12 w-12" src="/globe.svg" />
+                        {user?<img className="h-12 w-12" src={user.User.image} />:<img className="h-12 w-12" src="/NoImage.jpg" />}
                         <h3 className=" text-xl uppercase font-serif font-bold ">{currPost[0].title}</h3>
                         
                     </span>
                     
-                    <img className="w-full h-52 mt-4" src={currPost[0].image} alt="img" />
+                    <img className="w-full h-72  mt-4" src={currPost[0].image?currPost[0].image:"/NoImage.jpg"} alt="img" />
                     {/* description */}
                     <p className="font-sans font-semibold text-center text-lg">
                         {currPost[0].body}
                     </p>
                     {/* tags */}
-                    <span className="font-bold font-mono font-xl text-left">tags</span>
+               {    /* <span className="font-bold font-mono font-xl text-left">tags</span>*/}
                 </div>
                 {/* buttons to like or dislike */}
                <div className="flex items-center justify-evenly w-40 shadow-md shadow-black  absolute right-2  px-3 py-2 rounded-xl">

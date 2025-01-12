@@ -49,16 +49,18 @@ const Navbar = () => {
                 </Link>
 
             </ul>
-            
+         
 
         </div>
         <div className=" flex items-center justify-between gap-6 pr-4" >
+
             <input placeholder="search topic.." type="text" className="rounded-full border-2 border-slate-300 px-2 " />
+          {user? <img className="h-12 w-12 rounded-full border border-green-300" src={user.User.image} alt="img"/>:null}
             {isLoggedIn === false ? <Link href="/SignupPage" className="hidden  sm:block bg-green-500 text-black  rounded-full py-1 px-3 shadow-md shadow-black border border-black hover:scale-90">Signup</Link> : <Link className="hidden  sm:block bg-green-500 text-black  rounded-full py-1 px-3 shadow-md shadow-black border border-black hover:scale-90" href={"/Account"}>Account</Link>}
-            <Image className="hidden  sm:block" src="/next.svg" alt="img" height={52} width={52}></Image>
+           
             <button onClick={ShowSidebar}>
                 <RiMenu2Line className="sm:hidden  block" />
-
+ 
             </button>
             {Visible === true ? (<>
                 <SideBar HideSideBar={HideSideBar} />

@@ -43,7 +43,7 @@ const PostCard = () => {
     }
 
     function addFallbackImage(event){
-        event.target.src = "/SurgeLogo.jpeg"
+        event.target.src = "./NoImage.jpg"
 
     }
 
@@ -65,7 +65,7 @@ const PostCard = () => {
                                          
                                           {/* post image */}
                                          
-                                          <img className="h-[70%] w-full" onError={addFallbackImage} src={`${post.image!==""?post.image:"/earth image.jpg"}`} alt="img" />
+                                          <img className="h-[70%] w-full" onError={addFallbackImage} src={post.image?post.image:"/NoImage.jpg"} alt="\" />
                                            {/*Post title*/}
                                           <span className="flex items-center justify-between gap-3   "> <h3 className="text-lg font-mono uppercase text-center font-bold">{post.title}</h3> </span>
 
