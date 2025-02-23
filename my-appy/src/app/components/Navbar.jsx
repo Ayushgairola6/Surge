@@ -38,7 +38,7 @@ const Navbar = () => {
                 <Link href="/createPost">CreatePost</Link>
             </ul>
             <ul className="hover:bg-black hover:text-white px-2 rounded-full w-full text-center  cursor-pointer">
-                <Link href="/">About</Link>
+                <Link href="/AllChats">Chats</Link>
             </ul>
             <ul className="hover:bg-black hover:text-white px-2 rounded-full w-full text-center  cursor-pointer">
                 <Link href="">Contact</Link>

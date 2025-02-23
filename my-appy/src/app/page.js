@@ -10,12 +10,10 @@ import PostCard from "./components/PostCard";
 import { UseStore } from "@/store/store"
 export default function Home() {
 
-  const isLoggedIn = useSelector(state=>state.auth.isLoggedIn)
-
   return (<>
-     <Topic /> 
-    <PostCard />
+   <Topic/>
+    <PostCard/>
   </>
 
-  );
+  )
 }

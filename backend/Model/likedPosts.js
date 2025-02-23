@@ -2,7 +2,7 @@ const db = require("./db");
 
 const CreateLikedPostTable = () => {
     const query = `CREATE TABLE IF NOT EXISTS likedPosts (
-        id INT UNIQUE AUTO_INCREMENT,
+        id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
         post_id INT NOT NULL,  -- The ID of the post being liked, must always be a valid post
         comment_id INT,        -- The ID of the comment, this can be NULL if no comment is involved
         user_id INT NOT NULL,  -- The ID of the user who liked the post, must always be a valid user

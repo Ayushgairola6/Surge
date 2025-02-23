@@ -7,7 +7,7 @@ export const UpdateReaction = createAsyncThunk(
    async (Post_id, thunkAPI) => { 
     const token = localStorage.getItem("userdata");
      try { 
-        const response = await axios.patch(`http://localhost:8080/api/feed/Reaction/${Post_id}`, {}, 
+        const response = await axios.patch(`https://surge-oyqw.onrender.com/api/feed/Reaction/${Post_id}`, {}, 
             { 
                 headers: { 
                     "Content-Type": "application/json", 
@@ -28,7 +28,7 @@ export const Add_Comment = createAsyncThunk(
    const token = localStorage.getItem("userdata");
 
         try {
-            const response = await axios.post(`http://localhost:8080/api/feed/post/comment/${Post_id}`,Comment,{
+            const response = await axios.post(`https://surge-oyqw.onrender.com/api/feed/post/comment/${Post_id}`,Comment,{
                 headers: {
                     "Content-Type": "text/plain",
                  "authorization" :`Bearer ${token}`
@@ -49,7 +49,7 @@ export const GetComments = createAsyncThunk(
    const token = localStorage.getItem("userdata");
    
         try {
-            const response = await axios.get(`http://localhost:8080/api/feed/post/Allcomments/${Post_id}`,{
+            const response = await axios.get(`https://surge-oyqw.onrender.com/api/feed/post/Allcomments/${Post_id}`,{
                 headers: {
                  "authorization" :`Bearer ${token}`
                 }

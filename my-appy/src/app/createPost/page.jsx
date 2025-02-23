@@ -41,7 +41,7 @@ const token = localStorage.getItem("userdata");
     // sending the form data to the server
     try {
       setPostStatus("pending")
-      const res = await axios.post("http://localhost:8080/api/feed/create", form, {
+      const res = await axios.post("https://surge-oyqw.onrender.com/api/feed/create", form, {
         headers: {
           "Content-Type": "multipart/form-data",
           "Authorization": `Bearer ${token}`

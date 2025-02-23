@@ -2,7 +2,7 @@ const db = require("./db");
 
 const CreateDislikePostTable = () => {
     const query = `CREATE TABLE IF NOT EXISTS disliked_posts (
-        id INT UNIQUE AUTO_INCREMENT,
+        id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
         post_id INT NOT NULL,  -- The ID of the post being liked, must always be a valid post
         user_id INT NOT NULL,  -- The ID of the user who liked the post, must always be a valid user
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Timestamp of when the like was created
@@ -20,3 +20,4 @@ const CreateDislikePostTable = () => {
 };
 
 exports.disliked = { CreateDislikePostTable };
+

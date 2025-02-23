@@ -144,15 +144,14 @@
             }
         }
 
-
+// Update user profile by adding profile picture
        async function Upload_profileImage(req,res) {
          
          try{
-
             const token = req.headers.authorization.split(" ")[1];         
               if(!token ){
                 console.log("no token found")
-                res.status(400).json("no token found");
+                return res.status(400).json("no token found");
               }
             const decoded = jwt.decode(token ,secret);
             const id = decoded.id;
@@ -196,6 +195,7 @@
                 console.log("no posts found");
                 return res.status(400).json("no user found");
             }
+            console.log({user,posts})
  
          return res.status(200).json({user,posts});
          }
@@ -206,5 +206,51 @@
         }
 
 
+// Send profiles
 
-        exports.data = { getUser, Login, Signup ,Upload_profileImage,upload}
+const sendProfile = async(req,res)=>{
+try{
+    // the users id we want the profile sent via parameters
+  console.log("envoked")
+
+          const Id = req.params.id;
+          const token = req.headers.authorization.split(' ')[1];
+
+          if(!req.params.id){
+            return res.status(400).json({message:"No user Id found"});
+          }
+                if (!token ) {
+                    console.log("no jwt token found")
+                    return res.status(400).send({ message: "check if user even exists" })
+                }
+          
+              const UserQuery = `SELECT * FROM users WHERE users.id = ?`
+              const [User] = await UserTable.query(UserQuery,Id)
+         console.log(User)
+               if(!User){
+                console.log("user not found in database");
+                return res.status(400).json("This account not found in our database");
+               }
+
+               const postQuery =` SELECT * FROM posts WHERE author = ?`
+               const [posts] = await UserTable.query(postQuery,Id)
+           
+              if(!posts){
+                console.log("no user posts")
+                return res.status(400).json("error finding user posts")
+              }
+
+            console.log({user,posts})
+console.log("ended")
+                   return res.status(200).json({User,posts})
+
+
+}catch(err){
+    console.log(err);
+    throw err;
+}
+} 
+
+
+
+        exports.data = { getUser, Login, Signup ,Upload_profileImage,upload,sendProfile}

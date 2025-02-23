@@ -22,7 +22,9 @@
 
                 const query = `SELECT * FROM posts WHERE category = ?`
                 const [Posts] = await connection.query(query, category)
+                // console.log(Posts);
                 if (!Posts) {
+                    console.log("No posts found");
                     return res.status(400).send("No Post found");
                 }
                 // console.log(Posts);

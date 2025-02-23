@@ -39,7 +39,7 @@ const CommentPage =({toggle,ShowComment,id,token})=>{
                   </div>
                   </>
                  })}
-             </div>:<CircularLoader/>}
+             </div>:<div className="h-full w-full flex items-center justify-center"><CircularLoader /></div>}
         
        {/*input and button*/}
         <div className="  absolute bottom-0 left-0 w-full flex items-center justify-evenly p-2">

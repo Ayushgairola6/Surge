@@ -1,14 +1,18 @@
 'use client'
 
 import {BiSolidUpvote,BiUpvote,BiDownvote,BiSolidDownvote} from 'react-icons/bi'
+import {CiMenuKebab} from 'react-icons/ci';
 import {FaComment} from 'react-icons/fa';
+import {FaMessage} from 'react-icons/fa6';
+import {SlUserFollow} from 'react-icons/sl';
+import {MdExpandMore} from 'react-icons/md';
 import Image from "next/image";
 import {useEffect,useState} from 'react';
 import axios from "axios";
 import {useSelector , useDispatch } from 'react-redux'
 import {UpdateReaction} from "../../store/postSlice"
 import {GetComments} from "../../store/postSlice"
-
+import Link from 'next/link'
 import CommentPage from "./CommentPage";
 import LoadingCard from './loadingCard';
 const DetailedPost =  ({id}) => {
@@ -19,6 +23,7 @@ const DetailedPost =  ({id}) => {
     const [dislikedPost,setDislikedPost] = useState([]);
     const [currPost,setCurrPost] = useState(null);
     const [ShowComment,setShowComment] = useState(false);
+    const [showOption,setShowOptions] = useState(false);
    // accessing the id of the post from the /:id params
    const user = useSelector(state=>state.auth.user)
     const token = localStorage.getItem("userdata");
@@ -40,7 +45,7 @@ const DetailedPost =  ({id}) => {
              //fetch the clicked post 
                const fetchPost = async () => 
              
-             {try { const res = await axios.get(`http://localhost:8080/api/feed/post/${id}`,{
+             {try { const res = await axios.get(`https://surge-oyqw.onrender.com/api/feed/post/${id}`,{
                 headers:{
                     "Authorization":`Bearer ${token}`
                 }
@@ -109,6 +114,7 @@ function dislikePost() {
     // Dispatch the action
     dispatch(UpdateReaction(id));
 }
+
               // function to toggle CommentPage;
                 function toggleCommentSection(){
                     setShowComment(!ShowComment)
@@ -117,14 +123,23 @@ function dislikePost() {
 
     return <>
         {currPost!==null?<>
-            <div className="min-h-screen w-full relative mt-4">
+            <div  className="min-h-screen w-full relative mt-4">
 
             <div  className="relative border border-gray-300  h-fit rounded-lg  p-1 font-sans  w-full h-full">
                     {/*Post title*/}
-                    <span className="flex items-center justify-start  gap-4 pl-3 ">
+                    <span className="flex items-center justify-between px-4  gap-4  ">
                         {user?<img className="h-12 w-12" src={user.User.image} />:<img className="h-12 w-12" src="/NoImage.jpg" />}
                         <h3 className=" text-xl uppercase font-serif font-bold ">{currPost[0].title}</h3>
-                        
+
+                    {/*  menu options toggle icon*/}
+                        <CiMenuKebab className="relative" onClick={()=>setShowOptions(!showOption)} size={22}/>
+                        {showOption===true?
+                            <div className="absolute right-10 top-0 bg-black text-white rounded-xl w-[10rem] p-3 font-bold  flex items-normal justify-center flex-col gap-4 ">
+                           <Link className="flex items-center justify-evenly hover:scale-125 px-3" href={`/User2Account/${currPost[0].author}`}>Connect <FaMessage size={12} color="white"/></Link>
+                            <Link className="flex items-center justify-evenly hover:scale-125 px-3" href="/Account">Follow <SlUserFollow size={17} color="white"/></Link>
+                            <Link className="flex items-center justify-evenly hover:scale-125 px-3" href={`/Chats/${currPost[0].author}`}>More <MdExpandMore size={20} color="white"/></Link >
+                        </div>:null}
+
                     </span>
                     
                     <img className="w-full h-72  mt-4" src={currPost[0].image?currPost[0].image:"/NoImage.jpg"} alt="img" />
@@ -135,6 +150,10 @@ function dislikePost() {
                     {/* tags */}
                {    /* <span className="font-bold font-mono font-xl text-left">tags</span>*/}
                 </div>
+            {/*  link to chatroom   */}
+            <Link href="/" className="text-lg font-bold bg-gradient-to-r from-green-400 to-green-600 absolute left-5 px-3 py-1 rounded-xl mt-2 border border-black shadow-sm shadow-black" >
+                Connect
+                </Link>
                 {/* buttons to like or dislike */}
                <div className="flex items-center justify-evenly w-40 shadow-md shadow-black  absolute right-2  px-3 py-2 rounded-xl">
            {/*  upvote*/}

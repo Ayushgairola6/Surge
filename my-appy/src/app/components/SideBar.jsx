@@ -24,7 +24,7 @@ const SideBar = ({ HideSideBar }) => {
                     <Link href={`${isLoggedIn === true ? "/createPost" : "/Popup"}`}>CreatePost</Link>
                 </ul>
                 <ul className="hover:bg-gray-300 w-full text-center font-bold text-lg cursor-pointer">
-                    <Link href="/">About</Link>
+                    <Link href="/AllChats">Chats</Link>
                 </ul>
                 <ul className="hover:bg-gray-300 w-full text-center font-bold text-lg cursor-pointer">
                     <Link href="">Contact</Link>

@@ -3,7 +3,7 @@ const  db  = require("./db")
 
 const createCommentTable = () => {
     const query = ` CREATE TABLE IF NOT EXISTS comments (
-     id INT UNIQUE AUTO_INCREMENT,
+     id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
      post_id INT NOT NULL,
      user_id INT NOT NULL,
      comment_body TEXT NOT NULL ,
@@ -13,6 +13,7 @@ const createCommentTable = () => {
     `
     db.data.connection.query(query, (error, results) => {
         if(error){
+            console.log(error)
           throw error;
         }
         console.log("Comments table creted")

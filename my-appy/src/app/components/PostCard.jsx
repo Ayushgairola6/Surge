@@ -5,9 +5,17 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { UseStore } from "@/store/store";
+import {GetChats,GetRoomSpecificChats} from '@/store/ChatSlice';
+import {GetAccount} from '@/store/AuthSlice'
+import {useDispatch} from 'react-redux';
 import LoadingCard from './loadingCard'
 const PostCard = () => {
-        
+    // getting the user chats 
+    const dispatch = useDispatch();
+        useEffect(()=>{
+         dispatch(GetChats());
+         dispatch(GetAccount());
+        },[dispatch])
       const [currHover,setCurrHover] = useState(null);  
 
     // getting context of current tab being used by the user
