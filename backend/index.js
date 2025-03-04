@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+require("dotenv").config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const {createServer } = require("http");
@@ -44,7 +45,7 @@ app.use("/api/chats",Chats.route.chatRouter);
 
 // node server connection
 
-app.listen(8080, () => {
+app.listen(process.env.PORT,'0.0.0.0', () => {
     console.log('server connected')
 })
 

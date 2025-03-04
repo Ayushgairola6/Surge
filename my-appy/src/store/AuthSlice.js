@@ -5,7 +5,7 @@ export const SignupUser = createAsyncThunk(
     'auth/signup',
     async (form, thunkAPI) => {
         try {
-            const response = await axios.post("https://surge-oyqw.onrender.com/api/user/register", form, {
+            const response = await axios.post("http://localhost:8080/api/user/register", form, {
                 headers: {
                     "Content-Type": "application/json",
                 }
@@ -22,7 +22,7 @@ export const LoginUser = createAsyncThunk(
     'auth/login',
     async (form, thunkAPI) => {
         try {
-            const response = await axios.post("https://surge-oyqw.onrender.com/api/user/login", form, {
+            const response = await axios.post("http://localhost:8080/api/user/login", form, {
                 headers: {
                     "Content-Type": "application/json",
                 }
@@ -42,7 +42,7 @@ export const GetAccount = createAsyncThunk(
     async (form, thunkAPI) => {
         const token = localStorage.getItem("userdata");
         try {
-            const response = await axios.get("https://surge-oyqw.onrender.com/api/user/account/data", {
+            const response = await axios.get("http://localhost:8080/api/user/account/data", {
                 headers: {
                     "Authorization" : `Bearer ${token}`
                 }

@@ -3,16 +3,17 @@ require("dotenv").config();
 const fs = require('fs');
 // mySql database connection 
 const connection = mySql.createConnection({
-  host: process.env.HOST,
-  port: process.env.PORT,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
   database: process.env.DB,
   connectTimeout: 50000,
   ssl: { 
     rejectUnauthorized: false
   }
 });
+
   //  host:"localhost",
     // port:"3306",
     // user:"Ayushgairola",
