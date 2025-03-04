@@ -5,7 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const {createServer } = require("http");
 const httpServer = createServer(app);
-const websocket = require("./controller/chatController")
+// const websocket = require("../controller/chatController")
 // cross origin 
 app.use(cors({origin:"*"}));
 // parsing the data

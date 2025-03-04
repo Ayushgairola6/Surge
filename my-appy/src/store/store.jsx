@@ -9,10 +9,10 @@ export const AuthProvider = ({ children }) => {
     // user state
     // login state
     // selected tab state
-    const [currTab, setCurrTab] = useState(topics[0])
+    const [currTab, setCurrTab] = useState("Tech")
     // posts state
     const [posts, setPosts] = useState(null)
-
+    const [valid ,setIsValid] = useState("no")
 
 
 
@@ -28,8 +28,9 @@ export const AuthProvider = ({ children }) => {
 
     }
 
+   
 
-
+    // function invocation
 
     return (
         <AuthContext.Provider

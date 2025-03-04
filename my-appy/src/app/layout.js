@@ -2,8 +2,7 @@
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer"
-import { AuthProvider, UseStore } from "@/store/store";
-import AllChats from './Allchats/page'
+import { AuthProvider, UseStore, } from "@/store/store";
 import { Provider } from 'react-redux';
 import { store } from '@/store/reduxStore';
 

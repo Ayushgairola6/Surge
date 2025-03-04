@@ -3,7 +3,7 @@ import {useSelector,useDispatch} from 'react-redux';
 import {useRef} from 'react';
 import {IoMdClose} from 'react-icons/io'; 
 import {Add_Comment} from "../../store/postSlice"
-import LoadingCard from './LoadingCard'
+import LoadingCard from './loadingCard'
 import CircularLoader from './CircularLoader'
 const CommentPage =({toggle,ShowComment,id,token})=>{
 

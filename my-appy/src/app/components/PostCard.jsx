@@ -6,15 +6,19 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { UseStore } from "@/store/store";
 import {GetChats,GetRoomSpecificChats} from '@/store/ChatSlice';
-import {GetAccount} from '@/store/AuthSlice'
-import {useDispatch} from 'react-redux';
+import {GetAccount,VerifyAccount} from '@/store/AuthSlice'
+import {useDispatch,useSelector} from 'react-redux';
 import LoadingCard from './loadingCard'
 const PostCard = () => {
     // getting the user chats 
+    
+    
+
     const dispatch = useDispatch();
         useEffect(()=>{
-         dispatch(GetChats());
-         dispatch(GetAccount());
+            dispatch(VerifyAccount());
+        //  dispatch(GetChats());
+        //  dispatch(GetAccount());
         },[dispatch])
       const [currHover,setCurrHover] = useState(null);  
 

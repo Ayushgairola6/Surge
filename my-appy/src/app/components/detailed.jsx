@@ -13,8 +13,8 @@ import {useSelector , useDispatch } from 'react-redux'
 import {UpdateReaction} from "../../store/postSlice"
 import {GetComments} from "../../store/postSlice"
 import Link from 'next/link'
-import CommentPage from "./CommentPage";
-import LoadingCard from './loadingCard';
+import CommentPage from "./CommentPage.jsx";
+import LoadingCard from './loadingCard.jsx';
 const DetailedPost =  ({id}) => {
 
     const dispatch = useDispatch();
