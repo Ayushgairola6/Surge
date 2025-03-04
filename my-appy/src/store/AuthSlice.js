@@ -41,6 +41,9 @@ export const GetAccount = createAsyncThunk(
     'Account/data',
     async (form, thunkAPI) => {
         const token = localStorage.getItem("userdata");
+        if(!token){
+            return;
+        }
         try {
             const response = await axios.get("http://localhost:8080/api/user/account/data", {
                 headers: {
@@ -61,7 +64,7 @@ export const UploadProfilePic = createAsyncThunk(
     async (form, thunkAPI) => {
         const token = localStorage.getItem("userdata");
         try {
-            const response = await axios.patch("https://surge-oyqw.onrender.com/api/user/upload",form ,{
+            const response = await axios.patch("http://localhost:8080/api/user/upload",form ,{
                 headers: {
                     "Content-Type":"mulipart/form-data" ,
                     "Authorization" : `Bearer ${token}`
@@ -75,7 +78,29 @@ export const UploadProfilePic = createAsyncThunk(
         }
     }
 )
-
+export const VerifyAccount = createAsyncThunk(
+    'verify/account',
+    async (form, thunkAPI) => {
+        const token = localStorage.getItem("userdata");
+        if(!token){
+            return ;
+        }
+        try{
+            
+               const response = await axios.get("http://localhost:8080/api/user/account/verify" ,{
+                headers:{
+                    "Content-Type":"application/json",
+                    "Authorization":`Bearer ${token}`
+                }
+               })
+               console.log(response.data);
+               
+               return response.data;
+        }catch(error){
+            throw new Error("Account validation failed");
+        }
+    }
+)
 
 
 
@@ -126,6 +151,17 @@ const authSlice = createSlice({
             })
             // upload profileImage
             .addCase(UploadProfilePic.fulfilled,(state,action)=>{
+            })
+            // verify account
+            .addCase(VerifyAccount.pending,(state,action)=>{
+                state.isLoggedIn = false;
+            })
+            .addCase(VerifyAccount.rejected,(state,action)=>{
+                state.isLoggedIn=false;
+            })
+            .addCase(VerifyAccount.fulfilled,(state,action)=>{
+              state.isLoggedIn = true;
+              action.payload
             })
     }
 })

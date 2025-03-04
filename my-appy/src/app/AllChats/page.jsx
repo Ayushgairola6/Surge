@@ -106,7 +106,7 @@ return ()=>{
 			 			 	 {roomdata!==null?<div  className="h-full w-full border border-red-500 rounded-md  overflow-auto p-2">
 			 			 	                 {[...roomdata, ...messages].map((chat,index)=>{
 			 			 	                 	return (<>                   
-			 			 	                 	<div className={`${chat.username===User.userid?'text-right':'text-left'} `} key={index}>    
+			 			 	                 	<div className={`'text-right':'text-left'} `} key={index}>    
 			 			 	                 	<ul className={`font-bold`}>{chat.username}</ul>         
 			 			 	                 		<ul >{chat.message}</ul>
 
