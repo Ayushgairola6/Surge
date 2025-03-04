@@ -187,7 +187,7 @@ async function GetChatRooms(req, res) {
         let User_id = null;
         const decoded = jwt.verify(token, key, (err, result) => {
             if (err) {
-                return res.status(400).json({ message: "token not verified" });
+                return err
             }
             User_id = result.id;
         });
@@ -199,9 +199,9 @@ async function GetChatRooms(req, res) {
         const [Rooms] = await connection.query(query, [User_id, User_id]);
         // console.log([Rooms]);
 
-        if (!Rooms || Rooms.length === 0) {
+        if ( Rooms.length === 0) {
             console.log("No rooms found with user id");
-            return res.status(200).json("No results rooms find");
+            return res.status(400).json("No results rooms find");
         }
 
         return res.status(200).json(Rooms);
