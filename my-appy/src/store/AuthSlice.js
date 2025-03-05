@@ -160,8 +160,11 @@ const authSlice = createSlice({
                 state.isLoggedIn=false;
             })
             .addCase(VerifyAccount.fulfilled,(state,action)=>{
-              state.isLoggedIn = true;
-              action.payload
+              if(action.payload.message==="Verified"){
+                state.isLoggedIn = true;
+              }
+               
+              
             })
     }
 })

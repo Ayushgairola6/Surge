@@ -50,7 +50,7 @@ app.listen(process.env.PORT,'0.0.0.0', () => {
 })
 
 
-websocket.data.InitializeSocketIo(httpServer);
+
 
 httpServer.listen(4000,()=>{
         console.log("socket.io connection running on port 4000");
