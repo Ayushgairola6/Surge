@@ -3,7 +3,8 @@ const UserRouter = express.Router();
 const controller = require("../Controller/UserController")
 
 
-UserRouter.get("/account/data", controller.data.getUser)
+UserRouter.get("/account/verify",controller.data.verifyToken)
+.get("/account/data", controller.data.getUser)
     .post("/register", controller.data.Signup)
     .post("/login", controller.data.Login)
     .patch("/upload",controller.data.upload.single("image"),controller.data.Upload_profileImage)

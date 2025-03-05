@@ -3,8 +3,18 @@ const app = express();
 require("dotenv").config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const {createServer } = require("http");
-const httpServer = createServer(app);
+const http = require("http");
+const httpServer = http.createServer(app);
+
+const {Server} = require("socket.io");
+
+const io = new Server(httpServer,{
+    cors:{
+        origin:"*"
+    }
+}); 
+module.exports = {io,httpServer};
+
 // const websocket = require("../controller/chatController")
 // cross origin 
 app.use(cors({origin:"*"}));
@@ -17,9 +27,8 @@ const User = require("./Router/User.Router");
 const Chats = require("./Router/ChatsRouter.js");
 // importing all the tables
 const user_Table = require("./Model/User")
-const chatsTable = require("./Model/chatsTable");
 
-const chatRoom = require("./Model/chatRooms");
+const messages = require("./Model/Messages.js");
 
 const comment_Table = require("./Model/Comments")
 const likedPost_Table = require("./Model/likedPosts")
@@ -31,9 +40,7 @@ comment_Table.comment.createCommentTable();
 Post_Table.post.CreatePostTable();
 likedPost_Table.liked.CreateLikedPostTable();
 dislikedPost_table.disliked.CreateDislikePostTable();
-chatsTable.data.createChatsTable();
-
-chatRoom.data.createChatsRoomTable();
+messages.data.createMessagesTable()
 
 // Routes to access the api
 app.use("/api/feed", Post.route.PostRouter);
@@ -45,14 +52,10 @@ app.use("/api/chats",Chats.route.chatRouter);
 
 // node server connection
 
-app.listen(process.env.PORT,'0.0.0.0', () => {
+httpServer.listen(process.env.PORT?process.env.PORT:8080,'0.0.0.0', () => {
     console.log('server connected')
 })
 
 
 
-
-httpServer.listen(4000,()=>{
-        console.log("socket.io connection running on port 4000");
-    });
 

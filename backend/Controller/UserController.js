@@ -11,6 +11,32 @@
 
       const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 1024 * 1024 * 5 } })
 
+
+
+       // function to verifytoken and keep the user logged in
+       const verifyToken = async(req,res)=>{
+         try{
+            const token = req.headers.authorization.split(" ")[1];
+            let user ;
+            if(!token)return res.status(400).json("No token found");
+               const verify = jwt.verify(token,secret,(err,result)=>{
+                if(err){
+                    return ;
+                }
+             user = result;
+               })
+
+               if(!user){
+                return res.status(400).json({message:"User not found"});
+               }
+              
+            return res.status(200).json({message:"Verified"});
+         }catch(error){
+            throw new Error("You are not authoized")
+         }
+       }
+
+
         // creating an account
         async function Signup(req, res) {
             try {
@@ -102,17 +128,20 @@
       async  function getUser(req, res) {
             try {
                 const token = req.headers.authorization.split(' ')[1];
+
                 if (!token) {
                     console.log("no jwttoken found")
                     return res.status(400).send({ message: "check if user even exists" })
                 }
-                
-              const decoded = jwt.decode(token,secret);
+              const decoded = jwt.decode(token);
+
+                const userId =decoded.id;   
+
               if(!decoded){
                 console.log('jwt verify/decoded error');
                 return res.status(400).json('no decoded token');
               }
-               const userId = decoded.id;
+
 
                if(!userId){
                 console.log("userID not found")
@@ -120,21 +149,16 @@
                }
 
            
-              const UserQuery = `SELECT * FROM users WHERE users.id = ?`
-              const [User] = await UserTable.query(UserQuery,userId)
-        
-               if(!User){
-                console.log("user not found in database");
-                return res.status(400).json("This account not found in our database");
-               }
+              const query =  `SELECT * FROM users WHERE id = ?`;
+                 
+                const [User] = await UserTable.query(query,userId);
+                
+                if(User.length===0){
+                    return res.status(400).json({message:"User not found"})
+                } 
+                const Find  = `SELECT * FROM posts WHERE author = ?`
+                const [posts] = await UserTable.query(Find,userId)
 
-               const postQuery =` SELECT * FROM posts WHERE author = ?`
-               const [posts] = await UserTable.query(postQuery,userId)
-           
-              if(!posts){
-                console.log("no user posts")
-                return res.status(400).json("error finding user posts")
-              }
 
                    return res.status(201).json({User,posts})
 
@@ -148,7 +172,7 @@
        async function Upload_profileImage(req,res) {
          
          try{
-            const token = req.headers.authorization.split(" ")[1];         
+            const token = req.headers.authorization.split(" ")[1];  
               if(!token ){
                 console.log("no token found")
                 return res.status(400).json("no token found");
@@ -211,7 +235,6 @@
 const sendProfile = async(req,res)=>{
 try{
     // the users id we want the profile sent via parameters
-  console.log("envoked")
 
           const Id = req.params.id;
           const token = req.headers.authorization.split(' ')[1];
@@ -226,7 +249,6 @@ try{
           
               const UserQuery = `SELECT * FROM users WHERE users.id = ?`
               const [User] = await UserTable.query(UserQuery,Id)
-         console.log(User)
                if(!User){
                 console.log("user not found in database");
                 return res.status(400).json("This account not found in our database");
@@ -240,8 +262,6 @@ try{
                 return res.status(400).json("error finding user posts")
               }
 
-            console.log({user,posts})
-console.log("ended")
                    return res.status(200).json({User,posts})
 
 
@@ -253,4 +273,4 @@ console.log("ended")
 
 
 
-        exports.data = { getUser, Login, Signup ,Upload_profileImage,upload,sendProfile}
+        exports.data = { getUser, Login, Signup ,Upload_profileImage,upload,sendProfile,verifyToken}
