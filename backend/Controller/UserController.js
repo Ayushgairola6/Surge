@@ -235,7 +235,6 @@
 const sendProfile = async(req,res)=>{
 try{
     // the users id we want the profile sent via parameters
-  console.log("envoked")
 
           const Id = req.params.id;
           const token = req.headers.authorization.split(' ')[1];
@@ -250,7 +249,6 @@ try{
           
               const UserQuery = `SELECT * FROM users WHERE users.id = ?`
               const [User] = await UserTable.query(UserQuery,Id)
-         console.log(User)
                if(!User){
                 console.log("user not found in database");
                 return res.status(400).json("This account not found in our database");
@@ -264,8 +262,6 @@ try{
                 return res.status(400).json("error finding user posts")
               }
 
-            console.log({user,posts})
-console.log("ended")
                    return res.status(200).json({User,posts})
 
 
