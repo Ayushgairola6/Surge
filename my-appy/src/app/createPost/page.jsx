@@ -9,14 +9,18 @@ const Create_Post = () => {
     const isLoggedIn = useSelector(state=>state.auth.isLoggedIn);
 
  const [PostStatus,setPostStatus]=useState("idle")
-
+const [token,setToken] = useState(null);
  const categoryRef= useRef();
  const titleRef = useRef();
  const ImageRef = useRef();
  const captionRef = useRef();
  const tagRef = useRef();
 
-const token = localStorage.getItem("userdata");
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setToken(localStorage.getItem("userdata"));
+        }
+    }, []);
   // A function that handles the change in the form and adds them in the respective key
 
   if(isLoggedIn===false){

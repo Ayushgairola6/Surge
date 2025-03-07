@@ -15,12 +15,14 @@ const messageInput = useRef();
    const roomdata = useSelector(state=>state.chat.chatData);
    const User = useSelector(state=>state.auth.user);
   const [room_name,setRoomname]=useState(null)
-const userid = User!==null?User.User[0].id:null;
+const userid = User?.User?.[0]?.id ?? null;
+const [senderName, setSenderName] = useState(User?.User?.[0]?.username ?? "");
  const [messages,setMessage]=useState([]);
  const [user2,setUser2] = useState(null)
-   const [senderName,setSenderName] =useState(User.User[0].username)
 useEffect(()=>{
-dispatch(GetChats())
+	if(User){
+dispatch(GetChats())		
+	}
 },[dispatch])
 
 
@@ -34,7 +36,7 @@ dispatch(GetChats())
 
 
  useEffect(()=>{
-	if(roomdata!==null){
+	if(roomdata !== null && User?.User?.[0]?.id ){
 		const lastMessage = roomdata[roomdata.length-1];
 		if(lastMessage.sender_id === User.User[0].id){
 			setUser2(lastMessage.receiver_id)
@@ -99,7 +101,7 @@ useEffect(()=>{
 
   function SendMessage(){ 
 	
-	if(!socket.current)return;
+	if(!socket.current || !User?.User?.[0])return;
 	if(roomdata!==null){
 		const lastMessage = roomdata[roomdata.length-1];
 		if(lastMessage.sender_id === User.User[0].id){
