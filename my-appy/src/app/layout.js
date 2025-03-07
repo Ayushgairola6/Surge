@@ -2,6 +2,7 @@
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer"
+import GetAccountVerified from './components/globalVerifier'
 import { AuthProvider, UseStore, } from "@/store/store";
 import { Provider } from 'react-redux';
 import { store } from '@/store/reduxStore';
@@ -16,6 +17,8 @@ export default function RootLayout({ children }) {
 
       <Provider store={store}>
         <AuthProvider>        
+        <GetAccountVerified/>
+
           <Navbar/>
           {children}
           <Footer/>

@@ -13,7 +13,6 @@ export const UpdateReaction = createAsyncThunk(
                     "Content-Type": "application/json", 
                     "Authorization": `Bearer ${token}` 
                 }});
-         alert(response.data); 
         return response.data;
         } catch (error) {
             alert(error);
@@ -34,7 +33,6 @@ export const Add_Comment = createAsyncThunk(
                  "authorization" :`Bearer ${token}`
                 }
             })
-            alert(response.data);
             return response.data;
         } catch (error) {
             alert(error);
@@ -95,7 +93,6 @@ const postSlice = createSlice({
             state.commentStatus = "done"
         })
         .addCase(Add_Comment.pending,(state,action)=>{
-            console.log("pending..")
         })
         // fetch commentStatus
          .addCase(GetComments.pending, (state, action) => {

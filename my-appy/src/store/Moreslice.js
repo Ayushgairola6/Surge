@@ -14,8 +14,7 @@ export const Getdata = createAsyncThunk(
                     "Authorization": `Bearer ${token}`
                 }
             })
-            console.log(token);
-            console.log(response.data)
+           
             return response.data;
         } catch (error) {
            return thunkAPI.rejectWithValue(error.response.data);
@@ -43,7 +42,6 @@ const MoreSlice = createSlice({
             .addCase(Getdata.fulfilled, (state, action) => {
                 state.status = "idle"
                 state.Account = action.payload;
-                console.log(action.payload)
             })
 
   }

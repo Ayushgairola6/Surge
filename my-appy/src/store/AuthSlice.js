@@ -10,7 +10,7 @@ export const SignupUser = createAsyncThunk(
                     "Content-Type": "application/json",
                 }
             })
-            return response.data;
+            
         } catch (error) {
             alert(error);
             throw error;
@@ -50,7 +50,6 @@ export const GetAccount = createAsyncThunk(
                     "Authorization" : `Bearer ${token}`
                 }
             })
-            console.log(response.data)
             return response.data;
         } catch (error) {
             alert(error);
@@ -70,7 +69,6 @@ export const UploadProfilePic = createAsyncThunk(
                     "Authorization" : `Bearer ${token}`
                 }
             })
-            console.log(response.data)
             return response.data;
         } catch (error) {
             alert(error);
@@ -93,7 +91,6 @@ export const VerifyAccount = createAsyncThunk(
                     "Authorization":`Bearer ${token}`
                 }
                })
-               console.log(response.data);
                
                return response.data;
         }catch(error){
@@ -118,7 +115,6 @@ const authSlice = createSlice({
      extraReducers: (builder) => {
         builder.addCase(SignupUser.pending, (state, action) => {
             state.Signupstatus = "loading..."
-            console.log(action.meta)
         })
             .addCase(SignupUser.rejected, (state, action) => {
                 state.Signupstatus = "Network error"
@@ -126,7 +122,6 @@ const authSlice = createSlice({
             })
             .addCase(SignupUser.fulfilled, (state, action) => {
                 state.Signupstatus = "idle"
-                console.log(action.payload)
             })
             // login status
             .addCase(LoginUser.rejected, (state, action) => {

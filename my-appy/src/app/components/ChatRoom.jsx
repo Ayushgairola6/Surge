@@ -16,6 +16,7 @@ const messageInput = useRef();
 const socket = useRef(null)
 const [messages,setMessage] =useState([]);
 const [user1,setUser1]=useState(null);
+const[senderName,setSenderName]=useState(user.User[0].username);
 const [user2,setUser2]=useState(null);
 const [roomName,setRoomName] = useState(null)
  const token = localStorage.getItem("userdata");
@@ -31,10 +32,8 @@ useEffect(()=>{
 	  socket.current = io("http://localhost:8080",{
 		auth:{token},
 	  })
-	  console.log(socket.current);
 	 // emit a connection event 
 	 socket.current.on("connection",()=>{
-	   console.log("Socket connection has been established");
 	 })
   
 	 // emit a join chat event with user 2 data
@@ -46,11 +45,9 @@ useEffect(()=>{
 	  setUser2(id);
 	  
 	 })
-	
 	// listening to the updated messages that are being currently listened
   
 	socket.current.on("newMessage",(data)=>{
-		console.log(data)
 		setMessage((prev)=>(Array.isArray(prev) ? [...prev, data] : [data]))
 	})
 	
@@ -62,28 +59,29 @@ useEffect(()=>{
 	return () => {
 	  socket.current.disconnect();
 	};
-  },[io])
+  },[roomName,user1,user2]);
 
 
 
 
 	return <>
-		<div  className="bg-gradient-to-br from-purple-300  to-blue-300 h-screen w-screen relative">
+		<div  className="bg-gray-300 h-screen w-screen relative">
 			{/*chats*/}
-			<div onClick={()=>console.log(messages)}  className="h-[90%] text-black font-bold text-md">
+			<div onClick={()=>console.log(messages)}  className="h-[90%] text-black ">
 				{messages.map((message,index)=>{
-				return	<div className={`${message.sender_id===user1?"text-left":"text-right"}`} key={index}>
-				<ul >{message.message}</ul>					
+				return	<div className={`${message.sender_id===user1?"text-left":"text-right"} px-4 py-2`} key={index}>
+					<ul className='text-lg font-bold'>{message.sender_name}</ul>
+				<ul className='text-md'>{message.message}</ul>					
 				</div>
 				})}
 			</div>
 		{/*input and send button*/}
-			<div className=" h-[20%] flex items-center justify-center gap-4 absolute bottom bg-black w-full">
-				<input   ref={messageInput} className="rounded-xl p-2 font-bold w-[70%]" placeholder="Enter your message here..." type="text"/>
+			<div className=" h-[20%] flex items-center justify-center gap-4 absolute bottom bg-white  w-full">
+				<input   ref={messageInput} className="rounded-xl p-2 font-bold w-[70%] border border-black" placeholder="Enter your message here..." type="text"/>
 				<button  onClick={()=>{
-					socket.current.emit("message",({roomName:roomName, user1:user1, user2:user2,message:messageInput.current.value}));
+					socket.current.emit("message",({roomName:roomName, user1:user1, user2:user2,message:messageInput.current.value,sender_name:senderName}));
 					messageInput.current.value="";
-				}} className="bg-gradient-to-r from-purple-300 to-green-300 px-4 font-bold rounded-xl border border-black shadow-md shadow-black">
+				}} className="bg-sky-500 px-4 font-bold rounded-xl border border-black shadow-md shadow-black">
 				Send
 				</button>
 			</div>

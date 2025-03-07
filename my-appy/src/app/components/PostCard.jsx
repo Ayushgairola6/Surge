@@ -14,12 +14,12 @@ const PostCard = () => {
     
     
 
-    const dispatch = useDispatch();
-        useEffect(()=>{
-            dispatch(VerifyAccount());
-        //  dispatch(GetChats());
-        //  dispatch(GetAccount());
-        },[dispatch])
+    // const dispatch = useDispatch();
+    //     useEffect(()=>{
+    //         dispatch(VerifyAccount());
+    //     //  dispatch(GetChats());
+    //      dispatch(GetAccount());
+    //     },[dispatch])
       const [currHover,setCurrHover] = useState(null);  
 
     // getting context of current tab being used by the user

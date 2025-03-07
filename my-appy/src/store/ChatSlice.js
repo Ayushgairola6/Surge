@@ -12,7 +12,6 @@ export const GetChats = createAsyncThunk(
                     "Authorization" : `Bearer ${token}`
                 }
             })
-            console.log(response.data)
             return response.data;
         } catch (error) {
             alert(error);
@@ -34,7 +33,6 @@ export const GetRoomSpecificChats = createAsyncThunk(
                     "Authorization" : `Bearer ${token}`
                 }
             })
-            console.log(response.data)
             return response.data;
         } catch (error) {
             alert(error);

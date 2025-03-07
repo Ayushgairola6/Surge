@@ -14,11 +14,11 @@ const messageInput = useRef();
    const chats = useSelector(state=>state.chat.chats);
    const roomdata = useSelector(state=>state.chat.chatData);
    const User = useSelector(state=>state.auth.user);
-  const [room_name,setRoomname]=useState(chats[0].room_name)
+  const [room_name,setRoomname]=useState(null)
 const userid = User!==null?User.User[0].id:null;
  const [messages,setMessage]=useState([]);
- let user2 = useRef(null)
-   
+ const [user2,setUser2] = useState(null)
+   const [senderName,setSenderName] =useState(User.User[0].username)
 useEffect(()=>{
 dispatch(GetChats())
 },[dispatch])
@@ -33,6 +33,24 @@ dispatch(GetChats())
  },[dispatch,chats])
 
 
+ useEffect(()=>{
+	if(roomdata!==null){
+		const lastMessage = roomdata[roomdata.length-1];
+		if(lastMessage.sender_id === User.User[0].id){
+			setUser2(lastMessage.receiver_id)
+		}else{
+			setUser2(lastMessage.sender_id)
+		}
+	}
+},[roomdata]);
+
+useEffect(()=>{
+	if(chats!==null){
+	setRoomname(chats[0].room_name);
+	}
+},[chats])
+
+
 // a bunch of states to handle socket related data
 const socket = useRef(null);
 
@@ -40,22 +58,22 @@ const socket = useRef(null);
 
 useEffect(()=>{
 	const token = localStorage.getItem("userdata");
+	if(!token){
+		return ;
+	   }
 	try{
-	 if(!token){
-	  return ;
-	 }
-	 //socket port
+
+	  
 	  socket.current = io("http://localhost:8080",{
 		auth:{token},
 	  })
 	// connecting to the socket 
-	socket.current.on("connection",()=>{
-		console.log("Socket connection has been established");
+	socket.current.on("connect",()=>{
 	  })
+	//   joining in a room
+  socket.current.emit("joinChat", { selectedUser:user2 });
 	// listening to the updated messages that are being currently listened
-  
 	socket.current.on("newMessage",(data)=>{
-		console.log(data)
 		setMessage((prev)=>(Array.isArray(prev) ? [...prev, data] : [data]))
 	})
 	
@@ -67,7 +85,7 @@ useEffect(()=>{
 	return () => {
 	  socket.current.disconnect();
 	};
-  },[io])
+  },[user2])
 
   
 // function which fetch chats when room id clicked on
@@ -80,17 +98,19 @@ useEffect(()=>{
 
 
   function SendMessage(){ 
+	
 	if(!socket.current)return;
-	if(roomdata.length!==0){
+	if(roomdata!==null){
 		const lastMessage = roomdata[roomdata.length-1];
 		if(lastMessage.sender_id === User.User[0].id){
-			user2 = lastMessage.receiver_id
+			setUser2(lastMessage.receiver_id)
 		}else{
-			user2 = lastMessage.sender_id
+			setUser2(lastMessage.sender_id);
 		}
-		return
+		
 	}
-	socket.current.emit("message",({roomName:roomName, user1:User.User[0].id, user2:user2,message:messageInput.current.value}))
+	socket.current.emit("message",({roomName:room_name, user1:User.User[0].id, user2:user2,message:messageInput.current.value,sender_name:senderName}))
+	messageInput.current.value = "";
   }
  
 
@@ -99,7 +119,7 @@ useEffect(()=>{
 		<div className=" flex items-center justify-center h-screen">
 			 {chats!==null? <div onClick={()=>console.log(roomdata)} className="flex items-normal justify-normal flex-col h-full w-[40%] p-2 gap-3 ">
 			 			{/*chat rooms*/}
-			 		{[...chats,messages].map((chat,index)=>{
+			 		{[...chats].map((chat,index)=>{
 			 			return (<>
 			 			
 			 				<div onClick={()=>{
@@ -133,9 +153,7 @@ useEffect(()=>{
 			 			 	                 })}
 			 			                  	 <div className=" flex items-center justify-evenly p-2  w-full ">
 			 			 	                    	<input ref={messageInput} className="w-72 border border-slate-400 rounded-xl font-bold p-1" placeholder="Your message" type='text'/>
-			 			 	                    	<button onClick={()=>{
-														SendMessage()
-													}} className="bg-sky-400 px-4 py-1 text-lg rounded-xl shadow-sm shadow-black text-gray-300 font-bold">Send</button>
+			 			 	                    	<button onClick={SendMessage} className="bg-sky-400 px-4 py-1 text-lg rounded-xl shadow-sm shadow-black text-gray-300 font-bold">Send</button>
 			 			 	                    </div>
 			 			 	               
 			 			 	 			 			 	 </div>:null}
