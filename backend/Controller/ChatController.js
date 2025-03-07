@@ -35,7 +35,6 @@ io.on("connection", (socket) => {
       return socket.disconnect();
     }
     
-    const user2name = user2.selectedUser.name;
     const sortedIds = [user1, user2.selectedUser].sort().join("_");
     roomName = `chat_${sortedIds}`;
 
@@ -49,7 +48,7 @@ io.on("connection", (socket) => {
       return;
     }
 
-    const { roomName, message, user1, user2 } = data;
+    const { roomName, message, user1, user2,sender_name } = data;
     const sender_id = user1;
     const receiver_id = user2;
 
@@ -66,7 +65,7 @@ io.on("connection", (socket) => {
 
     const [insertResponse] = await connection.query(InsertQuery, [roomName, message, sender_id, receiver_id]);
     if (insertResponse.affectedRows > 0) {
-      io.to(roomName).emit("newMessage", { sender_id, receiver_id, message: message });
+      io.to(roomName).emit("newMessage", { sender_id, receiver_id, message: message,sender_name });
     }
   });
   
@@ -137,11 +136,15 @@ async function GetChatData(req, res) {
   receiver.username AS receiver_name, 
   messages.message, 
   messages.sender_id, 
-  messages.receiver_id
+  messages.receiver_id,
+  messages.sent_at
 FROM messages
 JOIN users AS sender ON messages.sender_id = sender.id
 JOIN users AS receiver ON messages.receiver_id = receiver.id
-WHERE messages.room_name = ?;
+WHERE messages.room_name = ?
+ORDER BY messages.sent_at DESC
+LIMIT 20;
+
 `;
 
         const [data] = await connection.query(query, [room_name]);
@@ -150,8 +153,8 @@ WHERE messages.room_name = ?;
         if (!data || data.length === 0) {
             return res.status(400).json({ message: "No data found" });
         }
-
-        return res.status(200).json(data);
+  const sotedMessage = data.reverse();
+        return res.status(200).json(sotedMessage);
 
     } catch (error) {
         console.log(error);
