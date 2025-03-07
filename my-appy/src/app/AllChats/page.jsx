@@ -14,10 +14,11 @@ const messageInput = useRef();
    const chats = useSelector(state=>state.chat.chats);
    const roomdata = useSelector(state=>state.chat.chatData);
    const User = useSelector(state=>state.auth.user);
-
+  const [room_name,setRoomname]=useState(null)
 const userid = User!==null?User.User[0].id:null;
-
-   
+ const [messages,setMessage]=useState([]);
+ const [user2,setUser2] = useState(null)
+   const [senderName,setSenderName] =useState(User.User[0].username)
 useEffect(()=>{
 dispatch(GetChats())
 },[dispatch])
@@ -32,49 +33,85 @@ dispatch(GetChats())
  },[dispatch,chats])
 
 
-// a bunch of states to handle socket related data
-const [socket ,setSocket] = useState(null);
-const [messages,setMessage] =useState([]);
-const room = chats?chats[0].room_name:null;
-const room_id = chats?chats[0].room_id:null;
-const [roomName,setRoomname] = useState(room);
-const [roomid,setRoomId] = useState(room_id);
-const [username, setUsername] = useState(null);
-const [receipent,setReceipent] = useState(null);
-const [userId,setUserId] =useState(null);
- const token = localStorage.getItem("userdata");
+ useEffect(()=>{
+	if(roomdata!==null){
+		const lastMessage = roomdata[roomdata.length-1];
+		if(lastMessage.sender_id === User.User[0].id){
+			setUser2(lastMessage.receiver_id)
+		}else{
+			setUser2(lastMessage.sender_id)
+		}
+	}
+},[roomdata]);
 
-
-
-// connecting to the websocket
 useEffect(()=>{
+	if(chats!==null){
+	setRoomname(chats[0].room_name);
+	}
+},[chats])
 
- const socketIo = io("http://localhost:4000", { auth: { token: token } });
-  setSocket(socketIo);
-// Join a room (example)
-socketIo.emit("joinByRoomName",{roomName,userid,roomid});
 
-socketIo.on("room_message",(message)=>{
-	setMessage((prev)=>[...prev,message]);
-})
-return ()=>{
-	socketIo.disconnect();
-}
+// a bunch of states to handle socket related data
+const socket = useRef(null);
 
-},[ token])
+
+
+useEffect(()=>{
+	const token = localStorage.getItem("userdata");
+	if(!token){
+		return ;
+	   }
+	try{
+
+	  
+	  socket.current = io("http://localhost:8080",{
+		auth:{token},
+	  })
+	// connecting to the socket 
+	socket.current.on("connect",()=>{
+	  })
+	//   joining in a room
+  socket.current.emit("joinChat", { selectedUser:user2 });
+	// listening to the updated messages that are being currently listened
+	socket.current.on("newMessage",(data)=>{
+		setMessage((prev)=>(Array.isArray(prev) ? [...prev, data] : [data]))
+	})
+	
+  
+	}catch(error){
+	  throw error;
+	}
+  
+	return () => {
+	  socket.current.disconnect();
+	};
+  },[user2])
 
   
 // function which fetch chats when room id clicked on
   const GetRoomData=(chat)=>{
-  alert(chat) ;
   setRoomname(chat.room_name);
-  setRoomId(chat.room_id);
+  
   // get room related data;
   dispatch(GetRoomSpecificChats(chat.room_name));
   }
 
 
-  
+  function SendMessage(){ 
+	
+	if(!socket.current)return;
+	if(roomdata!==null){
+		const lastMessage = roomdata[roomdata.length-1];
+		if(lastMessage.sender_id === User.User[0].id){
+			setUser2(lastMessage.receiver_id)
+		}else{
+			setUser2(lastMessage.sender_id);
+		}
+		
+	}
+	socket.current.emit("message",({roomName:room_name, user1:User.User[0].id, user2:user2,message:messageInput.current.value,sender_name:senderName}))
+	messageInput.current.value = "";
+  }
  
 
 	return(
@@ -82,7 +119,7 @@ return ()=>{
 		<div className=" flex items-center justify-center h-screen">
 			 {chats!==null? <div onClick={()=>console.log(roomdata)} className="flex items-normal justify-normal flex-col h-full w-[40%] p-2 gap-3 ">
 			 			{/*chat rooms*/}
-			 		{chats.map((chat,index)=>{
+			 		{[...chats].map((chat,index)=>{
 			 			return (<>
 			 			
 			 				<div onClick={()=>{
@@ -98,34 +135,25 @@ return ()=>{
 			 			 	 
 			 
 			 			 	  
-			 			 </div>:<div  className=" border border-gray-400 py-1 px-2 rounded-full flex items-center justify-between animate-pulse ">
+			 			 </div>:<div  className="border border-gray-400 py-1 px-2 rounded-full flex items-center justify-between animate-pulse ">
 			 			 	 	message
 			 			 	 	<img className="h-10 w-10 border-2 border-green-400 rounded-full" src="/NoImage.jpg"/>
 			 			 	 </div>}
 			 			 	{/*chats of currrently seclected chatsessions or room*/}
-			 			 	 {roomdata!==null?<div  className="h-full w-full border border-red-500 rounded-md  overflow-auto p-2">
+			 			 	 {roomdata!==null?<div  className="flex flex-col items-normal justify-between h-screen w-full border border-gray-400  rounded-xl  overflow-auto py-4 ">
 			 			 	                 {[...roomdata, ...messages].map((chat,index)=>{
 			 			 	                 	return (<>                   
-			 			 	                 	<div className={`'text-right':'text-left'} `} key={index}>    
-			 			 	                 	<ul className={`font-bold`}>{chat.username}</ul>         
+			 			 	                 	<div className={`${chat.sender_id===userid?'text-left':'text-right'} `} key={index}>    
+			 			 	                 	<ul className={`font-bold`}>{chat.sender_name}</ul>         
 			 			 	                 		<ul >{chat.message}</ul>
 
 			 			 	                 		</div>
 			 			 	                    
 			 			 	                 	</>)
 			 			 	                 })}
-			 			                  	 <div className="border border-red-500 flex items-center justify-evenly p-2  bottom-1 w-full bg-black">
-			 			 	                    	<input ref={messageInput} className="border border-slate-400 rounded-xl font-bold p-1" placeholder="Your message" type='text'/>
-			 			 	                    	<button onClick={()=>{
-			 			 	                    		if (socket) {
-					 socket.emit("room_message", {roomName: roomName,
-					 	roomId:roomid,
-						 message: messageInput.current.value,
-						 userid:userid,
-						
-						 })
-						messageInput.current.value = "" }
-			 			 	                    	}} className="bg-gradient-to-r from-green-500 to-purple-500 w-[4rem] rounded-xl shadow-sm shadow-purple-400 font-bold">Send</button>
+			 			                  	 <div className=" flex items-center justify-evenly p-2  w-full ">
+			 			 	                    	<input ref={messageInput} className="w-72 border border-slate-400 rounded-xl font-bold p-1" placeholder="Your message" type='text'/>
+			 			 	                    	<button onClick={SendMessage} className="bg-sky-400 px-4 py-1 text-lg rounded-xl shadow-sm shadow-black text-gray-300 font-bold">Send</button>
 			 			 	                    </div>
 			 			 	               
 			 			 	 			 			 	 </div>:null}
