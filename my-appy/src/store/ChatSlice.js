@@ -6,7 +6,7 @@ export const GetChats = createAsyncThunk(
  async ( thunkAPI) => {
         const token = localStorage.getItem("userdata");
         try {
-            const response = await axios.get("http://localhost:8080/api/chats/all/data/" ,{
+            const response = await axios.get("https://surge-oyqw.onrender.com/api/chats/all/data/" ,{
                 headers: {
                     "Content-Type":"mulipart/form-data" ,
                     "Authorization" : `Bearer ${token}`
@@ -27,7 +27,7 @@ export const GetRoomSpecificChats = createAsyncThunk(
  async ( room_name,thunkAPI) => {
         const token = localStorage.getItem("userdata");
         try {
-            const response = await axios.get(`http://localhost:8080/api/chats/chats/${room_name}`,{
+            const response = await axios.get(`https://surge-oyqw.onrender.com/api/chats/chats/${room_name}`,{
                 headers: {
                     "Content-Type":"mulipart/form-data" ,
                     "Authorization" : `Bearer ${token}`

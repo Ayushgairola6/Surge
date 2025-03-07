@@ -66,7 +66,7 @@ useEffect(()=>{
 	try{
 
 	  
-	  socket.current = io("http://localhost:8080",{
+	  socket.current = io("https://surge-oyqw.onrender.com",{
 		auth:{token},
 	  })
 	// connecting to the socket 

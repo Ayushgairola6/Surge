@@ -5,7 +5,7 @@ export const SignupUser = createAsyncThunk(
     'auth/signup',
     async (form, thunkAPI) => {
         try {
-            const response = await axios.post("http://localhost:8080/api/user/register", form, {
+            const response = await axios.post("https://surge-oyqw.onrender.com/api/user/register", form, {
                 headers: {
                     "Content-Type": "application/json",
                 }
@@ -22,7 +22,7 @@ export const LoginUser = createAsyncThunk(
     'auth/login',
     async (form, thunkAPI) => {
         try {
-            const response = await axios.post("http://localhost:8080/api/user/login", form, {
+            const response = await axios.post("https://surge-oyqw.onrender.com/api/user/login", form, {
                 headers: {
                     "Content-Type": "application/json",
                 }
@@ -45,7 +45,7 @@ export const GetAccount = createAsyncThunk(
             return;
         }
         try {
-            const response = await axios.get("http://localhost:8080/api/user/account/data", {
+            const response = await axios.get("https://surge-oyqw.onrender.com/api/user/account/data", {
                 headers: {
                     "Authorization" : `Bearer ${token}`
                 }
@@ -63,7 +63,7 @@ export const UploadProfilePic = createAsyncThunk(
     async (form, thunkAPI) => {
         const token = localStorage.getItem("userdata");
         try {
-            const response = await axios.patch("http://localhost:8080/api/user/upload",form ,{
+            const response = await axios.patch("https://surge-oyqw.onrender.com/api/user/upload",form ,{
                 headers: {
                     "Content-Type":"mulipart/form-data" ,
                     "Authorization" : `Bearer ${token}`
@@ -85,7 +85,7 @@ export const VerifyAccount = createAsyncThunk(
         }
         try{
             
-               const response = await axios.get("http://localhost:8080/api/user/account/verify" ,{
+               const response = await axios.get("https://surge-oyqw.onrender.com/api/user/account/verify" ,{
                 headers:{
                     "Content-Type":"application/json",
                     "Authorization":`Bearer ${token}`

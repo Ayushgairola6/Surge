@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     // fetch posts on desired tab click
     function getPosts(topic) {
         setCurrTab(topic)
-        axios.get(`http://localhost:8080/api/feed/posts/${topic}`).then(res => {
+        axios.get(`https://surge-oyqw.onrender.com/api/feed/posts/${topic}`).then(res => {
             setPosts(res.data);
         }).catch(error => {
             alert(error);
