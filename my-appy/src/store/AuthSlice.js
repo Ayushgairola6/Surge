@@ -108,20 +108,23 @@ const authSlice = createSlice({
         isLoggedIn: false,
         error: null,
         loginstatus: "idle",
-        Signupstatus: false
+        Signupstatus: false,
+        status:"idle"
     }, reducers: {
 
     },
      extraReducers: (builder) => {
         builder.addCase(SignupUser.pending, (state, action) => {
-            
+            state.status = "loading"
         })
             .addCase(SignupUser.rejected, (state, action) => {
                 state.Signupstatus = false;
+
                 state.error = action.payload;
             })
             .addCase(SignupUser.fulfilled, (state, action) => {
                 state.Signupstatus = true;
+                state.status = "idle"
             })
             // login status
             .addCase(LoginUser.rejected, (state, action) => {

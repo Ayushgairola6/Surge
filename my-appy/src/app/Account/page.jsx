@@ -5,10 +5,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from 'react';
 import AccountLoader from '../components/AccountLoading';
 import Link from 'next/link';
+import { ArrowUpRight } from "lucide-react";
 
 const UserAccount = () => {
   const [chosenImage, setChosenImage] = useState(null);
   const dispatch = useDispatch();
+  const [currHover,setCurrHover] = useState(null);  
 
   // loading user data from api
   useEffect(() => {
@@ -56,6 +58,22 @@ const UserAccount = () => {
     event.target.src = "/NoImage.jpg";
   }
 
+  function whenOver(post){
+    if(post){
+    setCurrHover(post);            
+    }else{
+        return
+    }
+}
+
+function whenOut(post){
+    if(post){
+ setCurrHover(!post)       
+    }else{
+        return
+    }
+  }
+
   return (
     <>
       {User !== null && User ? (
@@ -86,14 +104,31 @@ const UserAccount = () => {
           </div>
 
           {/* container for posts of user */}
-          <div className="mt-4 min-h-52 p-2 flex items-start justify-evenly gap-2 flex-wrap">
+          <div className="mt-4 min-h-52 flex flex-wrap justify-center items-center gap-4 md:items-normal md:justify-normal">
             {/* post body */}
             {User.posts.map((post) => (
-              <div onClick={()=>console.log(post)} key={post.id} className="flex flex-col items-center justify-center border border-black rounded-xl min-h-56 min-w-48 max-h-56 overflow-y-scroll hide-scrollbar max-w-48 text-center font-mono font-semibold text-md text-center">
-                <img className=" w-full" src="/NoImage.jpg" onError={addFallbackImage} alt="" />
-                <span className="text-xl uppercase">{post.title}</span>
-                <span>{post.body}</span>
-              </div>
+                 <div  onMouseEnter={()=>whenOver(post)} onMouseLeave={()=>whenOut(post)} key={post.id} className="  rounded-xl relative min-h-72 h-72 max-h-72
+                 overflow-y-scroll relative  text-center p-1 font-serif border-2 border-black hover:shadow-md hover:shadow-black w-64 hide-scrollbar">
+                                                                  {post===currHover?<Link className="absolute right-2 top-2 inline-flex items-center justify-center bg-green-500 px-2 rounded-xl flex items-center justify-center border gap-2 border-black" href={`/DetailedPost/${post.id}`}>
+                                                                  Read
+                                                         <ArrowUpRight  className="bg-black font-extrabold text-white rounded-full " size={17} />
+                                                         
+                                                     </Link>:null}
+                    
+                     {/* post image */}
+                    
+                     <img className="h-[70%] w-full" onError={addFallbackImage} src={post.image?post.image:"/NoImage.jpg"} alt="\" />
+                      {/*Post title*/}
+                     <span className="flex items-center justify-between gap-3   "> <h3 className="text-lg font-mono uppercase text-center font-bold">{post.title}</h3> </span>
+
+                     {/* description */}
+
+                     <p>
+                         {post.body}
+                     </p>
+                      <div className="bg-black/30 absolute w-full "></div>
+                 </div>
+                
             ))}
           </div>
         </div>

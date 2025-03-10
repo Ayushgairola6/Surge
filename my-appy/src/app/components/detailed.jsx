@@ -50,7 +50,6 @@ const DetailedPost =  ({id}) => {
                     "Authorization":`Bearer ${token}`
                 }
              }); 
-                 console.log(res.data); 
                  setCurrPost(res.data); } 
                  catch (error) 
                   { alert(error); } }; 
@@ -150,10 +149,8 @@ function dislikePost() {
                     {/* tags */}
                {    /* <span className="font-bold font-mono font-xl text-left">tags</span>*/}
                 </div>
-            {/*  link to chatroom   */}
-            <Link href="/" className="text-lg font-bold bg-gradient-to-r from-green-400 to-green-600 absolute left-5 px-3 py-1 rounded-xl mt-2 border border-black shadow-sm shadow-black" >
-                Connect
-                </Link>
+           
+            
                 {/* buttons to like or dislike */}
                <div className="flex items-center justify-evenly w-40 shadow-md shadow-black  absolute right-2  px-3 py-2 rounded-xl">
            {/*  upvote*/}

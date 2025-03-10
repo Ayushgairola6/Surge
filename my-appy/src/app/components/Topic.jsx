@@ -14,8 +14,8 @@ const Topic = () => {
     <ul
       key={index}
       onClick={() => getPosts(topic)}
-      className={`cursor-pointer px-4 py-1  text-black font-bold shadow-md shadow-black transition-transform duration-200 ${
-        currTab === topic ? "bg-green-400 rounded-xl scale-105" : "bg-gray-200 rounded-xl"
+      className={`cursor-pointer px-4 py-1 border border-gray-400 shadow-sm shadow-black hover:shadow-md text-black font-bold  transition-transform duration-200 ${
+        currTab === topic ? "bg-green-400 rounded-xl scale-105" : "  rounded-xl"
       } hover:scale-95`}
     >
       {topic}
