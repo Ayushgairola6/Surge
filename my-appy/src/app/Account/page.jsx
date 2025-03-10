@@ -59,21 +59,26 @@ const UserAccount = () => {
   return (
     <>
       {User !== null && User ? (
-        <div className="p-2">
+        <div className="p-2 max-w-screen whitespace-wrap">
           {/* User image and user details */}
-          <div className="p-1 font-mono font-bold text-lg flex items-center justify-start gap-10">
-            <img onClick={handleInputTrigger} className="h-32 w-32 border border-black" src={User.User[0].image ? User.User[0].image : "/NoImage.jpg"} alt="" />
-            {/* div containing user data button and Link */}
-            <div className="flex flex-col gap-2">
-              <span>{User.User[0].username}</span>
+          <div className="py-3 font-mono font-bold text-sm flex flex-col items-start justify-start gap-3 w-full border-b border-black">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <img onClick={handleInputTrigger} className="h-32 w-32 border border-black rounded-xl shadow-lg shadow-black" src={User.User[0].image ? User.User[0].image : "/NoImage.jpg"} alt="" />
+            <div className="flex flex-col items-start justify-start">
+            <span>{User.User[0].username}</span>
               <span>{User.User[0].email}</span>
+              </div>
+              </div>
+            {/* div containing user data button and Link */}
+            <div className="flex  gap-2 flex-col text-sm">
+              
               {chosenImage !== null ? <img className="h-12 w-12" src={chosenImage} alt="" /> : null}
               <input onChange={handleInputChange} className="text-xs hidden" ref={imageRef} type="file" />
               {/* buttons and link container*/}
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex flex-col items-center justify-center gap-3">
                   <button onClick={handleImage_upload} className='bg-green-500  px-6 rounded-xl font-bold border border-black shadow-md shadow-black rounded-xl'>UploadImage</button>
-              <Link className='bg-green-500  px-6 font-semibold text-md border border-black shadow-md shadow-black rounded-xl font-bold text-center' href={`/Chats/${User.User[0].id}`}>
-                Converse
+              <Link className='bg-sky-500  px-6 rounded-xl font-bold border border-black shadow-md shadow-black rounded-xl' href={`/Chats/${User.User[0].id}`}>
+                Chat 
               </Link>
               </div>
               
@@ -84,8 +89,8 @@ const UserAccount = () => {
           <div className="mt-4 min-h-52 p-2 flex items-start justify-evenly gap-2 flex-wrap">
             {/* post body */}
             {User.posts.map((post) => (
-              <div key={post.id} className="flex flex-col items-center justify-center border border-black rounded-xl min-h-56 min-w-48 max-h-56 overflow-y-scroll hide-scrollbar max-w-48 text-center font-mono font-semibold text-md text-center">
-                <img className="h-[70%] w-full" src={post.image ? post.image : "/NoImage.jpg"} onError={addFallbackImage} alt="" />
+              <div onClick={()=>console.log(post)} key={post.id} className="flex flex-col items-center justify-center border border-black rounded-xl min-h-56 min-w-48 max-h-56 overflow-y-scroll hide-scrollbar max-w-48 text-center font-mono font-semibold text-md text-center">
+                <img className=" w-full" src="/NoImage.jpg" onError={addFallbackImage} alt="" />
                 <span className="text-xl uppercase">{post.title}</span>
                 <span>{post.body}</span>
               </div>

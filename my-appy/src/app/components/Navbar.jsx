@@ -24,13 +24,11 @@ const Navbar = () => {
 
     }
 
-    return (<header className="w-full border-b shadow-sm flex items-center justify-between py-1 px-6 font-mono font-bold ">
+    return (<header className=" border-b shadow-sm flex items-center justify-between py-1 px-6 font-mono font-bold ">
 
-        <h1 className="text-2xl font-bold mx-2">
             <img className="h-12 w-16" src="/SurgeLogo.jpeg"/>
-        </h1>
 
-        <div className="hidden items-center justify-evenly gap-8 sm:flex ">
+        <div className="hidden items-center justify-evenly gap-4 sm:flex ">
             <ul className="hover:bg-black hover:text-white w-full text-center  cursor-pointer px-2 ">
                 <Link href="/">Home</Link>
             </ul>
@@ -53,9 +51,9 @@ const Navbar = () => {
 
         </div>
         <div className=" flex items-center justify-between gap-6 pr-4" >
-
-            <input placeholder="search topic.." type="text" className="rounded-full border-2 border-slate-300 px-2 " />
-          {user? <img className="h-12 w-12 rounded-full border border-green-300" src={user.User.image} alt="img"/>:null}
+{/*
+            <input placeholder="search topic.." type="text" className="rounded-full border-2 border-slate-300 px-2 " />*/}
+          {user&&user.User?  <img className="h-12 w-12 rounded-full border border-green-300" src={user.User[0].image} alt="img"/>:null}
             {isLoggedIn === false ? <Link href="/SignupPage" className="hidden  sm:block bg-green-500 text-black  rounded-full py-1 px-3 shadow-md shadow-black border border-black hover:scale-90">Signup</Link> : <Link className="hidden  sm:block bg-green-500 text-black  rounded-full py-1 px-3 shadow-md shadow-black border border-black hover:scale-90" href={"/Account"}>Account</Link>}
            
             <button onClick={ShowSidebar}>

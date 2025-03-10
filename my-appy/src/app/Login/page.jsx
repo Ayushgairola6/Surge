@@ -38,7 +38,7 @@ const Login = () => {
 
 
     return <>
-        <div className="h-screen w-screen flex items-center flex-col sm:flex-row justify-evenly font-mono  relative">
+        <div className="h-screen  flex items-center flex-col sm:flex-row justify-evenly font-mono  relative">
             {/* login form */}
             {status==="success"?<Toast className="absolute"/>:null}
             <form  className=" h-full sm:w-1/2 w-full flex items-center  justify-center flex-col gap-2 " action="post">

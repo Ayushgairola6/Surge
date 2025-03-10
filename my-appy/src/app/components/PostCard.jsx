@@ -14,12 +14,6 @@ const PostCard = () => {
     
     
 
-    // const dispatch = useDispatch();
-    //     useEffect(()=>{
-    //         dispatch(VerifyAccount());
-    //     //  dispatch(GetChats());
-    //      dispatch(GetAccount());
-    //     },[dispatch])
       const [currHover,setCurrHover] = useState(null);  
 
     // getting context of current tab being used by the user
@@ -68,7 +62,7 @@ const PostCard = () => {
                 return <>
                     {/* postcard body */}
                   <div  onMouseEnter={()=>whenOver(post)} onMouseLeave={()=>whenOut(post)} key={post.id} className="  rounded-xl relative min-h-72 h-72 max-h-72
-                                      overflow-y-scroll   text-center p-1 font-serif border-2 border-black hover:shadow-md hover:shadow-black w-64 hide-scrollbar">
+                                      overflow-y-scroll relative  text-center p-1 font-serif border-2 border-black hover:shadow-md hover:shadow-black w-64 hide-scrollbar">
                                                                                        {post===currHover?<Link className="absolute right-2 top-2 inline-flex items-center justify-center bg-green-500 px-2 rounded-xl flex items-center justify-center border gap-2 border-black" href={`/DetailedPost/${post.id}`}>
                                                                                        Read
                                                                               <ArrowUpRight  className="bg-black font-extrabold text-white rounded-full " size={17} />
@@ -86,7 +80,7 @@ const PostCard = () => {
                                           <p>
                                               {post.body}
                                           </p>
-                                           
+                                           <div className="bg-black/30 absolute w-full "></div>
                                       </div>
                                      
 
