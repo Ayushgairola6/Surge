@@ -118,7 +118,7 @@ const AllChats = () => {
                 <div className="w-full md:w-2/3 lg:w-3/4 border border-gray-400 rounded-xl flex flex-col p-4 overflow-auto">
                     <div className="flex-1 overflow-auto space-y-4">
                         {[...roomdata, ...messages].map((chat, index) => (
-                            <div key={index} className={`p-3 rounded-lg max-w-[75%] ${chat.sender_id === userid ? 'bg-blue-500 text-white self-end' : 'bg-gray-200 self-start'}`}>
+                            <div key={index} className={`p-3 rounded-lg max-w-[75%] ${chat.sender_id === userid ? ' text-white self-end' : ' self-start'}`}>
                                 <div className="font-bold">{chat.sender_name}</div>
                                 <div>{chat.message}</div>
                             </div>
