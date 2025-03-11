@@ -2,23 +2,26 @@
 import { useDispatch, useSelector } from "react-redux";
 import { LoginUser } from '@/store/AuthSlice'
 import Link from "next/link";
-import { useRef, useState } from 'react';
+import { useRef, useState,useEffect } from 'react';
 import CicularLoader from "../components/CircularLoader"
-import {redirect} from 'next/navigation'
+import {useRouter} from 'next/navigation';
 import Toast from "../components/Toast";
-
 const Login = () => {
+   const router = useRouter();
 
     const dispatch = useDispatch()
     const isLoggedIn = useSelector(state=>state.auth.isLoggedIn);
    const status = useSelector(state=>state.auth.loginstatus);
-
     // reference of the inputs
     const emailRef = useRef()
     const passwordRef = useRef()
 
     // state for form data
-    
+    useEffect(()=>{
+      if(isLoggedIn===true){
+       router.push("/")
+      }
+    },[isLoggedIn])
 
     function handle_Login(e) {
         // creating a new form
@@ -28,10 +31,7 @@ const Login = () => {
         form.append("password",passwordRef.current.value)
         dispatch(LoginUser(form));
 
-        if(isLoggedIn===true){
-            redirect("/")
-        }
-        return;
+               return;
     }
 
 

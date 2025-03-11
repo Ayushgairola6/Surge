@@ -1,12 +1,12 @@
 "use client"
 import Link from "next/link";
-import { useState, useRef } from 'react';
+import { useState, useRef ,useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { SignupUser } from "@/store/AuthSlice";
 import CicularLoader from "../components/CircularLoader"
-
+import {useRouter} from 'next/navigation';
 const Signup = () => {
-
+  const router = useRouter();
     const dispatch = useDispatch();
    const status = useSelector(state=>state.auth.Signupstatus);
     const [data, setData] = useState({
@@ -14,6 +14,12 @@ const Signup = () => {
         email: "",
         password: ""
     })
+   
+   useEffect(()=>{
+     if(status===true){
+        router.push("/Login")
+     }
+   },[status])
 
     const emailRef = useRef();
     const userRef = useRef();

@@ -13,8 +13,10 @@ export default function Home() {
    
 
   return (<>
+    
    <Topic/>
     <PostCard/>
+    
   </>
 
   )

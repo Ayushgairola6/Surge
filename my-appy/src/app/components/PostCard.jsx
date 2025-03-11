@@ -57,7 +57,7 @@ const PostCard = () => {
 
     return (<>
         {/* post container */}<div className="container min-h-screen mx-auto p-2">
-        {posts !== null ? <div  className=" flex flex-wrap justify-center gap-4">
+        {posts !== null ? <div  className=" flex flex-wrap justify-center items-center gap-4 md:items-normal md:justify-normal">
             {posts.map((post, index) => {
                 return <>
                     {/* postcard body */}

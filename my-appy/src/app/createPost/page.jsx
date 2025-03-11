@@ -61,10 +61,11 @@ const [token,setToken] = useState(null);
    ClearForm()
   }
 
- function ClearForm(){
+ function ClearForm(e){
+  e.preventDefault()
         categoryRef.current.value = ""
       titleRef.current.value = ""  
-      ImageRef.current.value = ""  
+       
       captionRef.current.value = "" 
       tagRef.current.value = "" 
      return ;
@@ -76,14 +77,14 @@ const [token,setToken] = useState(null);
     <form  className="h-screen p-3 rounded-xl">
       <h1 className=" text-center text-2xl font-sans font-bold ">CREATE A POST</h1>
       {/* div containing all inputs */}
-      <div encType="multipart/form-data" className="relative flex flex-col justify-center items-center  w-4/5 m-auto mt-4 rounded-md border border-slate-300 shadow-sm shadow-black">
+      <div encType="multipart/form-data" className="relative flex flex-col justify-center items-center  w-4/5 m-auto mt-4 rounded-md border border-slate-300 shadow-sm shadow-black rounded-xl">
 
         {/* category */}
         <div className=" w-full mt-4 p-1 flex flex-col">
           <label className="text-left font-bold " htmlFor="dropdown">
             Choose a category
           </label>
-          <select ref={categoryRef}  className="  border rounded-lg border-gray-500 w-full p-1" name="category" id="dropdown">
+          <select ref={categoryRef}  className="  border rounded-xl border-gray-500 w-full p-1" name="category" id="dropdown">
             <option className="font-semibold " value="Tech">Tech</option>
             <option className="font-semibold" value="AI">AI</option>
             <option className="font-semibold" value="Politics">Politics</option>
@@ -100,7 +101,7 @@ const [token,setToken] = useState(null);
           <ul>
 
             <input
-              ref={titleRef} name="title" className="border rounded-lg border-gray-500 w-full p-1" type="text" />
+              ref={titleRef} name="title" className="border rounded-xl border-gray-500 w-full p-1" type="text" />
           </ul>
 
         </div>
@@ -109,7 +110,7 @@ const [token,setToken] = useState(null);
           <label htmlFor="image" className="text-left font-bold ">Choose any image</label>
           <ul>
             <input
-              ref={ImageRef} name="image" className="p-1 rounded-lg  w-full" type="file" />
+              ref={ImageRef} name="image" className="p-1 rounded-xl  w-full" type="file" />
           </ul>
 
         </div>
@@ -118,7 +119,7 @@ const [token,setToken] = useState(null);
           <label htmlFor="caption" className="text-left font-bold ">Caption</label>
           <ul className="w-full">
             <textarea
-              ref={captionRef} className="border rounded-lg border-gray-500 w-full p-1" name="caption" id=""></textarea>
+              ref={captionRef} className="border rounded-xl border-gray-500 w-full p-1" name="caption" id=""></textarea>
           </ul>
 
         </div>
@@ -126,14 +127,14 @@ const [token,setToken] = useState(null);
         <div className=" w-full mt-4 p-1 flex flex-col">
           <label htmlFor="caption" className="text-left font-bold ">Choose hashtags</label>
           <ul className="w-full">
-            <textarea ref={tagRef} className="border rounded-lg border-gray-500 w-full p-1" name="tags" placeholder="#AI" id=""></textarea>
+            <textarea ref={tagRef} className="border rounded-xl border-gray-500 w-full p-1" name="tags" placeholder="#AI" id=""></textarea>
           </ul>
 
         </div>
         {/* buttons for actions */}
         <div className='flex items-center justify-evenly p-2  w-full'>
-          {PostStatus=== "pending"? <CicularLoader/>:<button onClick={(e) => handlePostCreate(e)} className="bg-black text-white py-0 px-4 hover:bg-white hover:text-black font-semibold rounded-lg hover:border hover:border-black">Post</button>}
-          <button onClick={ClearForm} className="bg-black text-white py-0 px-3 font-semibold rounded-lg hover:bg-white hover:text-black hover:border hover:border-black">Delete</button>
+          {PostStatus=== "pending"? <CicularLoader/>:<button onClick={(e) => handlePostCreate(e)} className="bg-black text-white py-1 rounded-xl px-4 hover:bg-white hover:text-black font-semibold rounded-lg hover:border hover:border-black">Post</button>}
+          <button onClick={ClearForm} className="bg-black text-white py-1 px-3 font-semibold rounded-lg hover:bg-white hover:text-black hover:border hover:border-black rounded-xl">Delete</button>
         </div>
       </div>
 

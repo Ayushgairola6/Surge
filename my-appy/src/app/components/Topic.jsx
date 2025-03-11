@@ -9,11 +9,20 @@ const Topic = () => {
 
 
     return <>
-        <div className="flex items-center justify-evenly p-2 font-serif  ">
-            {topics.map((topic, index) => {
-                return <ul key={index}  onClick={()=>getPosts(topic)} className={`cursor-pointer     ${currTab === topic ? "bg-green-400 rounded-xl px-2 border border-black text-black shadow-md  shadow-black font-bold hover:scale-90" : null}`}>{topic}</ul>
-            })}
-        </div>
+        <div className="flex flex-wrap justify-center gap-4 py-2 font-serif">
+  {topics.map((topic, index) => (
+    <ul
+      key={index}
+      onClick={() => getPosts(topic)}
+      className={`cursor-pointer px-4 py-1  text-black font-bold shadow-md shadow-black transition-transform duration-200 ${
+        currTab === topic ? "bg-green-400 rounded-xl scale-105" : "bg-gray-200 rounded-xl"
+      } hover:scale-95`}
+    >
+      {topic}
+    </ul>
+  ))}
+</div>
+
     </>
 }
 
