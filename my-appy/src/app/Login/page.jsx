@@ -43,7 +43,7 @@ const Login = () => {
             {status==="success"?<Toast className="absolute"/>:null}
             <form  className=" h-full md:w-1/2 w-[90%] flex items-center  justify-center flex-col gap-2 " action="post">
 
-                <h1 className="font-bold  text-2xl">Login to your account</h1>
+                <h1 className="font-bold  text-xl  text-center">Welcom back !Ready to share your ideas?</h1>
                 <span className=" text-sm">Enter your email below to login to your account</span>
                 <div className="  w-96  p-1">
                     <label className="text-start font-bold" htmlFor="email">Email</label>
@@ -66,7 +66,11 @@ const Login = () => {
                 <span className="mt-4 font-bold text-lg">Don't have an account? <Link className="underline" href="/SignupPage">Sign up</Link></span>
             </form>
             {/* app image */}
-            <img className=" h-full w-1/2 hidden sm:block" src="/cyberpunk.jpg" alt="" />
+            <div className="h-full md:flex flex-col items-center justify-center text-center flex-wrap p-2 uppercase hidden ">
+             <h1 className="text-4xl font-bold ">your ideas <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-sky-600">matter </span> let's bring them to life</h1>
+
+                <img className="h-3/5  w-3/5 rounded-full " src="https://plus.unsplash.com/premium_photo-1668383777295-8343df447607?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHdvcmtzcGFjZXxlbnwwfHwwfHx8MA%3D%3D" alt="/"/>
+            </div>
         </div>
 
 

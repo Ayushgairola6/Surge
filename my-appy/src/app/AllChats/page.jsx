@@ -5,13 +5,15 @@ import { GetAccount } from '../../store/AuthSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import Link from 'next/link';
-
+import { useRouter } from 'next/navigation';
 const AllChats = () => {
+    const router = useRouter()
     const messageInput = useRef();
     const dispatch = useDispatch();
     const chats = useSelector(state => state.chat.chats);
     const roomdata = useSelector(state => state.chat.chatData);
     const User = useSelector(state => state.auth.user);
+    const isLoggedIn = useSelector(state=>state.auth.isLoggedIn);
     const [room_name, setRoomname] = useState(null);
     const userid = User?.User?.[0]?.id ?? null;
     const [senderName, setSenderName] = useState(User?.User?.[0]?.username ?? "");
@@ -20,10 +22,12 @@ const AllChats = () => {
     const socket = useRef(null);
 
     useEffect(() => {
-        if (User) {
+        if (User && isLoggedIn===true) {
             dispatch(GetChats());
+        }else{
+         router.push('/Popup')
         }
-    }, [dispatch]);
+    }, [isLoggedIn,User]);
 
     useEffect(() => {
         if (chats) {
@@ -101,7 +105,9 @@ const AllChats = () => {
             <div className="w-full md:w-1/3 lg:w-1/4 border border-gray-400 rounded-xl p-4 overflow-auto">
                 {chats !== null ? (
                     chats.map((chat, index) => (
-                        <div key={index} onClick={() => GetRoomData(chat)}
+                        <div  key={index} onClick={() => {GetRoomData(chat)
+                            console.log(chats)
+                        }}
                             className="flex items-center justify-between p-3 border border-gray-300 rounded-xl cursor-pointer hover:bg-gray-100 transition">
                             <span>{chat.room_name}</span>
                             <img className="h-10 w-10 border-2 border-green-400 rounded-full" src="/NoImage.jpg" />
@@ -118,16 +124,16 @@ const AllChats = () => {
                 <div className="w-full md:w-2/3 lg:w-3/4 border border-gray-400 rounded-xl flex flex-col p-4 overflow-auto">
                     <div className="flex-1 overflow-auto space-y-4">
                         {[...roomdata, ...messages].map((chat, index) => (
-                            <div key={index} className={`p-3 rounded-lg max-w-[75%] ${chat.sender_id === userid ? ' text-white self-end' : ' self-start'}`}>
-                                <div className="font-bold">{chat.sender_name}</div>
-                                <div>{chat.message}</div>
+                            <div key={index} className={`p-3 rounded-lg  ${chat.sender_id === userid ? '  text-left' : ' text-right '}`}>
+                                <div className={`${chat.sender_id === userid ? '  text-green-600 font-bold' : '  text-red-600  font-bold'}`}>{chat.sender_name}</div>
+                                <ul className=''>{chat.message}</ul>
                             </div>
                         ))}
                     </div>
                     {/* Input Box */}
                     <div className="flex items-center gap-2 mt-4">
                         <input ref={messageInput} className="flex-1 border border-gray-400 rounded-xl p-2" placeholder="Your message" type="text" />
-                        <button onClick={SendMessage} className="bg-sky-400 px-4 py-2 rounded-xl text-white font-bold shadow-md hover:bg-sky-500 transition">
+                        <button type='submit' onClick={SendMessage} className="bg-sky-400 px-4 py-2 rounded-xl text-white font-bold shadow-md hover:bg-sky-500 transition">
                             Send
                         </button>
                     </div>
