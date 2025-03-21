@@ -7,9 +7,18 @@ import Login from "./Login/page";
 import Signup from "./SignupPage/page";                    
 import Topic from "./components/Topic";
 import PostCard from "./components/PostCard";
-import { UseStore } from "@/store/store"
+import { GetAccount } from "@/store/AuthSlice";
 export default function Home() {
-   
+
+  // react-redux tools
+   const isLoggedIn = useSelector(state=>state.auth.isLoggedIn)
+   const dispatch = useDispatch();
+  //  if user successfully logs in get his account details
+   useEffect(()=>{
+     if(isLoggedIn===true){
+      dispatch(GetAccount());
+     }
+  },[isLoggedIn])
    
 
   return (<>

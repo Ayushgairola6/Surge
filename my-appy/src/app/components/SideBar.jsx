@@ -10,10 +10,10 @@ const SideBar = ({ HideSideBar }) => {
 
     return <>
         <div 
-        onClick={()=>console.log(isLoggedIn)}
         
+        onClick={() => HideSideBar()}
         className="fixed right-0 top-0 z-20  border border-black h-full w-60 bg-white text-black ">
-            <button className="absolute top-4 left-4" onClick={() => HideSideBar()}  >
+            <button className="absolute top-4 left-4"   >
                 <IoClose className="mt-2 ml-2" />
             </button>
             <div className="flex flex-col items-center justify-normal gap-2 mt-6">

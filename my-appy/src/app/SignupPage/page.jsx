@@ -43,21 +43,21 @@ const Signup = () => {
             {/* app image */}
             <img className=" h-1/2 w-1/2 hidden sm:block" src="/Earth2.jpg" alt="" />
             {/* signup form */}
-            <form onSubmit={(e) => handle_Signup(e)} className=" h-full sm:w-1/2 w-full flex items-center  justify-center flex-col gap-2 " action="post">
+            <form onSubmit={(e) => handle_Signup(e)} className=" h-full md:w-1/2 w-[90%] flex items-center  justify-center flex-col gap-2 " action="post">
 
                 <h1 className="font-bold  text-2xl">Create an account!</h1>
                 <span className=" text-md font-semibold">Enter your details below </span>
                 <div className="  w-96  p-1">
                     <label className="text-start font-bold" htmlFor="username">Username</label>
-                    <input ref={userRef} className="border border-black w-full px-0.5" placeholder="john doe" type="text" />
+                    <input ref={userRef} className=" w-full border border-gray-400 focus-border-sky-400 rounded-xl px-2 font-bold text-lg" placeholder="john doe" type="text" />
                 </div>
                 <div className="text-left w-96  p-1">
                     <label className="text-start font-bold" htmlFor="email">email</label>
-                    <input ref={emailRef} className="border border-black w-full px-0.5" placeholder="johndoe@gmail.com" type="email" />
+                    <input ref={emailRef} className=" w-full border border-gray-400 focus-border-sky-400 rounded-xl px-2 font-bold text-lg" placeholder="johndoe@gmail.com" type="email" />
                 </div>
                 <div className="text-left w-96  p-1">
                     <label className="text-start font-bold" htmlFor="password">password</label>
-                    <input placeholder="12345" ref={passwordRef} className="border border-black w-full px-0.5" type="password" />
+                    <input placeholder="hfs8jjf@990jlf" ref={passwordRef} className="border border-gray-400 focus-border-sky-400 rounded-xl px-2 w-full  font-bold text-lg" type="password" />
                 </div>
                 {status==="loading..."?<CicularLoader/>:<button className="bg-green-500 text-black w-96 mt-2 p-1 rounded-xl font-bold " >Sign up</button>}
 

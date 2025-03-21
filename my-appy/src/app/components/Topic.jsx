@@ -9,19 +9,20 @@ const Topic = () => {
 
 
     return <>
-        <div className="flex flex-wrap justify-center gap-4 py-2 font-serif">
+ <div className="flex flex-wrap items-center justify-center gap-2 border-b px-3 py-2 font-serif">
   {topics.map((topic, index) => (
     <ul
       key={index}
       onClick={() => getPosts(topic)}
-      className={`cursor-pointer px-4 py-1  text-black font-bold shadow-md shadow-black transition-transform duration-200 ${
-        currTab === topic ? "bg-green-400 rounded-xl scale-105" : "bg-gray-200 rounded-xl"
-      } hover:scale-95`}
+      className={`cursor-pointer px-2 rounded-xl py-1 text-black font-bold shadow-md transition-transform duration-200 ${
+        currTab === topic ? "bg-green-400 scale-105" : "bg-gray-200"
+      } rounded-md hover:scale-95`}
     >
       {topic}
     </ul>
   ))}
 </div>
+
 
     </>
 }
