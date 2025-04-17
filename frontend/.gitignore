@@ -20,7 +20,7 @@ node_modules/
 
 # production
 /build
-*.svg
+# *.svg
 # misc
 .DS_Store
 *.pem
