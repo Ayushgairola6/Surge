@@ -118,7 +118,7 @@ const DetailedPost = ({ id }) => {
             const token = localStorage.getItem('auth_token')
 
             try {
-                const res = await axios.get(`http://localhost:8080/api/feed/post/${id}`, {
+                const res = await axios.get(`https://surge-oyqw.onrender.com/api/feed/post/${id}`, {
                     withCredentials: true,
                     headers: {
                         Authorization: `Bearer ${token}`,

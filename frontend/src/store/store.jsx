@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem("auth_token");
         if (!token || isLoggedIn === false) return;
-        socket.current = io("http://localhost:8080", {
+        socket.current = io("https://surge-oyqw.onrender.com", {
             auth: { token },
             withCredentials: true
         });
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
         setCurrTab(topic)
 
         try {
-            const response = await axios.get(`http://localhost:8080/api/feed/posts/${topic}`, {
+            const response = await axios.get(`https://surge-oyqw.onrender.com/api/feed/posts/${topic}`, {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${token}`

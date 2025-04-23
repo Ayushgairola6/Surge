@@ -14,7 +14,7 @@ const PostCard = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/feed/posts/${currTab}`)
+      .get(`https://surge-oyqw.onrender.com/api/feed/posts/${currTab}`)
       .then((res) => {
         setPosts(res.data);
       })

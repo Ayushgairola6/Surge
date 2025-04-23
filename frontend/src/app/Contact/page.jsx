@@ -12,7 +12,7 @@ const ContactPage = () => {
         const token = localStorage.getItem("auth_token");
         try {
             setStatus("pending");
-            const response = await axios.post("http://localhost:8080/api/feedback", { feedback: InputRef.current.value }, {
+            const response = await axios.post("https://surge-oyqw.onrender.com/api/feedback", { feedback: InputRef.current.value }, {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${token}`
