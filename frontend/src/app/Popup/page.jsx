@@ -1,41 +1,42 @@
 'use client'
 import Link from "next/link";
-import {useRouter} from "next/navigation";
-import {useEffect}from 'react';
-import {useSelector} from 'react-redux';
+import { useRouter } from "next/navigation";
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 const Popup = () => {
-  const router = useRouter();
-  const isLoggedIn = useSelector(state=>state.auth.isLoggedIn);
- 
-  useEffect(()=>{
-    if(isLoggedIn===true){
-        router.push("/")
-    }
-  },[isLoggedIn])
+    const router = useRouter();
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
 
-    return <>
-        <div onClick={()=>coonsole.log(isLoggedIn)} className="flex items-center justify-center  h-[80vh]  font-mono text-center rounded-lg">
-            <div className="m-auto flex flex-col items-center justify-center w-4/5 rounded-xl shadow-md shadow-black p-2 border-black border h-1/2">
-                <h1 className="font-bold  text-3xl">You need an Account to  
-                {' '}<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-sky-700">CREATE</span> Posts
+    useEffect(() => {
+        if (isLoggedIn === true) {
+            router.push("/")
+        }
+    }, [isLoggedIn])
+
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+            <div className="flex flex-col items-center justify-center w-11/12 max-w-md p-8 bg-white rounded-2xl shadow-2xl border border-gray-200 shadow-black">
+                <h1 className="text-3xl font-extrabold text-gray-900 text-center leading-tight">
+                    Welcome Back! 
                 </h1>
-                <div className="flex items-center justify-center gap-10 mt-4">
+                <p className="mt-4 text-gray-600 text-center">
+                    Please log in or sign up to access this feature.
+                </p>
+                <div className="flex items-center justify-center gap-4 mt-8 w-full">
                     <Link href="/Login">
-                        <button className="shadow-md shadow-black hover:animate-pulse bg-green-500 py-1 text-black font-bold rounded-lg px-3 rounded-xl border border-black">Login</button>
+                        <button className="w-full px-6 py-3 text-white bg-gradient-to-r from-green-400 to-green-600 rounded-xl shadow-lg hover:shadow-xl hover:from-green-500 hover:to-green-700 transition-all duration-300">
+                            Login
+                        </button>
                     </Link>
                     <Link href="/SignupPage">
-                        <button className="shadow-md shadow-black hover:animate-pulse bg-sky-500 py-1 text-black font-bold rounded-lg px-3 rounded-xl border border-black">Signup</button>
+                        <button className="w-full px-6 py-3 text-white bg-gradient-to-r from-blue-400 to-blue-600 shadow-lg hover:shadow-xl hover:from-blue-500 hover:to-blue-700 transition-all duration-300 rounded-xl">
+                            Signup
+                        </button>
                     </Link>
-
                 </div>
             </div>
-
-
         </div>
-
-
-
-    </>
+    );
 }
 
 export default Popup;

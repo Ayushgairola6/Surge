@@ -54,7 +54,7 @@ const User2 = ({ id }) => {
           />
           <div className="flex flex-col">
             <span className="text-xl sm:text-2xl font-bold text-gray-800">{Connection.User[0].username}</span>
-            <span className="text-sm sm:text-base text-gray-700">{Connection.User[0].email}</span>
+            {/* <span className="text-sm sm:text-base text-gray-700">{Connection.User[0].email}</span> */}
 
             {/* Chat Button */}
             {user !== null && Connection.User[0].id !== user.User[0].id && (

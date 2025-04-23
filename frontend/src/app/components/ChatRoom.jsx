@@ -29,7 +29,7 @@ const ChatRoom = ({ id }) => {
 				return;
 			}
 			//socket port
-			socket.current = io("https://surge-oyqw.onrender.com", {
+			socket.current = io("http://localhost:8080", {
 				auth: { token },
 				withCredentials: true,
 			})

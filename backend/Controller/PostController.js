@@ -20,14 +20,31 @@ async function SendAllPosts(req, res) {
             return res.status(400).json("please choose a category")
         }
 
-        const query = `SELECT * FROM posts WHERE category = ?`
+        const query = `SELECT 
+    p.author,
+    p.body,
+    p.category,
+    p.hashtags,
+    p.id,
+    p.image,
+    p.title,
+    u.username,
+    u.image AS user_image
+FROM 
+    posts p
+LEFT JOIN 
+    users u 
+ON 
+    u.id = p.author
+WHERE 
+    category = ?;
+`
         const [Posts] = await connection.query(query, category);
         // console.log(Posts);
         if (!Posts) {
             console.log("No posts found");
             return res.status(400).json("No Post found");
         }
-        // console.log(Posts);
         return res.status(200).json(Posts)
     } catch (error) {
         console.log(error);
@@ -46,9 +63,25 @@ async function SendSinglePost(req, res) {
             console.log("no userid")
             return res.status(400).json("user not found");
         }
-        // sending the asked post
-        const query = `SELECT p.author,p.body,p.category,p.hashtags,p.id,p.image,p.title , u.username,u.image as user_image FROM posts p LEFT JOIN users u on u.id=p.author WHERE p.id = ? ;`
-        const [post] = await connection.query(query, postId);
+        // sending the asked post with the likeCount
+        const query = `SELECT 
+    p.author, 
+    p.body, 
+    p.category, 
+    p.hashtags, 
+    p.id, 
+    p.image, 
+    p.title, 
+    u.username, 
+    u.image AS user_image, 
+    (SELECT COUNT(*) FROM likedPosts lp WHERE lp.post_id = p.id) AS likeCount,
+    (SELECT COUNT(*) FROM disliked_posts lp WHERE lp.post_id = p.id) AS dislikeCount,
+    (SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id) AS comments
+FROM posts p 
+LEFT JOIN users u ON u.id = p.author 
+WHERE p.id = ?;
+`
+        const [post] = await connection.query(query, [postId, postId]);
         if (!post) {
             console.log('post not found in single post')
             return res.status(400).json("post not found")
@@ -98,10 +131,10 @@ async function CreateAPost(req, res) {
 
         const [Post] = await connection.query(query, [req.body.title, req.body.caption, imageUrl, category, Id]);
 
-        if(Post.affectedRows===0){
-            return res.status(400).json({message:"Error while creating the post! "})
+        if (Post.affectedRows === 0) {
+            return res.status(400).json({ message: "Error while creating the post! " })
         }
-        return res.status(200).json({message:"Post has been created"});
+        return res.status(200).json({ message: "Post has been created" });
 
     } catch (error) {
         console.log(error);
@@ -235,7 +268,7 @@ async function updateReaction(req, res) {
 async function AddComment(req, res) {
     try {
         //   getting the comment
-        const {comment} = req.body
+        const { comment } = req.body
 
 
         const postId = req.params.id;
@@ -259,7 +292,7 @@ async function AddComment(req, res) {
             console.log("error inserting comment in new post")
             return res.status(400).json("error insertin comments");
         }
-        return res.status(200).json({message:"Comment added"});
+        return res.status(200).json({ message: "Comment added" });
 
 
 

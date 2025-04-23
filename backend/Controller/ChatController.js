@@ -35,21 +35,83 @@ io.use((socket, next) => {
   }
 });
 
+
 // client sends a connection event and we receive it
 io.on("connection", (socket) => {
   const user1 = socket.user.id;
-  socket.join(user1,()=>{
-    console.log(`${socket.user} has joined the room`)
+  // user joins his own room
+  socket.join(user1.toString());
+
+
+  // like event
+  socket.on("like_Post", async (data) => {
+    const { post_id } = data;
+    if (!post_id) return;
+
+    try {
+      // Remove any existing dislike
+      await connection.query(`DELETE FROM disliked_posts WHERE post_id = ? AND user_id = ?`, [post_id, socket.user.id]);
+
+      // Check if already liked
+      const [liked] = await connection.query(`SELECT * FROM likedPosts WHERE post_id = ? AND user_id = ?`, [post_id, socket.user.id]);
+
+      if (liked.length > 0) {
+        // Unlike
+        await connection.query(`DELETE FROM likedPosts WHERE post_id = ? AND user_id = ?`, [post_id, socket.user.id]);
+      } else {
+        // Like
+        await connection.query(`INSERT INTO likedPosts (post_id, user_id) VALUES (?, ?)`, [post_id, socket.user.id]);
+      }
+
+      // Get both like and dislike counts
+      const data = await getUpdatedLikes(post_id)
+      // Emit updated counts
+      io.to(socket.user.id.toString()).emit('updateReactionCounts', {
+        post: post_id,
+        post: post_id,
+        likeCount: data?.likecount[0].likeCount,
+        dislikeCount: data?.likecount[0].dislikeCount
+      });
+
+
+    } catch (err) {
+      console.error("Like error:", err);
+    }
   });
 
+  // dislike event
+  socket.on("dislike_post", async (data) => {
+    const { post_id } = data;
+    if (!post_id) return;
 
+    try {
+      // Remove like if exists
+      await connection.query(`DELETE FROM likedPosts WHERE post_id = ? AND user_id = ?`, [post_id, socket.user.id]);
 
+      // Check if already disliked
+      const [disliked] = await connection.query(`SELECT * FROM disliked_posts WHERE post_id = ? AND user_id = ?`, [post_id, socket.user.id]);
 
-   socket.on("like_Post",(data)=>{
-    console.log("post liked event has been received",data);
-   })
+      if (disliked.length > 0) {
+        // Remove dislike
+        await connection.query(`DELETE FROM disliked_posts WHERE post_id = ? AND user_id = ?`, [post_id, socket.user.id]);
+      } else {
+        // Add dislike
+        await connection.query(`INSERT INTO disliked_posts (post_id, user_id) VALUES (?, ?)`, [post_id, socket.user.id]);
+      }
 
+      // Get both like and dislike counts
+      const data = await getUpdatedLikes(post_id)
+      // Emit updated counts
+      io.to(socket.user.id.toString()).emit('updateReactionCounts', {
+        post: post_id,
+        likeCount: data?.likecount[0].likeCount,
+        dislikeCount: data?.dislikecount[0].dislikeCount
+      });
 
+    } catch (err) {
+      console.error("Dislike error:", err);
+    }
+  });
 
 
 
@@ -99,7 +161,17 @@ io.on("connection", (socket) => {
 
 });
 
+async function getUpdatedLikes(post_id) {
+  try {
+    if (!post_id) return { status: false };
 
+    const [likecount] = await connection.query(`SELECT COUNT(*) AS likeCount FROM likedPosts WHERE post_id = ?`, [post_id]);
+    const [dislikecount] = await connection.query(`SELECT COUNT(*) AS dislikeCount FROM disliked_posts WHERE post_id = ?`, [post_id]);
+    return { likecount, dislikecount };
+  } catch (error) {
+
+  }
+}
 
 // get chat data method
 async function GetChatRooms(req, res) {

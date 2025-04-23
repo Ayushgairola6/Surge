@@ -1,185 +1,6 @@
-// 'use client'
-
-// import { BiSolidUpvote, BiUpvote, BiDownvote, BiSolidDownvote } from 'react-icons/bi'
-// import { CiMenuKebab } from 'react-icons/ci';
-// import { FaComment } from 'react-icons/fa';
-// import { FaMessage } from 'react-icons/fa6';
-// import { SlUserFollow } from 'react-icons/sl';
-// import { MdExpandMore } from 'react-icons/md';
-// import Image from "next/image";
-// import { useEffect, useState } from 'react';
-// import axios from "axios";
-// import { useSelector, useDispatch } from 'react-redux'
-// import { UpdateReaction } from "../../store/postSlice"
-// import { GetComments } from "../../store/postSlice"
-// import Link from 'next/link'
-// import CommentPage from "./CommentPage.jsx";
-// import LoadingCard from './loadingCard.jsx';
-// const DetailedPost = ({ id }) => {
-
-//     const dispatch = useDispatch();
-//     const post = useSelector(state => state.posts.post);
-//     const [likedPost, setLikedPost] = useState([]);
-//     const [dislikedPost, setDislikedPost] = useState([]);
-//     const [currPost, setCurrPost] = useState(null);
-//     const [ShowComment, setShowComment] = useState(false);
-//     const [showOption, setShowOptions] = useState(false);
-//     // accessing the id of the post from the /:id params
-//     const user = useSelector(state => state.auth.user)
-//     const token = localStorage.getItem("auth_token");
-
-//     useEffect(() => {
-
-//         // Retrieve likedPosts and dislikedPosts from localStorage
-//         if (localStorage) {
-//             const data_liked = JSON.parse(localStorage.getItem("likedPosts")) || [];
-//             setLikedPost(data_liked);
-
-//             const data_disliked = JSON.parse(localStorage.getItem("dislikedPosts")) || [];
-//             setDislikedPost(data_disliked);
-//         }
-
-//         //fetch the clicked post 
-//         const fetchPost = async () => {
-//             try {
-//                 const res = await axios.get(`https://surge-oyqw.onrender.com/api/feed/post/${id}`, {
-//                     withCredentials: true,
-//                     headers: {
-//                         "Authorization": `Bearer ${token}`
-//                     }
-//                 });
-//                 console.log(res.data)
-//                 setCurrPost(res.data);
-//             }
-//             catch (error) { throw new Error(error) }
-//         };
-//         // call the function
-//         fetchPost();
-
-//     }, [id])
-
-
-
-
-
-//     // Like Post function
-//     function LikePost() {
-//         const isLiked = likedPost.includes(id);
-//         const isDisliked = dislikedPost.includes(id);
-
-//         if (isLiked) {
-//             // alert("Post already liked");
-//             return;
-//         }
-
-//         if (isDisliked) {
-//             // Remove from dislikedPosts if the post is disliked
-//             const updatedDislikedPost = dislikedPost.filter((i) => id !== i);
-//             setDislikedPost(updatedDislikedPost);
-//             localStorage.setItem("dislikedPosts", JSON.stringify(updatedDislikedPost));
-//         }
-
-//         // Add to likedPosts
-//         const updatedLikedPost = [...likedPost, id];
-//         setLikedPost(updatedLikedPost);
-//         localStorage.setItem("likedPosts", JSON.stringify(updatedLikedPost));
-
-//         // Dispatch the action
-//         dispatch(UpdateReaction(id));
-//     }
-
-//     // Dislike Post function
-//     function dislikePost() {
-//         const isLiked = likedPost.includes(id);
-//         const isDisliked = dislikedPost.includes(id);
-
-//         if (isDisliked) {
-//             // alert("Post already disliked");
-//             return;
-//         }
-
-//         if (isLiked) {
-//             // Remove from likedPosts if the post is liked
-//             const updatedLikedPost = likedPost.filter((i) => id !== i);
-//             setLikedPost(updatedLikedPost);
-//             localStorage.setItem("likedPosts", JSON.stringify(updatedLikedPost));
-//         }
-
-//         // Add to dislikedPosts
-//         const updatedDislikedPost = [...dislikedPost, id];
-//         setDislikedPost(updatedDislikedPost);
-//         localStorage.setItem("dislikedPosts", JSON.stringify(updatedDislikedPost));
-
-//         // Dispatch the action
-//         dispatch(UpdateReaction(id));
-//     }
-
-//     // function to toggle CommentPage;
-//     function toggleCommentSection() {
-//         setShowComment(!ShowComment)
-//         dispatch(GetComments(id))
-//     }
-
-//     return <>
-//         {currPost !== null ? <>
-//             <div className="min-h-screen w-full relative mt-4">
-
-//                 <div className="relative border border-gray-300   rounded-lg  p-1 font-sans  w-full h-full">
-//                     {/*Post title*/}
-//                     <span className="flex items-center justify-between px-4  gap-4  ">
-//                         {user ? <img className="h-12 w-12" src={user.User.image} /> : <img className="h-12 w-12" src="/NoImage.jpg" />}
-//                         <h3 className=" text-xl uppercase font-serif font-bold ">{currPost[0].title}</h3>
-
-//                         {/*  menu options toggle icon*/}
-//                         <CiMenuKebab className="relative" onClick={() => setShowOptions(!showOption)} size={22} />
-//                         {showOption === true ?
-//                             <div className="absolute right-10 top-0 bg-black text-white rounded-xl w-[10rem] p-3 font-bold  flex items-normal justify-center flex-col gap-4 ">
-//                                 <Link className="flex items-center justify-evenly hover:scale-125 px-3" href={`/User2Account/${currPost[0].author}`}>Connect <FaMessage size={12} color="white" /></Link>
-//                                 <Link className="flex items-center justify-evenly hover:scale-125 px-3" href="/Account">Follow <SlUserFollow size={17} color="white" /></Link>
-//                                 <Link className="flex items-center justify-evenly hover:scale-125 px-3" href={`/Chats/${currPost[0].author}`}>More <MdExpandMore size={20} color="white" /></Link >
-//                             </div> : null}
-
-//                     </span>
-
-//                     <img className="w-full h-72  mt-4" src={currPost[0].image ? currPost[0].image : "/NoImage.jpg"} alt="img" />
-//                     {/* description */}
-//                     <p className="font-sans font-semibold text-center text-lg">
-//                         {currPost[0].body}
-//                     </p>
-//                     {/* tags */}
-//                     {    /* <span className="font-bold font-mono font-xl text-left">tags</span>*/}
-//                 </div>
-
-
-//                 {/* buttons to like or dislike */}
-//                 <div className="flex items-center justify-evenly w-40 shadow-md shadow-black  absolute right-2  px-3 py-2 rounded-xl">
-//                     {/*  upvote*/}
-//                     <button onClick={LikePost}>
-//                         {!likedPost.includes(id) ? <BiUpvote className="hover:scale-125" size={22} />
-//                             : <BiSolidUpvote className="hover:scale-125" color="red" size={22} />}
-//                     </button>
-//                     {/*  downvote*/}
-//                     <button onClick={dislikePost}>
-//                         {!dislikedPost.includes(id) ? <BiDownvote className="hover:scale-125 " size={22} />
-//                             : <BiSolidDownvote className="hover:scale-125" color="red" size={22} />}
-//                     </button>
-//                     {/*comment icon*/}
-//                     <button onClick={toggleCommentSection}>
-//                         <FaComment className="hover:scale-125" />
-//                     </button>
-//                 </div>
-//                 {ShowComment === true ? <CommentPage toggle={toggleCommentSection} ShowComment={ShowComment} id={id} token={token} /> : null}
-//             </div>
-//         </> : <div className="h-full w-full flex flex-col items-center justify-center"><h1>loading....</h1>
-//             <LoadingCard />
-//         </div>}
-//     </>
-// }
-
-// export default DetailedPost;
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { UpdateReaction, GetComments } from '../../store/postSlice'
@@ -198,9 +19,14 @@ import { FaMessage } from "react-icons/fa6";
 import { MdExpandMore } from "react-icons/md";
 import { SlUserFollow } from 'react-icons/sl';
 import { useRouter } from 'next/navigation';
+import { io } from 'socket.io-client';
+import { UseStore } from '@/store/store';
 
 const DetailedPost = ({ id }) => {
+
     const dispatch = useDispatch()
+    const { socket } = UseStore();
+    const controller = new AbortController();
     const post = useSelector((state) => state.posts.post)
     const [likedPost, setLikedPost] = useState([])
     const [dislikedPost, setDislikedPost] = useState([])
@@ -211,11 +37,12 @@ const DetailedPost = ({ id }) => {
     const [vibe, setVibe] = useState(false)
     const [cussReaction, setCurrReaction] = useState(null);
     const [indicate, setIndicate] = useState(false);
+    const [updatedLikes, setUpdatedLikes] = useState(null);
+    const [updatedDislikes, setUpdatedDislikes] = useState(null);
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const router = useRouter();
     let token;
     useEffect(() => {
-        if (!localStorage) return;
         const reaction = JSON.parse(localStorage.getItem("user_reaction"));
         token = localStorage.getItem("auth_token")
         if (!reaction) return;
@@ -255,12 +82,28 @@ const DetailedPost = ({ id }) => {
 
     function SaveReaction(e) {
         if (e) {
-            setVibe(false)
-            setCurrReaction(e.link.src)
+            setVibe(false);
+    
+            if (cussReaction === null) {
+                // No prior reaction — like the post
+                setCurrReaction(e.link.src);
+                socket.current.emit("like_Post", { post_id: id });
+    
+            } else if (cussReaction === e.link.src) {
+                // Same reaction clicked again — remove like
+                setCurrReaction(null);
+                socket.current.emit("like_Post", { post_id: id });
+    
+            } else {
+                // Different reaction selected — just update reaction visually
+                setCurrReaction(e.link.src);
+            }
+    
             localStorage.setItem("user_reaction", JSON.stringify(cussReaction));
-            LikePost()
         }
     }
+    
+
     useEffect(() => {
         // Retrieve likedPosts and dislikedPosts from localStorage
         if (localStorage) {
@@ -275,7 +118,7 @@ const DetailedPost = ({ id }) => {
             const token = localStorage.getItem('auth_token')
 
             try {
-                const res = await axios.get(`https://surge-oyqw.onrender.com/api/feed/post/${id}`, {
+                const res = await axios.get(`http://localhost:8080/api/feed/post/${id}`, {
                     withCredentials: true,
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -287,65 +130,35 @@ const DetailedPost = ({ id }) => {
             }
         }
         fetchPost()
+        return () => {
+            controller.abort();
+        };
     }, [id])
 
-    // Like Post function
-    function LikePost() {
-        if (!id) return;
-        const isLiked = likedPost.includes(id)
-        const isDisliked = dislikedPost.includes(id)
 
-        if (isLiked) return
 
-        if (isDisliked) {
-            // Remove from dislikedPosts if the post is disliked
-            const updatedDislikedPost = dislikedPost.filter((i) => id !== i)
-            setDislikedPost(updatedDislikedPost)
-            localStorage.setItem("user_reaction", JSON.stringify(cussReaction));
-
-            localStorage.setItem('dislikedPosts', JSON.stringify(updatedDislikedPost))
-        }
-
-        // Add to likedPosts
-        const updatedLikedPost = [...likedPost, id]
-        setLikedPost(updatedLikedPost)
-        localStorage.setItem("user_reaction", JSON.stringify(cussReaction));
-        localStorage.setItem('likedPosts', JSON.stringify(updatedLikedPost))
-
-        // Dispatch the action
-        dispatch(UpdateReaction(id))
-    }
-
-    // Dislike Post function
-    function dislikePost() {
-        if (!id) return;
-        const isLiked = likedPost.includes(id)
-        const isDisliked = dislikedPost.includes(id)
-
-        if (isDisliked) return
-
-        if (isLiked) {
-            // Remove from likedPosts if the post is liked
-            const updatedLikedPost = likedPost.filter((i) => id !== i)
-            setLikedPost(updatedLikedPost)
-            setCurrReaction(null);
-            localStorage.setItem('likedPosts', JSON.stringify(updatedLikedPost))
-        }
-
-        // Add to dislikedPosts
-        const updatedDislikedPost = [...dislikedPost, id]
-        setDislikedPost(updatedDislikedPost)
-        localStorage.setItem('dislikedPosts', JSON.stringify(updatedDislikedPost))
-
-        // Dispatch the action
-        dispatch(UpdateReaction(id))
-    }
 
     // Function to toggle CommentPage;
     function toggleCommentSection() {
         setShowComment(!ShowComment)
         dispatch(GetComments(id))
     }
+
+    // listenimg to reaction events
+    useEffect(() => {
+        if (!socket.current) return;
+
+        socket.current.on("likeError", (data) => {
+            // console.log("error while liking the post", data)
+        })
+        socket.current.on("updateReactionCounts", (data) => {
+            console.log(data)
+            setUpdatedDislikes(data.dislikeCount)
+            setUpdatedLikes(data.likeCount)
+        })
+
+    }, [socket.current])
+
 
     return (
         <>
@@ -396,13 +209,13 @@ const DetailedPost = ({ id }) => {
                                                     Connect <FaMessage size={12} />
                                                 </Link>
 
-                                                <Link
+                                                {/* <Link
                                                     href="/Account"
                                                     className="flex items-center justify-between px-3 transition-all duration-300 hover:bg-white hover:text-black rounded-full"
                                                     aria-label="Follow"
                                                 >
                                                     Follow <SlUserFollow size={17} />
-                                                </Link>
+                                                </Link> */}
                                             </div>
                                         )}
                                     </div>
@@ -416,13 +229,13 @@ const DetailedPost = ({ id }) => {
                                     alt=""
                                 />
                                 <h1 className="absolute text-xl md:text-2xl lg:text-3xl w-full font-bold text-gray-300 text-center bottom-5 left-1">
-                                    He Started Clapping When the Plane Landed
+                                    {currPost[0].title}
                                 </h1>
                             </section>
 
                             {/* this container contains the post body with reaction buttons */}
                             <div className="p-2 w-full flex">
-                                <p className="p-2 text-xl w-full m-auto font-semibold">{currPost[0].body}</p>
+                                <p className="p-2 text-md font-serif w-full m-auto ">{currPost[0].body}</p>
                             </div>
 
                             <div className="flex items-center justify-center gap-5 p-4 relative cursor-pointer">
@@ -439,11 +252,15 @@ const DetailedPost = ({ id }) => {
                                     ) : (
                                         <FaRegThumbsUp size={28} />
                                     )}
-                                    <span className="text-xl">0</span>
+                                    <span className="text-xl">{updatedLikes !== null ? updatedLikes : currPost[0].likeCount}</span>
                                 </button>
 
                                 {/* Icons appear above the main buttons */}
-                                <div
+                                <div onClick={() => {
+                                    if (cussReaction === null) return;
+                                    // socket.current.emit("like_Post", { post_id: id })
+
+                                }}
                                     className={`absolute flex items-center justify-center gap-2 bottom-16 ${vibe ? "flex" : "hidden"
                                         } transition-all duration-500 border-t border-gray-400`}
                                 >
@@ -458,15 +275,17 @@ const DetailedPost = ({ id }) => {
                                     ))}
                                 </div>
 
-                                <button
-                                    onClick={dislikePost}
+                                <button onClick={() => {
+                                    socket.current.emit("dislike_post", { post_id: id })
+                                    setCurrReaction(null)
+                                }}
                                     className="hover:scale-125 transition-all duration-500 cursor-pointer flex items-center justify-center gap-1 p-2 bg-gray-400 rounded-full"
                                 >
                                     <FaRegThumbsDown
                                         size={28}
                                         color={dislikedPost.includes(id) ? "red" : "black"}
                                     />
-                                    <span className="text-xl">0</span>
+                                    <span className="text-xl">{updatedDislikes !== null ? updatedDislikes : currPost[0].dislikeCount}</span>
                                 </button>
 
                                 <button
@@ -474,7 +293,7 @@ const DetailedPost = ({ id }) => {
                                     className="hover:scale-125 transition-all duration-500 cursor-pointer flex items-center justify-center gap-1 p-2 bg-gray-400 rounded-full"
                                 >
                                     <FaRegComments size={28} />
-                                    <span className="text-xl">0</span>
+                                    <span className="text-xl">{currPost[0].comments}</span>
                                 </button>
                             </div>
 

@@ -1,103 +1,3 @@
-// 'use client'
-// import axios from "axios";
-// import Image from "next/image";
-// import { ArrowUpRight } from "lucide-react";
-// import Link from "next/link";
-// import { useEffect, useState } from "react";
-// import { UseStore } from "@/store/store";
-// import {GetChats,GetRoomSpecificChats} from '@/store/ChatSlice';
-// import {GetAccount,VerifyAccount} from '@/store/AuthSlice'
-// import {useDispatch,useSelector} from 'react-redux';
-// import LoadingCard from './loadingCard'
-// const PostCard = () => {
-//     // getting the user chats 
-
-
-
-//       const [currHover,setCurrHover] = useState(null);  
-
-//     // getting context of current tab being used by the user
-//     const { currTab ,posts,setPosts} = UseStore();
-
-//     useEffect(() => {
-//         axios.get(`https://surge-oyqw.onrender.com/api/feed/posts/${currTab}`).then(res => {
-//             console.log(res.data);
-//             setPosts(res.data);
-//         }).catch(error => {
-//             alert(error);
-//         })
-//     }, [])
-
-
-//     // functions to handle appearance and disappearance of the directive arrow in while hovering over the post
-
-//     function whenOver(post){
-//         if(post){
-//         setCurrHover(post);            
-//         }else{
-//             return
-//         }
-//     }
-
-//     function whenOut(post){
-//         if(post){
-//      setCurrHover(!post)       
-//         }else{
-//             return
-//         }
-
-//     }
-
-//     function addFallbackImage(event){
-//         event.target.src = "./NoImage.jpg"
-
-//     }
-
-
-
-//     return (<>
-//         {/* post container */}<div className="container min-h-screen mx-auto p-2">
-//         {posts !== null ? <div  className=" flex flex-wrap justify-center items-center gap-4 md:items-normal md:justify-normal">
-//             {posts.map((post, index) => {
-//                 return <>
-//                     {/* postcard body */}
-//                   <div   onMouseEnter={()=>whenOver(post)} onMouseLeave={()=>whenOut(post)} key={post.id} className="  rounded-xl  min-h-72 h-72 max-h-72
-//                                       overflow-y-scroll relative  text-center p-1 font-serif border-2 border-black hover:shadow-md hover:shadow-black w-64 hide-scrollbar">
-//                                                                                        {post===currHover?<Link className="absolute right-2 top-2 inline-flex items-center  bg-green-500 px-2 rounded-xl  justify-center border gap-2 border-black" href={`/DetailedPost/${post.id}`}>
-//                                                                                        Read
-//                                                                               <ArrowUpRight  className="bg-black font-extrabold text-white rounded-full " size={17} />
-
-//                                                                           </Link>:null}
-
-//                                           {/* post image */}
-
-//                                           <img className="h-[70%] w-full" onError={addFallbackImage} src={post.image?post.image:"/NoImage.jpg"} alt="\" />
-//                                            {/*Post title*/}
-//                                           <span className="flex items-center justify-between gap-3   "> <h3 className="text-lg font-mono uppercase text-center font-bold">{post.title}</h3> </span>
-
-//                                           {/* description */}
-
-//                                           <p>
-//                                               {post.body}
-//                                           </p>
-//                                            <div className="bg-black/30 absolute w-full "></div>
-//                                       </div>
-
-
-//                 </>
-//             })}
-
-//         </div> : <div className="h-screen w-full flex items-center justify-center ">
-
-//             <h1 className="font-bold text-3xl font-mono animate-pulse">LOADING...</h1>
-//         </div>
-//         }
-//         </div>
-
-//     </>)
-// }
-
-// export default PostCard;
 'use client'
 import axios from "axios";
 import { ArrowUpRight } from "lucide-react";
@@ -114,9 +14,8 @@ const PostCard = () => {
 
   useEffect(() => {
     axios
-      .get(`https://surge-oyqw.onrender.com/api/feed/posts/${currTab}`)
+      .get(`http://localhost:8080/api/feed/posts/${currTab}`)
       .then((res) => {
-        console.log(res.data);
         setPosts(res.data);
       })
       .catch((error) => {
@@ -169,9 +68,15 @@ const PostCard = () => {
               </div>
               {/* Post Content */}
               <div className="p-4">
-                <h3 className="text-xl font-mono uppercase font-bold text-gray-800 mb-2">
-                  {post.title}
-                </h3>
+                <div className="flex items-center justify-start gap-2 px-4 w-full">
+                  <Link className="h-12 w-12 rounded-full" href={`/User2Account/${post.author}`}>
+                    <img className="h-12 w-12 rounded-full" src={post.user_image ? post.user_image : "/"} alt="" />
+                  </Link>
+                  <span className="font-serif text-md">{post.username}</span>
+                </div>
+                <h3 className="text-lg font-mono uppercase font-bold text-gray-800 mb-2">
+                    {post.title}
+                  </h3>
                 <p className="text-gray-600 text-sm line-clamp-3">
                   {post.body}
                 </p>
@@ -179,7 +84,7 @@ const PostCard = () => {
               {/* Read Button at Bottom */}
               <div className="px-4 pb-4">
                 <Link className="" href={`/DetailedPost/${post.id}`}>
-                  <p className="inline-flex items-center bg-gradient-to-r from-indigo-600 to-purple-600 border border-gray-400  text-white px-4 py-2 rounded-full shadow hover:bg-green-600 transition-colors shadow-sm shadow-black">
+                  <p className="inline-flex items-center bg-gradient-to-r from-indigo-600 to-purple-600 border border-gray-400  text-white px-4 py-2 rounded-full  hover:bg-green-600 transition-colors shadow-sm shadow-black">
                     Read <ArrowUpRight size={20} className="ml-2" />
                   </p>
                 </Link>

@@ -1,28 +1,35 @@
 "use client"
 import axios from 'axios';
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 
 const ContactPage = () => {
 
     const InputRef = useRef();
-
+    const [status, setStatus] = useState("idle");
     async function handleFeedbac(e) {
         e.preventDefault();
         if (!InputRef.current || InputRef.current.value === "") return;
         const token = localStorage.getItem("auth_token");
         try {
-            const response = await axios.post("http://localhost:8080/send/feedback", { data: InputRef.current.value }, {
+            setStatus("pending");
+            const response = await axios.post("http://localhost:8080/api/feedback", { feedback: InputRef.current.value }, {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             })
-            console.log(response.data);
+            if (response.data.message === "Done") {
+                setStatus("Done");
+                console.log(response.data);
+            }
+            setTimeout(() => {
+                setStatus("idle");
+            }, 2000)
         } catch (error) {
+            setStatus("idle");
             console.log(error);
-            throw new Error("Error while sending feedback!")
         }
-
+        InputRef.current.value = ""
     }
 
 
@@ -46,12 +53,17 @@ const ContactPage = () => {
                         placeholder="Type your message..."
                         className="p-3 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-indigo-600 resize-none h-32 transition duration-300 rounded-xl"
                     ></textarea>
-                    <button
+                    {status === "pending" ? (<div className='flex items-center justify-center'>
+                        <div className='border-t-4 border-red-500 animate-spin h-10 w-10 rounded-full'>
+
+                        </div>
+
+                    </div>) : <button
                         type="submit"
                         className="w-full bg-gradient-to-r from-lime-500 to-pink-500 text-white py-3 rounded-full font-semibold transform transition hover:scale-105 shadow-sm shadow-black"
                     >
                         SEND
-                    </button>
+                    </button>}
                 </form>
             </div>
         </div>

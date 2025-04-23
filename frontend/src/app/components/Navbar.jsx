@@ -30,7 +30,7 @@ const Navbar = () => {
 
     return (<header className=" border-b shadow-sm flex items-center justify-between py-1 px-6 font-mono font-bold ">
 
-        <img className="h-12 w-16 cursor-pointer" src="/SurgeLogo.jpeg" />
+        <img className="h-12 w-16 cursor-pointer" src="/images.jpeg" />
 
         <div className="hidden items-center justify-evenly gap-4 sm:flex">
             <Link

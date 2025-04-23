@@ -15,7 +15,7 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 102
 
 // function to verifytoken and keep the user logged in
 const UpdateState = async (req, res) => {
-    console.log("yha tak code arha hai")
+    
     try {
         if (req.user) {
             return res.status(200).json({ message: "Authorized" })
