@@ -243,13 +243,15 @@ const DetailedPost = ({ id }) => {
                         {/* the top most container that contains the user name and post data  */}
                         <div className=" h-full">
                             <section onClick={() => console.log(currPost)} className="w-[96%] mx-auto flex items-center justify-between gap-2 py-2 px-4   rounded-bl-xl rounded-br-xl ">
-                                <div className="flex items-center justify-center  gap-2">
-                                    <img
+                                <div className="flex items-center justify-between  gap-2 flex-col ">
+                                    <Image
                                         className="h-10 w-10 rounded-full"
                                         src={currPost[0].user_image}
                                         alt=""
+                                        height={25}
+                                        width={25}
                                     />
-                                    <span className="font-bold text-white text-lg">@{currPost[0].username}</span>
+                                    <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-purple-600 to-white text-lg">@{currPost[0].username}</span>
                                 </div>
 
                                 <span className="flex items-center justify-between px-4 gap-4 ">
@@ -264,7 +266,7 @@ const DetailedPost = ({ id }) => {
 
                                         {indicate && (
                                             <label
-                                                className="text-white font-bold bg-black  text-sm py-1 px-3 rounded-full absolute -top-8 left-1/2 -translate-x-1/2"
+                                                className="text-white font-bold bg-black  text-sm py-1 px-3 rounded-full absolute -top-8 left-1/2 -translate-x-1/2 hidden md:block lg:block"
                                                 htmlFor="menu"
                                             >
                                                 Menu
@@ -299,7 +301,7 @@ const DetailedPost = ({ id }) => {
 
                             <section className="w-full px-3 relative flex flex-col items-center justify-center gap-4">
                                 {/* Next Button */}
-                                <ul
+                                {currPost[0].media_urls.length > 0 ? <><ul
                                     className="absolute top-10 right-5 p-1 bg-black rounded-full z-[99] shadow-sm hover:shadow-purple-900 cursor-pointer hover:-rotate-90 transition-all duration-300"
                                     onClick={() => {
                                         if (currPost[0].media_urls.length > 0 && Index < currPost[0].media_urls.length - 1) {
@@ -310,17 +312,17 @@ const DetailedPost = ({ id }) => {
                                     <FaAngleDown color="white" />
                                 </ul>
 
-                                {/* Previous Button */}
-                                <ul
-                                    className="absolute top-10 left-5 p-1 bg-black rounded-full z-[99] shadow-sm hover:shadow-purple-900 cursor-pointer hover:rotate-90 transition-all duration-300"
-                                    onClick={() => {
-                                        if (Index > 0) {
-                                            setIndex((prev) => prev - 1);
-                                        }
-                                    }}
-                                >
-                                    <FaAngleDown color="white" />
-                                </ul>
+                                    {/* Previous Button */}
+                                    <ul
+                                        className="absolute top-10 left-5 p-1 bg-black rounded-full z-[99] shadow-sm hover:shadow-purple-900 cursor-pointer hover:rotate-90 transition-all duration-300"
+                                        onClick={() => {
+                                            if (Index > 0) {
+                                                setIndex((prev) => prev - 1);
+                                            }
+                                        }}
+                                    >
+                                        <FaAngleDown color="white" />
+                                    </ul></> : null}
 
                                 {/* Image wrapper (relative container for 'fill') */}
                                 <div className="relative w-full max-w-[90vw] h-[25rem]">
@@ -339,9 +341,11 @@ const DetailedPost = ({ id }) => {
                                 </div>
 
                                 {/* Title */}
+
                                 <h1 className="text-2xl md:text-3xl lg:text-4xl w-full font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-700 to-purple-700 text-center">
                                     {currPost[0].title}
                                 </h1>
+
                             </section>
 
 

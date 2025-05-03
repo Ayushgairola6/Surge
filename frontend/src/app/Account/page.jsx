@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { ArrowUpRight } from "lucide-react";
 import { FaLock } from "react-icons/fa";
 import { CiMenuKebab } from "react-icons/ci";
+import { IoCreateSharp } from "react-icons/io5";
 import PostMenu from "../components/postOptionMenu";
 import { useRouter } from "next/navigation";
 
@@ -131,7 +132,7 @@ const UserAccount = () => {
           </div>
           {/* Posts Container */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {User.posts.map((post) => (
+            {User.posts.length > 0 ? User.posts.map((post) => (
               <div onMouseEnter={() => {
                 setCurrPost(post.id)
               }}
@@ -185,7 +186,10 @@ const UserAccount = () => {
                   </Link>
                 </div>
               </div>
-            ))}
+            )) : <div className="flex items-center justify-center h-[50vh] flex-col gap-3 ">
+              <span className="text-purple-500">You currently do not have any posts</span>
+              <Link href="/createPost" className="py-1 px-4 rounded-full flex items-center justify-center gap-2">Start Posting <IoCreateSharp/></Link>
+            </div>}
           </div>
         </div>
       ) : (

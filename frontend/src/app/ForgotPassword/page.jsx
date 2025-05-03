@@ -4,7 +4,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResetPassword, updateState } from '../../store/AuthSlice'
-import { MdOutlineSmsFailed ,MdSearch} from 'react-icons/md'
+import { MdOutlineSmsFailed, MdSearch, MdArrowBack } from 'react-icons/md'
+import Link from 'next/link';
+
 const ForgotPassword = () => {
 
     const dispatch = useDispatch();
@@ -12,7 +14,7 @@ const ForgotPassword = () => {
     const newPassword = useRef();
     const confirmPassword = useRef();
     const status = useSelector(state => state.auth.passwordUpdated);
-
+    const [arrow,setArrow] = useState(false);
     const handleResetPassword = async () => {
         if (email.current.value === "" || newPassword.current.value === "" || confirmPassword.current.value === "") { return }
         if (newPassword.current.value !== confirmPassword.current.value) {
@@ -34,6 +36,8 @@ const ForgotPassword = () => {
             }, 2000)
         }
     }, [status])
+
+
 
     return (<>
 
@@ -63,7 +67,7 @@ const ForgotPassword = () => {
                      rounded-xl border border-gray-400 focus:ring-2 focus:ring-sky-500 shadow-sm" />
                 </section>
 
-                <div className="mt-6 w-full flex justify-center">
+                <div className="mt-6 w-full ">
                     {status === "pending" && (
                         <div className="bg-sky-600
                         flex items-center justify-center gap-3   transition-all duration-700 
@@ -76,18 +80,26 @@ const ForgotPassword = () => {
                     {status === "failed" && (
                         <div className="bg-red-200  transition-all duration-700
                         flex items-center justify-center gap-3  text-red-600 p-3 w-[90%] mt-6 rounded-xl text-center border border-red-600 font-bold">
-                            Something went wrong! <MdOutlineSmsFailed className=""/>
+                            Something went wrong! <MdOutlineSmsFailed className="" />
                         </div>
                     )}
 
                     {status === "idle" && (
                         <button onClick={() => handleResetPassword()} className="bg-gradient-to-r from-indigo-600 to-purple-600
-                         hover:scale-105 transition-all duration-500 text-black
+                         hover:from-indigo-600 hover:to-sky-600  text-black
                           transition-all duration-300  p-3 w-[90%] mt-6 cursor-pointer font-bold rounded-xl text-center">
                             Proceed
                         </button>
                     )}
+
                 </div>
+                <span onMouseOver={() => setArrow(true)}
+                    onMouseOut={() =>setArrow(false)}
+                    className="flex items-center justify-center w-full p-2 mt-2 hover:underline transition-all duration-500 text-gray-400 text-sm cursor-pointer gap-3">
+                    <Link href="/Login">Back to Login</Link>
+                    <MdArrowBack size={20}  className={`${arrow===true?"rotate-0 opacity-100":"-rotate-180 opacity-0"}  transition-all duration-500 `} />
+                </span>
+
             </div>
         </div>
 

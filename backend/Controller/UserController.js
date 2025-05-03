@@ -163,7 +163,13 @@ async function getUser(req, res) {
         if (User.length === 0) {
             return res.status(400).json({ message: "User not found" })
         }
-        const Find = `SELECT * FROM posts WHERE author = ?`
+        const Find = `SELECT p.author, 
+    p.body, 
+    p.category, 
+    p.hashtags, 
+    p.id, 
+    COALESCE(p.media_urls, CAST('[]' AS JSON)) AS media_urls, 
+    p.title  FROM posts p WHERE author = ?`
         const [posts] = await UserTable.query(Find, userId)
 
 
@@ -236,7 +242,7 @@ const sendProfile = async (req, res) => {
         // console.log(User);
         const postQuery = ` SELECT * FROM posts WHERE author = ?`
         const [posts] = await UserTable.query(postQuery, Id)
-    //    console.log(posts)
+        //    console.log(posts)
         if (!posts) {
             console.log("no user posts")
             return res.status(400).json("error finding user posts")

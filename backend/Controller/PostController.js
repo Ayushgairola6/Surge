@@ -267,21 +267,33 @@ const DeletePost = async (req, res) => {
         if (!post_id) {
             return res.status(404).json({ message: "Post not found" });
         }
-        const [Post] = await connection.query("SELECT image From posts WHERE id = ?", [post_id]);
+
+        const [Post] = await connection.query("SELECT COALESCE(p.media_urls, CAST('[]' AS JSON)) AS media_urls  FROM posts p WHERE id = ?", [post_id]);
 
         if (Post.length === 0) {
             return res.status(404).json({ message: "Post not found" });
         }
-        const query = `DELETE FROM posts WHERE id = ?`;
-        const [data] = await connection.query(query, [post_id]);
-        const deleteData = await deleteImage(Post[0].image, "/BlogPosts");
+        // console.log(Post);
+
+        const mediaUrls = Post[0].media_urls;
+
+        // Delete all images from Firebase
+        await Promise.all(
+            mediaUrls.map(url => deleteImage(url, "/BlogPosts"))
+        );
+
+        // Delete post from DB
+        const [data] = await connection.query("DELETE FROM posts WHERE id = ?", [post_id]);
+
         if (data.affectedRows === 0) {
-            return res.status(400).json({ message: "Could not delete the post , please try again later" });
+            return res.status(400).json({ message: "Could not delete the post, please try again later" });
         }
 
         return res.json({ message: "Deleted" });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({ message: "Server error" });
     }
-}
+};
+
 exports.data = { SendAllPosts, SendSinglePost, DeletePost, CreateAPost, upload, updateReaction, AddComment, DeletePost };

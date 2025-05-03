@@ -57,13 +57,13 @@ const SideBar = ({ HideSideBar, setVisible, Visible }) => {
                     Contact
                 </Link>
 
-                <Link
-                    href="/"
+                <a
+                    href="https://instagram.com"
                     className="hover:bg-white w-full text-md cursor-pointer flex items-center justify-start px-6 transition-all gap-3 text-gray-200 hover:text-indigo-600"
                 >
                     <span><FaInstagramSquare className="hover:animate-spin" /></span>
                     Instagram
-                </Link>
+                </a>
 
                 <Link
                     href={isLoggedIn === false ? "/Login" : "/Account"}

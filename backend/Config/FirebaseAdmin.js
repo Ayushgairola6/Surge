@@ -45,19 +45,17 @@ const uploadToFirebase = async (file, path) => {
 
 // function to delete media from firebase when a post is deleted 
 
-const deleteImage = async (fileUrl,filePath) => {
+const deleteImage = async (fileUrl, filePath) => {
     try {
         if (fileUrl) {
             const bucketName = "lemon-1ef21.appspot.com";  
-            // extracting the bucketName and its length from the fileUrl;
             const startIndex = fileUrl.indexOf(`${bucketName}/`) + `${bucketName}/`.length;
             const filePathEncoded = fileUrl.slice(startIndex, fileUrl.indexOf("?"));
-            const filePath = decodeURIComponent(filePathEncoded);  
-         
-            const storageRef = bucket.file(filePath);
+            const decodedPath = decodeURIComponent(filePathEncoded);  
+
+            const storageRef = bucket.file(decodedPath);
             await storageRef.delete();
-            console.log("post has been deleted")
-            
+            // console.log("post has been deleted")
         }
     } catch (error) {
         console.error('Error deleting file from Firebase:', error);

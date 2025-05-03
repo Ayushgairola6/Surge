@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 const BackgroundEffect = () => {
   const emojis = [
@@ -16,11 +16,15 @@ const BackgroundEffect = () => {
       return { id: i, size, x, y, delay, duration, emoji };
     });
   };
-  const particles = useMemo(() => {
+  const [particles, setParticles] = useState([]);
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
-      createParticles(20)
+      const newParticles = createParticles(20);
+      setParticles(newParticles);
     }
   }, []);
+
 
   return (<>
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 h-full w-full">

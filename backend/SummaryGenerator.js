@@ -93,7 +93,7 @@ async function SendSinglePost(post_id) {
         const query = `
             SELECT 
                 p.author, p.body, p.category, p.hashtags, p.id, 
-                p.image, p.title, u.username, u.image AS user_image, 
+                p.media_urls, p.title, u.username, u.image AS user_image, 
                 (SELECT COUNT(*) FROM likedPosts lp WHERE lp.post_id = p.id) AS likeCount,
                 (SELECT COUNT(*) FROM disliked_posts dp WHERE dp.post_id = p.id) AS dislikeCount,
                 (SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id) AS commentCount,

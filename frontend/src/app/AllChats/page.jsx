@@ -128,14 +128,14 @@ const AllChats = () => {
               <div
                 key={index}
                 onClick={() => GetRoomData(chat)}
-                className="flex-shrink-0 flex flex-col items-center justify-center px-3 py-2 rounded-xl cursor-pointer transition-all   shadow-sm"
+                className="flex-shrink-0 flex flex-col items-center justify-center px-3 py-2 rounded-xl cursor-pointer transition-all   shadow-sm bg-sky-100"
               >
                 <img
                   className="h-10 w-10 rounded-full border border-indigo-700 shadow-sm"
                   src={chat.image === null ? "/NoImage.jpg" : chat.image}
                   alt="Avatar"
                 />
-                <span className="font-medium text-white mt-2">{chat.username}</span>
+                <span className="font-medium text-transparent bg-clip-text bg-gradien-to-r from-indigo-700 to-purple-700 mt-2">{chat.username}</span>
               </div>
             ))
           ) : (
@@ -148,15 +148,15 @@ const AllChats = () => {
 
       <div className="flex flex-col md:flex-row flex-1 gap-4">
         {/* Chat Rooms for Larger Screens (Vertical Layout) */}
-        <div className="hidden md:block w-full md:w-1/3 lg:w-1/4 bg-black text-white bg-opacity-80 border border-indigo-300 rounded-xl p-4 overflow-auto shadow-lg">
+        <div className="hidden md:block w-full md:w-1/3 lg:w-1/4 bg-gradient-to-br from-white/5  to-white/15  text-white bg-opacity-80  rounded-xl p-4 overflow-auto shadow-lg">
           {chats !== null ? (
             chats.map((chat, index) => (
               <div
                 key={index}
                 onClick={() => GetRoomData(chat)}
-                className="flex items-center justify-between px-3 py-2 gap-3  bg-opacity-70 rounded-xl cursor-pointer transition-all 0 shadow-sm mb-2"
+                className="flex items-center justify-between px-3 py-2 gap-3  bg-opacity-70  cursor-pointer transition-all 0 shadow-sm mb-2 bg-sky-50 rounded-xl"
               >
-                <span className="font-medium text-gray-200">{chat.username}</span>
+                <span className="font-medium text-transparent bg-clip-text bg-gradien-to-r from-indigo-700 to-purple-700">{chat.username}</span>
                 <img
                   className="h-10 w-10 rounded-full border border-indigo-700 shadow-sm"
                   src={chat.image === null ? "/NoImage.jpg" : chat.image}
@@ -172,18 +172,21 @@ const AllChats = () => {
         </div>
 
         {/* Chat Window */}
-        <div className="w-full md:w-2/3 lg:w-3/4 bg-black bg-opacity-90  rounded-xl flex flex-col p-4 overflow-auto shadow-lg">
+        <div className="w-full md:w-2/3 lg:w-3/4 bg-white/10 bg-opacity-90  rounded-xl flex flex-col p-4 overflow-auto ">
           {roomdata && messages ? <div className="flex-1 overflow-auto space-y-4">
             {[...roomdata, ...messages].map((chat, index) => (
               <div
                 key={index}
-                className={`p-3 rounded-lg shadow  ${chat.sender_id === userid ? ' text-left' : ' text-right'}  rounded-xl p-2   `}
-                
+                className={`p-3 rounded-lg  flex items-center  ${chat.sender_id === userid ? ' justify-start' : ' justify-end'}  rounded-xl p-2   `}
+
               >
-                <label className={`${chat.sender_id === userid ? "text-purple-600" : "text-indigo-600"} text-lg font-bold`}>
-                  {chat.sender_name}
-                </label>
-                <p className='text-white'>{chat.message}</p>
+                <div className={`${chat.sender_id === userid ? ' bg-sky-100' : 'bg-red-100 '} rounded-xl p-2`}>
+                  <label className={`${chat.sender_id === userid ? "text-purple-600" : "text-indigo-600"} text-lg font-bold`}>
+                    {chat.sender_name}
+                  </label>
+                  <p className='text-black'>{chat.message}</p>
+                </div>
+
               </div>
             ))}
             <div ref={bottomRef} />
@@ -191,7 +194,7 @@ const AllChats = () => {
           <div className="flex items-center gap-2 mt-4">
             <input
               ref={messageInput}
-              className="flex-1 border border-gray-300 rounded-xl p-2 shadow focus:ring focus:ring-blue-300 outline-none"
+              className="flex-1 border border-gray-300 rounded-xl p-2 shadow focus:ring focus:ring-blue-300 outline-none text-purple-700 font-bold"
               placeholder="Your message"
               type="text"
             />
