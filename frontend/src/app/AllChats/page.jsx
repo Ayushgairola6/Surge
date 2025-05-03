@@ -64,7 +64,7 @@ const AllChats = () => {
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     try {
-      socket.current = io("https://surge-oyqw.onrender.com", {
+      socket.current = io("http://localhost:8080", {
         auth: { token },
         withCredentials: true
       });
@@ -119,28 +119,28 @@ const AllChats = () => {
   }, [messages]);
 
   return (
-    <div className="flex flex-col h-screen w-full p-4 gap-4 bg-gradient-to-r from-indigo-500 to-purple-500 overflow-auto">
+    <div className="flex flex-col h-screen w-full p-4 gap-4 bg-black overflow-auto text-white">
       {/* Chat Rooms for Mobile Devices (Horizontal Scroll Layout) */}
       <div className="block md:hidden">
-        <div className="flex overflow-x-auto space-x-4 bg-white bg-opacity-80 border border-indigo-300 rounded-xl p-2 shadow-lg mb-4">
+        <div className="flex overflow-x-auto space-x-4 bg-gradient-to-br from-white/5  to-white/15 bg-opacity-80 shadow-md shadow-indigo-800 rounded-xl p-2  mb-4">
           {chats !== null ? (
             chats.map((chat, index) => (
               <div
                 key={index}
                 onClick={() => GetRoomData(chat)}
-                className="flex-shrink-0 flex flex-col items-center justify-center px-3 py-2 rounded-xl cursor-pointer transition-all hover:bg-gradient-to-r hover:from-indigo-100 hover:to-purple-100 shadow-sm"
+                className="flex-shrink-0 flex flex-col items-center justify-center px-3 py-2 rounded-xl cursor-pointer transition-all   shadow-sm"
               >
                 <img
-                  className="h-10 w-10 rounded-full border border-gray-300 shadow-sm"
+                  className="h-10 w-10 rounded-full border border-indigo-700 shadow-sm"
                   src={chat.image === null ? "/NoImage.jpg" : chat.image}
                   alt="Avatar"
                 />
-                <span className="font-medium text-gray-800 mt-2">{chat.username}</span>
+                <span className="font-medium text-white mt-2">{chat.username}</span>
               </div>
             ))
           ) : (
             <div className="animate-pulse border py-3 px-4 rounded-xl flex items-center justify-center">
-              Loading...
+              No connections.
             </div>
           )}
         </div>
@@ -148,17 +148,17 @@ const AllChats = () => {
 
       <div className="flex flex-col md:flex-row flex-1 gap-4">
         {/* Chat Rooms for Larger Screens (Vertical Layout) */}
-        <div className="hidden md:block w-full md:w-1/3 lg:w-1/4 bg-white bg-opacity-80 border border-indigo-300 rounded-xl p-4 overflow-auto shadow-lg">
+        <div className="hidden md:block w-full md:w-1/3 lg:w-1/4 bg-black text-white bg-opacity-80 border border-indigo-300 rounded-xl p-4 overflow-auto shadow-lg">
           {chats !== null ? (
             chats.map((chat, index) => (
               <div
                 key={index}
                 onClick={() => GetRoomData(chat)}
-                className="flex items-center justify-between px-3 py-2 gap-3 bg-white bg-opacity-70 rounded-xl cursor-pointer transition-all hover:bg-gradient-to-r hover:from-indigo-100 hover:to-purple-100 shadow-sm mb-2"
+                className="flex items-center justify-between px-3 py-2 gap-3  bg-opacity-70 rounded-xl cursor-pointer transition-all 0 shadow-sm mb-2"
               >
-                <span className="font-medium text-gray-800">{chat.username}</span>
+                <span className="font-medium text-gray-200">{chat.username}</span>
                 <img
-                  className="h-10 w-10 rounded-full border border-gray-300 shadow-sm"
+                  className="h-10 w-10 rounded-full border border-indigo-700 shadow-sm"
                   src={chat.image === null ? "/NoImage.jpg" : chat.image}
                   alt="Avatar"
                 />
@@ -172,17 +172,18 @@ const AllChats = () => {
         </div>
 
         {/* Chat Window */}
-        <div className="w-full md:w-2/3 lg:w-3/4 bg-white bg-opacity-90 border border-gray-300 rounded-xl flex flex-col p-4 overflow-auto shadow-lg">
+        <div className="w-full md:w-2/3 lg:w-3/4 bg-black bg-opacity-90  rounded-xl flex flex-col p-4 overflow-auto shadow-lg">
           {roomdata && messages ? <div className="flex-1 overflow-auto space-y-4">
             {[...roomdata, ...messages].map((chat, index) => (
               <div
                 key={index}
-                className={`p-3 rounded-lg shadow ${chat.sender_id === userid ? 'bg-blue-100 text-left' : 'bg-gray-100 text-right'}`}
+                className={`p-3 rounded-lg shadow  ${chat.sender_id === userid ? ' text-left' : ' text-right'}  rounded-xl p-2   `}
+                
               >
-                <div className={`${chat.sender_id === userid ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}`}>
+                <label className={`${chat.sender_id === userid ? "text-purple-600" : "text-indigo-600"} text-lg font-bold`}>
                   {chat.sender_name}
-                </div>
-                <div>{chat.message}</div>
+                </label>
+                <p className='text-white'>{chat.message}</p>
               </div>
             ))}
             <div ref={bottomRef} />
@@ -197,7 +198,7 @@ const AllChats = () => {
             <button
               type="submit"
               onClick={SendMessage}
-              className="bg-gradient-to-r from-sky-500 to-blue-500 px-4 py-2 rounded-xl text-white font-bold shadow-md transition hover:from-sky-600 hover:to-blue-600"
+              className="bg-gradient-to-r from-indigo-700 to-purple-700 px-4 py-2 rounded-xl text-white font-bold shadow-md transition hover:from-indigo-500 hover:to-blue-600"
             >
               Send
             </button>

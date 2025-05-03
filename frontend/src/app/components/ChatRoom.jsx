@@ -29,7 +29,7 @@ const ChatRoom = ({ id }) => {
 				return;
 			}
 			//socket port
-			socket.current = io("https://surge-oyqw.onrender.com", {
+			socket.current = io("http://localhost:8080", {
 				auth: { token },
 				withCredentials: true,
 			})
@@ -66,24 +66,24 @@ const ChatRoom = ({ id }) => {
 
 
 	return <>
-		<div className="bg-gray-300 h-screen w-screen relative">
+		<div className="bg-black h-screen  relative">
 			{/*chats*/}
-			<div onClick={() => console.log(messages)} className="h-[90%] text-black ">
+			<div  className="h-[90%] text-white space-y-4">
 				{messages.map((message, index) => {
-					return <div className={`${message.sender_id === user1 ? "text-left" : "text-right"} px-4 py-2`} key={index}>
-						<ul className='text-lg font-bold'>{message.sender_name}</ul>
+					return <div className={`${message.sender_id === user1 ? "text-left " : "text-right"} px-4 py-2 rounded-xl`} key={index}>
+						<ul className={`text-lg font-bold ${message.sender_id === user1 ? "text-purple-600" : "text-indigo-600"}`}>{message.sender_name}</ul>
 						<ul className='text-md'>{message.message}</ul>
 					</div>
 				})}
 			</div>
 			{/*input and send button*/}
-			<div className=" h-[20%] flex items-center justify-center gap-4 absolute bottom bg-white  w-full">
-				<input ref={messageInput} className="rounded-xl p-2 font-bold w-[70%] border border-black" placeholder="Enter your message here..." type="text" />
+			<div className="  flex items-center justify-center gap-4 absolute bottom-0 left-0 p-6 bg-gradient-to-r from-white/5 to-white/15 w-full">
+				<input ref={messageInput} className="rounded-xl p-2 px-3 font-bold w-[70%] border border-black" placeholder="Your message" type="text" />
 				<button onClick={() => {
 					if (!socket.current) return;
 					socket.current.emit("message", ({ roomName: roomName, user1: user1, user2: user2, message: messageInput.current.value, sender_name: senderName }));
 					messageInput.current.value = "";
-				}} className="bg-sky-500 px-4 font-bold rounded-xl border border-black shadow-md shadow-black">
+				}} className="bg-gradient-to-r from-indigo-600 to-purple-600 p- px-4 font-bold rounded-xl border border-black shadow-md shadow-black">
 					Send
 				</button>
 			</div>

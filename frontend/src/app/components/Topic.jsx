@@ -37,19 +37,19 @@ const Topic = () => {
   const { topics, currTab, getPosts } = UseStore();
 
   return (
-    <div className="w-full px-4 py-3 border-b">
+    <div className="w-full px-4 py-3  bg-black text-white">
       {/* Wrap the buttons in an overflow container to allow horizontal scrolling on smaller screens */}
-      <div className="flex gap-3 items-center overflow-x-auto whitespace-nowrap">
+      <div className="flex gap-3 px-6 items-center overflow-x-auto whitespace-nowrap">
 
         {topics.map((topic, index) => (
           <button
             key={index}
             onClick={() => getPosts(topic)}
             className={`
-              px-6 py-2 font-semibold rounded-full transition-all duration-300 ease-in-out focus:outline-none
+              px-4 py-2 font-semibold rounded-full transition-all duration-300 ease-in-out focus:outline-none
               ${currTab === topic
-                ? "bg-gradient-to-r from-lime-500 to-pink-500 text-white shadow-xl transform scale-105"
-                : "bg-white text-gray-700 border border-gray-300 hover:border-blue-500"}
+                ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-xl transform scale-105"
+                : "bg-black text-gray-200 border border-gray-300 hover:border-indigo-500"}
             `}
           >
             {topic}

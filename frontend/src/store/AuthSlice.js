@@ -5,7 +5,7 @@ export const SignupUser = createAsyncThunk(
     'auth/signup',
     async (form, thunkAPI) => {
         try {
-            const response = await axios.post("https://surge-oyqw.onrender.com/api/user/register", form, {
+            const response = await axios.post("http://localhost:8080/api/user/register", form, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "application/json"
@@ -13,7 +13,8 @@ export const SignupUser = createAsyncThunk(
             })
 
         } catch (error) {
-            throw error;
+            return thunkAPI.rejectWithValue(error.message)
+
         }
     }
 )
@@ -23,15 +24,17 @@ export const GetAccount = createAsyncThunk(
         const token = localStorage.getItem("auth_token");
 
         try {
-            const response = await axios.get("https://surge-oyqw.onrender.com/api/user/account/data", {
+            const response = await axios.get("http://localhost:8080/api/user/account/data", {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             })
+            console.log(response.data)
             return response.data;
         } catch (error) {
-            throw error;
+            return thunkAPI.rejectWithValue(error.message)
+
         }
     }
 )
@@ -40,7 +43,7 @@ export const LoginUser = createAsyncThunk(
     'auth/login',
     async (form, thunkAPI) => {
         try {
-            const response = await axios.post("https://surge-oyqw.onrender.com/api/user/login", form, {
+            const response = await axios.post("http://localhost:8080/api/user/login", form, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "application/json"
@@ -54,7 +57,8 @@ export const LoginUser = createAsyncThunk(
             return response.data;
 
         } catch (error) {
-            throw error;
+            return thunkAPI.rejectWithValue(error.message)
+
         }
     }
 )
@@ -66,7 +70,7 @@ export const UploadProfilePic = createAsyncThunk(
     async (form, thunkAPI) => {
         const token = localStorage.getItem("auth_token");
         try {
-            const response = await axios.put("https://surge-oyqw.onrender.com/api/user/upload", form, {
+            const response = await axios.put("http://localhost:8080/api/user/upload", form, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "mulipart/form-data",
@@ -78,7 +82,8 @@ export const UploadProfilePic = createAsyncThunk(
             }
             return response.data;
         } catch (error) {
-            throw error;
+            return thunkAPI.rejectWithValue(error.message)
+
         }
     }
 )
@@ -86,10 +91,9 @@ export const VerifyAccount = createAsyncThunk(
     'verify/account',
     async (form, thunkAPI) => {
         const token = localStorage.getItem("auth_token");
-        console.log("token from localStorage");
         try {
 
-            const response = await axios.get("https://surge-oyqw.onrender.com/api/user/account/verify", {
+            const response = await axios.get("http://localhost:8080/api/user/account/verify", {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -98,15 +102,34 @@ export const VerifyAccount = createAsyncThunk(
             if (response.data.message === "Authorized") {
                 await thunkAPI.dispatch(GetAccount());
                 // Combine and return data
+                return response.data;
+
             }
-            return response.data;
         } catch (error) {
-            throw new Error("Account validation failed");
+            return thunkAPI.rejectWithValue(error.message)
+
         }
     }
 )
 
-
+export const ResetPassword = createAsyncThunk(
+    'reset/password',
+    async (data, thunkAPI) => {
+        const token = localStorage.getItem("auth_token");
+        try {
+            const response = await axios.put("http://localhost:8080/api/user/password/reset", data, {
+                withCredentials: true, headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            if (response.data.message === "Updated") {
+                return response.data;
+            }
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
 
 const authSlice = createSlice({
     name: 'auth',
@@ -117,9 +140,12 @@ const authSlice = createSlice({
         loginstatus: "idle",
         Signupstatus: false,
         status: "idle",
-        isUploading: "idle"
+        isUploading: "idle",
+        passwordUpdated: "idle"
     }, reducers: {
-
+      updateState:(state,action)=>{
+         state.passwordUpdated  = "idle";
+      }
     },
     extraReducers: (builder) => {
         builder.addCase(SignupUser.pending, (state, action) => {
@@ -180,7 +206,20 @@ const authSlice = createSlice({
             .addCase(UploadProfilePic.fulfilled, (state, action) => {
                 state.isUploading = "idle"
             })
+            //reset password
+            .addCase(ResetPassword.pending, (state, action) => {
+                state.passwordUpdated = "pending"
+            })
+            .addCase(ResetPassword.rejected, (state, action) => {
+                state.passwordUpdated = "failed"
+             
+            })
+            .
+            addCase(ResetPassword.fulfilled, (state, action) => {
+                state.passwordUpdated = 'success'
+            })
+
     }
 })
-
+export const {updateState} = authSlice.actions;
 export default authSlice.reducer;

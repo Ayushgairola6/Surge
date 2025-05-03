@@ -15,7 +15,7 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 102
 
 // function to verifytoken and keep the user logged in
 const UpdateState = async (req, res) => {
-    
+
     try {
         if (req.user) {
             return res.status(200).json({ message: "Authorized" })
@@ -108,6 +108,41 @@ async function Login(req, res) {
     }
 }
 
+// reset password
+
+const ResetPassword = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ message: "All fields are mandatory!" });
+        }
+
+        // find the person with the email id provided
+        const [User] = await UserTable.query(`SELECT * FROM users WHERE email = ?`, email);
+
+        if (User.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        // hash the new password
+        const newhashPassword = await bcrypt.hash(password, 8);
+
+        if (!newhashPassword) { return res.status(400).json({ message: "Error please try again later" }) }
+
+        // if user is found update his password
+        const [UpdatedUser] = await UserTable.query(
+            "UPDATE users SET password_hash = ? WHERE id = ?",
+            [newhashPassword, User[0].id]
+        );
+
+        if (UpdatedUser.affectedRows === 0) {
+            return res.status(400).json({ message: "Please try again later!" })
+        }
+
+        return res.json({ message: "Updated" })
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
 
 // get a user ;
 
@@ -170,7 +205,7 @@ async function Upload_profileImage(req, res) {
         if (!data) {
             return res.status(400).json({ message: "Error please try again" });
         }
-        
+
         return res.status(200).json({ message: "Updated successfully" });
     }
     catch (error) {
@@ -187,7 +222,7 @@ const sendProfile = async (req, res) => {
         // the users id we want the profile sent via parameters
 
         const Id = req.params.id;
-         console.log(Id);
+        // console.log(Id);
         if (!req.params.id) {
             return res.status(400).json({ message: "No user Id found" });
         }
@@ -198,10 +233,10 @@ const sendProfile = async (req, res) => {
             console.log("user not found in database");
             return res.status(400).json("This account not found in our database");
         }
-        console.log(User);
+        // console.log(User);
         const postQuery = ` SELECT * FROM posts WHERE author = ?`
         const [posts] = await UserTable.query(postQuery, Id)
-
+    //    console.log(posts)
         if (!posts) {
             console.log("no user posts")
             return res.status(400).json("error finding user posts")
@@ -218,4 +253,4 @@ const sendProfile = async (req, res) => {
 
 
 
-exports.data = { getUser, Login, Signup, Upload_profileImage, upload, sendProfile, UpdateState }
+exports.data = { getUser, Login, Signup, Upload_profileImage, upload, sendProfile, UpdateState, ResetPassword }

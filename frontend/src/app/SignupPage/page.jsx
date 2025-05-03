@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SignupUser } from "@/store/AuthSlice";
 import CicularLoader from "../components/CircularLoader";
 import { useRouter } from 'next/navigation';
-
+import Image from 'next/image'
 const Signup = () => {
     const router = useRouter();
     const dispatch = useDispatch();
@@ -33,45 +33,61 @@ const Signup = () => {
     }
 
     return (
-        <div className="min-h-screen w-full flex flex-col sm:flex-row items-center justify-center font-mono px-4 bg-white">
+        <div className="min-h-screen w-full flex flex-col sm:flex-row items-center justify-center
+        gap-4 font-mono px-4 bg-black text-white py-4">
             {/* Image Section */}
-            <div className="hidden sm:flex items-center justify-center w-1/2 p-6">
-                <div className="relative w-full max-w-md rounded-xl overflow-hidden shadow-xl">
-                    {/* The background image */}
-                    <img
-                        className="w-full h-full object-cover"
-                        src="https://images.unsplash.com/photo-1535957998253-26ae1ef29506?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        alt="Creative"
-                    />
-                    {/* Overlay to darken the image */}
-                    <div className="absolute inset-0  opacity-30"></div>
-                    {/* Text overlay */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-end p-6 text-center uppercase">
-                        <h1 className="text-4xl font-bold text-white mb-2">
-                            From your{" "}
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-sky-600">
-                                brain
-                            </span>{" "}
-                            to the world!
-                        </h1>
-                    </div>
+            <div className="hidden sm:flex items-center justify-center  w-[30rem] p-6">
+          
+            <div              
+              className="relative bg-gradient-to-r from-white/5 to-black rounded-xl 
+              shadow-lg overflow-hidden transition-transform
+               duration-300 "
+            >
+              {/* Post Image */}
+              {/*<div className="h-48 w-full relative">
+                <img
+                  src={ "/NoImage.jpg"}
+                  alt="/"
+                  className="object-cover w-full h-full"
+                />
+                <div className="absolute inset-0 bg-black opacity-20"></div>
+              </div>*/}
+              {/* Post Content */}
+              <div className="p-4">
+                <div className="flex items-center justify-start gap-2 px-4 w-full">
+                <Image src="/images.jpeg" alt="" height={25} width={25} className="rounded-full" />
+                  <span className="font-serif text-md text-transparent 
+                  bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700
+                  ">Desruptive_daddy</span>
                 </div>
+                <h3 className="text-lg font-mono uppercase font-bold text-gray-300 mb-2">
+                    She likes it rough
+                  </h3>
+                <p className="text-gray-300 text-sm line-clamp-3">
+                  loremfdjskfljdskfjdskjfdsjcds9iudsifjdsiojfidjsfoidsjfio
+                  dsjdkcd-0dsacid-sifdsfkljsdfkldjsflk;djslfkdjslfjdslafjds;jfdkl;sajfdlskfdksfjlk;dsjfkd
+                </p>
+              </div>
+               
+              
+        </div>
             </div>
 
 
             {/* Signup Form */}
             <form
                 onSubmit={(e) => handle_Signup(e)}
-                className="w-full sm:w-1/2 max-w-md flex flex-col gap-5 justify-center p-6"
+                className="w-full sm:w-1/2 max-w-md flex flex-col gap-5 justify-center p-6 bg-gradient-to-br from-white/15 to-black rounded-xl"
             >
-                <h1 className="text-3xl font-bold text-center">Create an account!</h1>
-                <span className="text-md text-center font-semibold text-gray-700">
-                    Enter your details below
+                <h1 className="text-xl sm:text-2xl font-bold text-center
+                 text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700 ">Create an account!</h1>
+                <span className="text-sm text-center font-semibold text-gray-300">
+                   Be the first one's to get early riser features
                 </span>
 
                 {/* Username */}
                 <div className="w-full">
-                    <label htmlFor="username" className="block mb-1 font-semibold">
+                    <label htmlFor="username" className="block mb-1 ">
                         Username
                     </label>
                     <input
@@ -80,13 +96,13 @@ const Signup = () => {
                         type="text"
                         placeholder="john doe"
                         required
-                        className="w-full border border-gray-400 focus:border-sky-400 rounded-xl px-3 py-2 text-lg font-medium"
+                        className="w-full border border-gray-400 focus:border-sky-400 rounded-xl px-3 py-2 text-lg font-medium text-black"
                     />
                 </div>
 
                 {/* Email */}
                 <div className="w-full">
-                    <label htmlFor="email" className="block mb-1 font-semibold">
+                    <label htmlFor="email" className="block mb-1 ">
                         Email
                     </label>
                     <input
@@ -95,13 +111,13 @@ const Signup = () => {
                         type="email"
                         placeholder="johndoe@gmail.com"
                         required
-                        className="w-full border border-gray-400 focus:border-sky-400 rounded-xl px-3 py-2 text-lg font-medium"
+                        className="w-full border border-gray-400 focus:border-sky-400 rounded-xl px-3 py-2 text-lg font-medium text-black"
                     />
                 </div>
 
                 {/* Password */}
                 <div className="w-full">
-                    <label htmlFor="password" className="block mb-1 font-semibold">
+                    <label htmlFor="password" className="block mb-1 ">
                         Password
                     </label>
                     <input
@@ -110,7 +126,7 @@ const Signup = () => {
                         type="password"
                         placeholder="hfs8jjf@990jlf"
                         required
-                        className="w-full border border-gray-400 focus:border-sky-400 rounded-xl px-3 py-2 text-lg font-medium"
+                        className="w-full border border-gray-400 focus:border-sky-400 rounded-xl px-3 py-2 text-lg font-medium text-black"
                     />
                 </div>
 
@@ -122,7 +138,7 @@ const Signup = () => {
                 ) : (
                     <button
                         type="submit"
-                        className="bg-gradient-to-r from-lime-500 to-pink-500 text-black py-2 px-4 rounded-xl font-bold shadow-md shadow-black hover:scale-95 hover:shadow-lg  w-full transition-all"
+                        className="bg-gradient-to-r from-purple-600 to-indigo-600 text-black py-2 px-4 rounded-xl font-bold shadow-md shadow-black hover:scale-95 hover:shadow-lg  w-full transition-all"
                     >
                         Sign up
                     </button>

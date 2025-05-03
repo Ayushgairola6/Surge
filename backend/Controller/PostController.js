@@ -26,7 +26,7 @@ async function SendAllPosts(req, res) {
     p.category,
     p.hashtags,
     p.id,
-    p.image,
+ COALESCE(p.media_urls, CAST('[]' AS JSON)) AS media_urls, 
     p.title,
     u.username,
     u.image AS user_image
@@ -70,7 +70,7 @@ async function SendSinglePost(req, res) {
     p.category, 
     p.hashtags, 
     p.id, 
-    p.image, 
+    COALESCE(p.media_urls, CAST('[]' AS JSON)) AS media_urls, 
     p.title, 
     u.username, 
     u.image AS user_image, 
@@ -97,13 +97,13 @@ WHERE p.id = ?;
 async function CreateAPost(req, res) {
 
     try {
-
-        if (!req.file) {
+        if (!req.files || req.files.length === 0) {
             return res.status(400).json({ message: "Image not found!" })
         }
-        const image = req.file;
-
-        let imageUrl;
+        const { category, title, caption, hashtags } = req.body;
+        if (!category || !title || !caption || !hashtags) return res.status(400).json({ message: "All fields are mandatory" });
+        const images = req.files;
+        let imageUrls;
         // token sent by the user
 
         const Id = req.user.id;
@@ -113,68 +113,26 @@ async function CreateAPost(req, res) {
             return res.status(400).json("no userid in token")
         }
         // uploading media to firebase
-        if (image && image !== " ") {
-            imageUrl = await uploadToFirebase(image, "BlogPosts")
-            if (!imageUrl) {
-                console.log("url will be empty");
-                res.status(400).json("No image detected");
+        try {
+            imageUrls = await Promise.all(images.map(img => uploadToFirebase(img, "/BlogPosts")));
+            if (!imageUrls || imageUrls.length === 0) {
+                return res.status(400).json({ message: "Image upload failed!" });
             }
+        } catch (error) {
+            console.error("Firebase upload error:", error);
+            return res.status(500).json({ message: "Image upload error" });
         }
         // Insert query
-        let category;
-        if (req.body.category === "") {
-            category = "other"
-        }
 
-        category = req.body.category;
-        const query = `INSERT INTO posts (title,body,image,category,author) VALUES ( ? , ? , ? , ? , ?)`
+        const parsedUrls = JSON.stringify(imageUrls);
+        const query = `INSERT INTO posts (title,body,media_urls,category,author) VALUES ( ? , ? , ? , ? , ?)`
 
-        const [Post] = await connection.query(query, [req.body.title, req.body.caption, imageUrl, category, Id]);
+        const [Post] = await connection.query(query, [req.body.title, req.body.caption, parsedUrls, category, Id]);
 
         if (Post.affectedRows === 0) {
             return res.status(400).json({ message: "Error while creating the post! " })
         }
         return res.status(200).json({ message: "Post has been created" });
-
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-// delete A post
-
-async function DeletePost(req, res) {
-    try {
-        const postId = req.params.id;
-        // check if the post if post id is sent or not
-        if (!postId) {
-            return res.status(401).send("no post id found");
-        }
-
-        // search query 
-
-        const search = ` SELECT * FROM posts WHERE id = ?`
-        const [response] = await connection.query(search.postId);
-
-        if (!response) {
-            console.log("no image url in db");
-            res.status(400).json("Image not found in our database");
-        }
-
-        // deleting image from firebase
-        const imageToDelete = await deleteImage(response.image, "BlogPosts");
-
-        if (!imageToDelete) {
-            console.log("firebase image deletion error");
-            res.status(400).json("error deleting image from cloud");
-        }
-
-        // query to delete a post
-        const query = `DELETE FROM posts WHERE id = ? ;`
-        const [result] = await connection.query(query, req.params.id);
-
-        return res.status(201).json({ message: "post has been deleted" });
 
     } catch (error) {
         console.log(error);
@@ -302,4 +260,28 @@ async function AddComment(req, res) {
     }
 }
 
-exports.data = { SendAllPosts, SendSinglePost, DeletePost, CreateAPost, upload, updateReaction, AddComment };
+const DeletePost = async (req, res) => {
+    try {
+        const post_id = req.params.id;
+
+        if (!post_id) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+        const [Post] = await connection.query("SELECT image From posts WHERE id = ?", [post_id]);
+
+        if (Post.length === 0) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+        const query = `DELETE FROM posts WHERE id = ?`;
+        const [data] = await connection.query(query, [post_id]);
+        const deleteData = await deleteImage(Post[0].image, "/BlogPosts");
+        if (data.affectedRows === 0) {
+            return res.status(400).json({ message: "Could not delete the post , please try again later" });
+        }
+
+        return res.json({ message: "Deleted" });
+    } catch (error) {
+        console.log(error);
+    }
+}
+exports.data = { SendAllPosts, SendSinglePost, DeletePost, CreateAPost, upload, updateReaction, AddComment, DeletePost };

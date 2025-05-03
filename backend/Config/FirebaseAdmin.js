@@ -28,14 +28,15 @@ const uploadToFirebase = async (file, path) => {
             stream.on('finish', resolve);
             stream.end(file.buffer);
         });
-
-        const downloadUrl = await storageRef.getSignedUrl({
-            action: 'read',
-            expires: Date.now() + 7 *24 * 60 *60 *1000 // store for a week 
-        });
-
+        await storageRef.makePublic();
+        // const downloadUrl = await storageRef.getSignedUrl({
+        //     action: 'read',
+        //     expires: Date.now() + 7 *24 * 60 *60 *1000 // store for a week 
+        // });
+        const downloadUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
         // console.log('File uploaded:', downloadUrl);
-        return downloadUrl[0];
+        // return downloadUrl[0];
+        return downloadUrl;
     } catch (error) {
         console.error('Error uploading file to Firebase:', error);
         throw error;
@@ -55,6 +56,7 @@ const deleteImage = async (fileUrl,filePath) => {
          
             const storageRef = bucket.file(filePath);
             await storageRef.delete();
+            console.log("post has been deleted")
             
         }
     } catch (error) {

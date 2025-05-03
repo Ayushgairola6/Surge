@@ -113,6 +113,18 @@ io.on("connection", (socket) => {
     }
   });
 
+  //  socket instance for comments 
+
+  socket.on("comment", async (data) => {
+    const { text, user_name, post_id } = data;
+    if (!text || !user_name || !post_id || !socket.user) {
+      return socket.emit("comment_error", { message: "Unable to comment!" });
+    }
+
+    await connection.query("INSERT INTO comments (post_id ,comment_body,user_id) VALUES (?,?,?) ", [post_id, text, socket.user.id]);
+
+    io.to(socket.user.id.toString()).emit("New_comment",{username:user_name,comment_body:text});
+  })
 
 
 

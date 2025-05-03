@@ -14,28 +14,41 @@ const Popup = () => {
     }, [isLoggedIn])
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-300">
-            <div className="flex flex-col items-center justify-center w-11/12 max-w-md p-8 bg-white rounded-2xl shadow-2xl border border-gray-200 shadow-black">
-                <h1 className="text-3xl font-extrabold text-gray-900 text-center leading-tight">
-                    Welcome Back! 
+
+
+        <div className="min-h-screen flex items-center justify-center bg-black p-6">
+            <div className="flex flex-col items-center justify-center w-full max-w-md p-10 bg-gradient-to-r from-white/15 to-black/90  bg-opacity-70 rounded-2xl shadow-2xl border border-gray-300 space-y-8">
+                <h1 className="text-3xl font-extrabold text-white text-center leading-tight">
+                    Hold up! 🔥
                 </h1>
-                <p className="mt-4 text-gray-600 text-center">
-                    Please log in or sign up to access this feature.
+                <p className="text-center text-gray-400 text-md">
+                    You need to log in or sign up to spill the hottest secrets.
                 </p>
-                <div className="flex items-center justify-center gap-4 mt-8 w-full">
+
+                <div className="flex flex-col w-full gap-4 mt-4">
                     <Link href="/Login">
-                        <button className="w-full px-6 py-3 text-white bg-gradient-to-r from-green-400 to-green-600 rounded-xl shadow-lg hover:shadow-xl hover:from-green-500 hover:to-green-700 transition-all duration-300">
+                        <button className="w-full px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-700 text-white rounded-xl shadow-lg hover:from-indigo-700 hover:to-purple-800 transition-all duration-300 font-semibold text-lg">
                             Login
                         </button>
                     </Link>
                     <Link href="/SignupPage">
-                        <button className="w-full px-6 py-3 text-white bg-gradient-to-r from-blue-400 to-blue-600 shadow-lg hover:shadow-xl hover:from-blue-500 hover:to-blue-700 transition-all duration-300 rounded-xl">
-                            Signup
+                        <button className="w-full px-6 py-3 bg-transparent border-2 border-purple-600 text-purple-400 rounded-xl hover:bg-purple-700 hover:text-white transition-all duration-300 font-semibold text-lg">
+                            Sign Up
                         </button>
+                    </Link>
+                </div>
+
+                <div className="text-center mt-4">
+                    <Link href="/">
+                        <span className="text-sm text-gray-400 hover:text-gray-200 underline">
+                            Go back to homepage
+                        </span>
                     </Link>
                 </div>
             </div>
         </div>
+
+
     );
 }
 

@@ -7,7 +7,7 @@ export const UpdateReaction = createAsyncThunk(
     async (Post_id, thunkAPI) => {
         const token = localStorage.getItem("auth_token");
         try {
-            const response = await axios.put(`https://surge-oyqw.onrender.com/api/feed/Reaction/${Post_id}`,{},
+            const response = await axios.put(`http://localhost:8080/api/feed/Reaction/${Post_id}`,{},
                 {
                     withCredentials: true,
                     headers: {
@@ -28,7 +28,7 @@ export const Add_Comment = createAsyncThunk(
         const token = localStorage.getItem("auth_token");
         console.log(comment);
         try {
-            const response = await axios.post(`https://surge-oyqw.onrender.com/api/feed/post/comment/${post_id}`, { comment: comment }, {
+            const response = await axios.post(`http://localhost:8080/api/feed/post/comment/${post_id}`, { comment: comment }, {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -51,7 +51,7 @@ export const GetComments = createAsyncThunk(
         const token = localStorage.getItem("auth_token");
 
         try {
-            const response = await axios.get(`https://surge-oyqw.onrender.com/api/feed/post/Allcomments/${Post_id}`, {
+            const response = await axios.get(`http://localhost:8080/api/feed/post/Allcomments/${Post_id}`, {
                 withCredentials: true,
                 headers: {
                     "authorization": `Bearer ${token}`
@@ -64,6 +64,23 @@ export const GetComments = createAsyncThunk(
     }
 )
 
+export const DeletPost = createAsyncThunk(
+    'post/delete',
+    async(post_id,thunkAPI)=>{
+        const token = localStorage.getItem("auth_token");
+        try{
+         const response = await axios.post(`http://localhost:8080/api/feed/delete/post/${post_id}`,{},{
+            withCredentials:true,
+            headers:{
+                "Authorization":`Bearer ${token}`
+            }
+         })
+        }catch(error){
+            thunkAPI.rejectWithValue(error);
+        }
+    }
+)
+
 const postSlice = createSlice({
     name: 'post',
     initialState: {
@@ -72,10 +89,17 @@ const postSlice = createSlice({
         status: "idle",
         comments: null,
         commentStatus: "idle",
-        MyComment: null
+        MyComment: null,
+        postDeleting:"idle",
+        post_to_delete:null
 
     }, reducers: {
-
+        AddNewCommentIn:(state,action)=>{
+         state.comments.push(action.payload);
+        },
+        ChooseToDelete:(state,action)=>{
+            state.post_to_delete=action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(UpdateReaction.pending, (state, action) => {
@@ -108,11 +132,22 @@ const postSlice = createSlice({
             .addCase(GetComments.fulfilled, (state, action) => {
                 state.comments = action.payload;
             })
+            // deleting a post
+            .addCase(DeletPost.rejected,(state)=>{
+                state.postDeleting="idle";
+            })
+            .addCase(DeletPost.pending,(state)=>{
+                 state.postDeleting="pending";
+            })
+            .addCase(DeletPost.fulfilled,(state)=>{
+                state.postDeleting="idle";
+                state.post_to_delete=null;
+            })
     }
 })
 
 
 
 
-
+export const {AddNewCommentIn,ChooseToDelete} = postSlice.actions;
 export default postSlice.reducer;
