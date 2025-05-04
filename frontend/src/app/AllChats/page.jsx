@@ -64,7 +64,7 @@ const AllChats = () => {
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     try {
-      socket.current = io("https://surge-oyqw.onrender.com", {
+      socket.current = io("http://localhost:8080", {
         auth: { token },
         withCredentials: true
       });
@@ -128,14 +128,14 @@ const AllChats = () => {
               <div
                 key={index}
                 onClick={() => GetRoomData(chat)}
-                className="flex-shrink-0 flex flex-col items-center justify-center px-3 py-2 rounded-xl cursor-pointer transition-all   shadow-sm bg-sky-100"
+                className="flex-shrink-0 flex flex-col items-center justify-center px-3 py-2 rounded-xl cursor-pointer transition-all   shadow-sm bg-black border border-gray-600"
               >
                 <img
                   className="h-10 w-10 rounded-full border border-indigo-700 shadow-sm"
                   src={chat.image === null ? "/NoImage.jpg" : chat.image}
                   alt="Avatar"
                 />
-                <span className="font-medium text-transparent bg-clip-text bg-gradien-to-r from-indigo-700 to-purple-700 mt-2">{chat.username}</span>
+                <span className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700 mt-2">{chat.username}</span>
               </div>
             ))
           ) : (
@@ -146,7 +146,7 @@ const AllChats = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row flex-1 gap-4">
+      <div className="flex flex-col  md:flex-row flex-1 gap-4">
         {/* Chat Rooms for Larger Screens (Vertical Layout) */}
         <div className="hidden md:block w-full md:w-1/3 lg:w-1/4 bg-gradient-to-br from-white/5  to-white/15  text-white bg-opacity-80  rounded-xl p-4 overflow-auto shadow-lg">
           {chats !== null ? (
@@ -154,9 +154,9 @@ const AllChats = () => {
               <div
                 key={index}
                 onClick={() => GetRoomData(chat)}
-                className="flex items-center justify-between px-3 py-2 gap-3  bg-opacity-70  cursor-pointer transition-all 0 shadow-sm mb-2 bg-sky-50 rounded-xl"
+                className="flex items-center justify-between px-3 py-2 gap-3  bg-opacity-70  cursor-pointer transition-all 0 shadow-sm mb-2 bg-black border border-gray-600 rounded-xl"
               >
-                <span className="font-medium text-transparent bg-clip-text bg-gradien-to-r from-indigo-700 to-purple-700">{chat.username}</span>
+                <span className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700">{chat.username}</span>
                 <img
                   className="h-10 w-10 rounded-full border border-indigo-700 shadow-sm"
                   src={chat.image === null ? "/NoImage.jpg" : chat.image}
@@ -177,7 +177,7 @@ const AllChats = () => {
             {[...roomdata, ...messages].map((chat, index) => (
               <div
                 key={index}
-                className={`p-3 rounded-lg  flex items-center  ${chat.sender_id === userid ? ' justify-start' : ' justify-end'}  rounded-xl p-2   `}
+                className={` rounded-lg  flex items-center  ${chat.sender_id === userid ? ' justify-start' : ' justify-end'}  rounded-xl p-2   `}
 
               >
                 <div className={`${chat.sender_id === userid ? ' bg-sky-100' : 'bg-red-100 '} rounded-xl p-2`}>

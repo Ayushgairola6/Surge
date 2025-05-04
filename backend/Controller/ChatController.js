@@ -45,8 +45,10 @@ io.on("connection", (socket) => {
 
   // like event
   socket.on("like_Post", async (data) => {
-    const { post_id } = data;
-    if (!post_id) return;
+    const { post_id, author } = data;
+    // console.log(data)
+    if (!post_id || !author) return;
+    // socket.join(author.toString());
 
     try {
       // Remove any existing dislike
@@ -65,6 +67,9 @@ io.on("connection", (socket) => {
 
       // Get both like and dislike counts
       const data = await getUpdatedLikes(post_id)
+      // send updates to the user whos post has been liked
+      io.to(author.toString()).emit("like_received", { message: "Someone has liked your post" });
+      // console.log(socket.user);
       // Emit updated counts
       io.to(socket.user.id.toString()).emit('updateReactionCounts', {
         post: post_id,
@@ -123,7 +128,7 @@ io.on("connection", (socket) => {
 
     await connection.query("INSERT INTO comments (post_id ,comment_body,user_id) VALUES (?,?,?) ", [post_id, text, socket.user.id]);
 
-    io.to(socket.user.id.toString()).emit("New_comment",{username:user_name,comment_body:text});
+    io.to(socket.user.id.toString()).emit("New_comment", { username: user_name, comment_body: text });
   })
 
 
@@ -145,16 +150,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", async (data) => {
-    if (!data.roomName) {
-      return;
-    }
-
     const { roomName, message, user1, user2, sender_name } = data;
-    const sender_id = user1;
+    const sender_id = socket.user.id;
     const receiver_id = user2;
 
-
-
+    if (!roomName || !message || !user1 || !user2 || !sender_name) {
+      console.log("Some data is missing in the message event");
+      return;
+    }
 
 
 
@@ -163,9 +166,10 @@ io.on("connection", (socket) => {
       INSERT INTO messages (room_name, message, sender_id, receiver_id) 
       VALUES (?, ?, ?, ?)
     `;
-
+    io.to(user2.toString()).emit("message_notify", { message: "New message received", by: sender_name });
     const [insertResponse] = await connection.query(InsertQuery, [roomName, message, sender_id, receiver_id]);
     if (insertResponse.affectedRows > 0) {
+
       io.to(roomName).emit("newMessage", { roomName, sender_id, receiver_id, message: message, sender_name });
     }
   });
@@ -251,7 +255,7 @@ JOIN users AS sender ON messages.sender_id = sender.id
 JOIN users AS receiver ON messages.receiver_id = receiver.id
 WHERE messages.room_name = ?
 ORDER BY messages.sent_at DESC
-LIMIT 20;
+LIMIT 5;
 
 `;
 

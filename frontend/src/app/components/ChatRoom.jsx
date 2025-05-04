@@ -20,7 +20,7 @@ const ChatRoom = ({ id }) => {
 	const [user2, setUser2] = useState(null);
 	const [roomName, setRoomName] = useState(null)
 	const token = localStorage.getItem("userdata");
-
+	const AutoScroller = useRef();
 	// connecting with the socket instance
 	useEffect(() => {
 		const token = localStorage.getItem("auth_token");
@@ -29,7 +29,7 @@ const ChatRoom = ({ id }) => {
 				return;
 			}
 			//socket port
-			socket.current = io("https://surge-oyqw.onrender.com", {
+			socket.current = io("http://localhost:8080", {
 				auth: { token },
 				withCredentials: true,
 			})
@@ -62,22 +62,31 @@ const ChatRoom = ({ id }) => {
 		};
 	}, [roomName, user1, user2]);
 
-
+	useEffect(() => {
+		if (AutoScroller.current) {
+			AutoScroller.current.scrollIntoView({ behavior: "smooth" });
+		}
+	}, [messages]);
 
 
 	return <>
-		<div className="bg-black h-screen  relative">
+		<div className="bg-black min-h-screen  flex items-center justify-between  flex-col ">
 			{/*chats*/}
-			<div  className="h-[90%] text-white space-y-4">
+			<div className="min-h-full w-full text-white space-y-2 overflow-y-auto ">
 				{messages.map((message, index) => {
-					return <div className={`${message.sender_id === user1 ? "text-left " : "text-right"} px-4 py-2 rounded-xl`} key={index}>
-						<ul className={`text-lg font-bold ${message.sender_id === user1 ? "text-purple-600" : "text-indigo-600"}`}>{message.sender_name}</ul>
-						<ul className='text-md'>{message.message}</ul>
+					return <> <div className={`${message.sender_id === user1 ? "justify-start " : "justify-end"} p-2 rounded-xl flex items-center`} key={index}>
+						<div className={`${message.sender_id === user1 ? ' bg-sky-100' : 'bg-red-100 '} rounded-xl p-2`}>
+							<ul className={`text-lg font-bold ${message.sender_id === user1 ? "text-purple-600" : "text-indigo-600"}`}>{message.sender_name}</ul>
+							<ul className={`text-black`}>{message.message}</ul>
+						</div>
+
 					</div>
+						<div ref={AutoScroller} />
+					</>
 				})}
 			</div>
 			{/*input and send button*/}
-			<div className="  flex items-center justify-center gap-4 absolute bottom-0 left-0 p-6 bg-gradient-to-r from-white/5 to-white/15 w-full">
+			<div className="  flex items-center justify-center gap-4   p-6 bg-gradient-to-r from-white/5 to-white/15 w-full">
 				<input ref={messageInput} className="rounded-xl p-2 px-3 font-bold w-[70%] border border-black" placeholder="Your message" type="text" />
 				<button onClick={() => {
 					if (!socket.current) return;

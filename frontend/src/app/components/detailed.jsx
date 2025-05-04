@@ -25,6 +25,7 @@ import { UseStore } from '@/store/store';
 import Summarizer from './Summarizer'
 import { IoClose } from "react-icons/io5"
 import { MdOutlineSmsFailed, MdSearch } from 'react-icons/md'
+import { CiUser } from "react-icons/ci";
 const DetailedPost = ({ id }) => {
 
     const dispatch = useDispatch()
@@ -94,12 +95,12 @@ const DetailedPost = ({ id }) => {
             if (cussReaction === null) {
                 // No prior reaction — like the post
                 setCurrReaction(e.link.src);
-                socket.current.emit("like_Post", { post_id: id });
+                socket.current.emit("like_Post", { post_id: id, author: currPost[0].author });
 
             } else if (cussReaction === e.link.src) {
                 // Same reaction clicked again — remove like
                 setCurrReaction(null);
-                socket.current.emit("like_Post", { post_id: id });
+                socket.current.emit("like_Post", { post_id: id, author: currPost[0].author });
 
             } else {
                 // Different reaction selected — just update reaction visually
@@ -244,34 +245,40 @@ const DetailedPost = ({ id }) => {
                         <div className=" h-full">
                             <section onClick={() => console.log(currPost)} className="w-[96%] mx-auto flex items-center justify-between gap-2 py-2 px-4   rounded-bl-xl rounded-br-xl ">
                                 <div className="flex items-center justify-between  gap-2 flex-col ">
-                                    <Image
+                                   {currPost[0].user_image? <Image
                                         className="h-10 w-10 rounded-full"
                                         src={currPost[0].user_image}
                                         alt=""
                                         height={25}
                                         width={25}
-                                    />
+                                    />:<CiUser size={22}/>}
                                     <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-purple-600 to-white text-lg">@{currPost[0].username}</span>
                                 </div>
 
                                 <span className="flex items-center justify-between px-4 gap-4 ">
                                     <div className="relative">
-                                        <CiMenuKebab
+                                        {/* <CiMenuKebab
                                             onMouseEnter={() => setIndicate(true)}
                                             onMouseLeave={() => setIndicate(false)}
                                             className="cursor-pointer"
                                             onClick={() => setShowOptions(!showOption)}
                                             size={22}
-                                        />
-
-                                        {indicate && (
+                                        /> */}
+                                        <Link
+                                            href={`/User2Account/${currPost[0].author}`}
+                                            className="flex items-center justify-center gap-2 px-3 transition-all duration-300 rounded-xl py-1 bg-white text-black hover:text-white hover:bg-black"
+                                            aria-label="Connect"
+                                        >
+                                            Connect <FaMessage size={12} />
+                                        </Link>
+                                        {/* {indicate && (
                                             <label
                                                 className="text-white font-bold bg-black  text-sm py-1 px-3 rounded-full absolute -top-8 left-1/2 -translate-x-1/2 hidden md:block lg:block"
                                                 htmlFor="menu"
                                             >
                                                 Menu
                                             </label>
-                                        )}
+                                        )} */}
 
                                         {showOption && (
                                             <div
@@ -327,7 +334,7 @@ const DetailedPost = ({ id }) => {
                                 {/* Image wrapper (relative container for 'fill') */}
                                 <div className="relative w-full max-w-[90vw] h-[25rem]">
                                     <Image
-                                        className="rounded-xl object-contain"
+                                        className=" object-contain rounded-xl"
                                         src={
                                             currPost[0].media_urls.length > 0
                                                 ? currPost[0].media_urls[Index]
@@ -350,8 +357,8 @@ const DetailedPost = ({ id }) => {
 
 
                             {/* this container contains the post body with reaction buttons */}
-                            <div className="p-2 w-full flex">
-                                <p className="p-2 text-md font-serif w-full m-auto ">{currPost[0].body}</p>
+                            <div className="py-2 w-full  text-center">
+                                <p className="md:px-32 px-10 text-md font-serif w-full  ">{currPost[0].body}</p>
                             </div>
 
                             <div className="flex items-center justify-center gap-5 p-4 relative cursor-pointer text-black">
@@ -422,9 +429,9 @@ const DetailedPost = ({ id }) => {
                     </div>
                 </>
             ) : (
-                <div className="h-screen  flex flex-col items-center justify-center">
-                    <h1 className="animate-pulse text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700">Let Us Cook</h1>
-                    <div className="h-8 w-8 rounded-full border-t-2 border-sky-700 animate-spin"></div>
+                <div className="h-screen bg-black flex  items-center justify-center gap-3">
+                    <h1 className="animate-pulse text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700 text-3xl">Let Us Cook</h1>
+                    <div className="h-5 w-5 rounded-full border-t-2 border-purple-700 animate-spin"></div>
                 </div>
             )}
 

@@ -12,7 +12,8 @@ import { CiMenuKebab } from "react-icons/ci";
 import { IoCreateSharp } from "react-icons/io5";
 import PostMenu from "../components/postOptionMenu";
 import { useRouter } from "next/navigation";
-
+import { ArrowLeft } from 'lucide-react';
+import { FaUserEdit } from "react-icons/fa";
 const UserAccount = () => {
   const [chosenImage, setChosenImage] = useState(null);
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ const UserAccount = () => {
     form.append("image", imageRef.current.files[0]);
     dispatch(UploadProfilePic(form));
     setChosenImage(null);
+    imageRef.current.files = "";
   }
 
   // Handle image preview after selection
@@ -84,21 +86,31 @@ const UserAccount = () => {
   return (
     <>
       {User !== null && User ? (
-        <div className="p-4 max-w-screen min-h-screen bg-black text-white mx-auto space-y-8">
+        <div className="p-4 max-w-screen min-h-screen bg-black text-white mx-auto space-y-8 ">
           {/* Profile Header */}
-          <div className="bg-gradient-to-bl from-purple-900  to-black p-4 rounded-xl shadow-md flex flex-col sm:flex-row items-normal justify-start gap-4">
+          <div className="bg-gradient-to-bl relative from-purple-900  to-black p-4 rounded-xl shadow-md flex flex-col sm:flex-row items-normal justify-start gap-4">
+            <ul onClick={() => {
+              if (imageRef.current) {
+                imageRef.current.click();
+              }
+            }} className="absolute top-3 right-3 "><FaUserEdit className="cursor-pointer" size={20} /></ul>
+            {/* <label className="absolute top-5 right-7 bg-black py-1 px-3 rounded-xl" htmlFor="edit">Edit profile</label> */}
             <div className="relative">
-              <img
+              <Image
                 onClick={handleInputTrigger}
                 className="h-24 w-24 sm:h-28 sm:w-28 rounded-full border-2 border-indigo-600 shadow-lg cursor-pointer transition transform hover:scale-105"
                 src={User.User[0].image ? User.User[0].image : "/NoImage.jpg"}
                 alt="Profile Picture"
+                height={100}
+                width={100}
               />
               {chosenImage && (
-                <img
+                <Image
                   className="absolute inset-0 h-24 w-24 sm:h-28 sm:w-28 rounded-full border-2 border-indigo-600 shadow-lg"
                   src={chosenImage}
                   alt="Chosen Preview"
+                  height={100}
+                  width={100}
                 />
               )}
               <input onChange={handleInputChange} ref={imageRef} className="hidden" type="file" />
@@ -107,18 +119,22 @@ const UserAccount = () => {
               <span className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-indigo-700">{User.User[0].username}</span>
               <span className="text-sm sm:text-base text-white">{User.User[0].email}</span>
               <div className="mt-2">
-                {uploadStatus !== "pending" ? (
-                  <button
-                    onClick={handleImage_upload}
-                    className="hover:bg-black hover:text-white font-semibold px-4 py-1 rounded-full    transition duration-300 bg-white text-black hover:shadow-md hover:shadow-indigo-700"
-                  >
-                    Upload Image
-                  </button>
-                ) : (
-                  <div className="flex items-center justify-center">
-                    <div className="h-10 w-10 border-t-2 border-white rounded-full animate-spin"></div>
-                  </div>
+                {imageRef.current?.files.length > 0 && (
+                  uploadStatus !== "pending" ? (
+                    <button
+                      onClick={handleImage_upload}
+                      className="hover:bg-black hover:text-white font-semibold px-4 py-1 rounded-full transition duration-300 bg-white text-black hover:shadow-md hover:shadow-indigo-700"
+                    >
+                      Upload Image
+                    </button>
+
+                  ) : (
+                    <div className="flex items-center justify-start">
+                      <div className="h-5 w-5 border-t-2 border-white rounded-full animate-spin"></div>
+                    </div>
+                  )
                 )}
+
               </div>
             </div>
           </div>
@@ -186,14 +202,14 @@ const UserAccount = () => {
                   </Link>
                 </div>
               </div>
-            )) : <div className="flex items-center justify-center h-[50vh] flex-col gap-3 ">
+            )) : <div className="flex  w-[85vw] items-center justify-center h-[50vh] flex-col gap-3 ">
               <span className="text-purple-500">You currently do not have any posts</span>
-              <Link href="/createPost" className="py-1 px-4 rounded-full flex items-center justify-center gap-2">Start Posting <IoCreateSharp/></Link>
+              <Link href="/createPost" className="py-1 px-4 rounded-full flex items-center justify-center gap-2 underline"><ArrowLeft size={15} />Start Posting </Link>
             </div>}
           </div>
         </div>
       ) : (
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="min-h-screen bg-black flex items-center justify-center">
           <AccountLoader />
         </div>
       )}

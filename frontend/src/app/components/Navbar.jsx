@@ -11,12 +11,17 @@ import { BsFillPenFill } from "react-icons/bs";
 import { RiChatSmile2Fill } from "react-icons/ri";
 import { MdContactMail } from "react-icons/md";
 import Link from "next/link";
+import LikeNotify from "./likeNotification";
+import MessageNotify from './messageNotify';
+
 const Navbar = () => {
     // const { isLoggedIn } = UseStore();
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn)
     const user = useSelector(state => state.auth.user);
     const [Visible, setVisible] = useState(false)
     // show sidebar
+    const { like_notification, setLike_notification } = UseStore();
+
     function ShowSidebar() {
         setVisible(!Visible);
         console.log('cld')
@@ -28,7 +33,10 @@ const Navbar = () => {
 
     }
 
-    return (<header className="  shadow-sm flex items-center justify-between py-2 px-6 font-mono  bg-black">
+    return (<header className="  shadow-sm flex items-center justify-between py-2 px-6 font-mono relative bg-black">
+        <LikeNotify />
+        <MessageNotify />
+
         <Link href="/">
             <img className="h-10 w-10 rounded-full cursor-pointer" src="/images.jpeg" />
         </Link>
