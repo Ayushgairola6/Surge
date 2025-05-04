@@ -8,7 +8,7 @@ export const Getdata = createAsyncThunk(
         try {
 
             //
-            const response = await axios.get(`http://localhost:8080/api/user/profile/${id}`, {
+            const response = await axios.get(`https://surge-oyqw.onrender.com/api/user/profile/${id}`, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "application/json",

@@ -5,7 +5,7 @@ export const SignupUser = createAsyncThunk(
     'auth/signup',
     async (form, thunkAPI) => {
         try {
-            const response = await axios.post("http://localhost:8080/api/user/register", form, {
+            const response = await axios.post("https://surge-oyqw.onrender.com/api/user/register", form, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "application/json"
@@ -24,13 +24,13 @@ export const GetAccount = createAsyncThunk(
         const token = localStorage.getItem("auth_token");
 
         try {
-            const response = await axios.get("http://localhost:8080/api/user/account/data", {
+            const response = await axios.get("https://surge-oyqw.onrender.com/api/user/account/data", {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             })
-            console.log(response.data)
+            // console.log(response.data)
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message)
@@ -43,7 +43,7 @@ export const LoginUser = createAsyncThunk(
     'auth/login',
     async (form, thunkAPI) => {
         try {
-            const response = await axios.post("http://localhost:8080/api/user/login", form, {
+            const response = await axios.post("https://surge-oyqw.onrender.com/api/user/login", form, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "application/json"
@@ -70,7 +70,7 @@ export const UploadProfilePic = createAsyncThunk(
     async (form, thunkAPI) => {
         const token = localStorage.getItem("auth_token");
         try {
-            const response = await axios.put("http://localhost:8080/api/user/upload", form, {
+            const response = await axios.put("https://surge-oyqw.onrender.com/api/user/upload", form, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "mulipart/form-data",
@@ -93,7 +93,7 @@ export const VerifyAccount = createAsyncThunk(
         const token = localStorage.getItem("auth_token");
         try {
 
-            const response = await axios.get("http://localhost:8080/api/user/account/verify", {
+            const response = await axios.get("https://surge-oyqw.onrender.com/api/user/account/verify", {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -117,7 +117,7 @@ export const ResetPassword = createAsyncThunk(
     async (data, thunkAPI) => {
         const token = localStorage.getItem("auth_token");
         try {
-            const response = await axios.put("http://localhost:8080/api/user/password/reset", data, {
+            const response = await axios.put("https://surge-oyqw.onrender.com/api/user/password/reset", data, {
                 withCredentials: true, headers: {
                     "Authorization": `Bearer ${token}`
                 }

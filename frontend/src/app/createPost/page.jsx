@@ -55,7 +55,7 @@ const Create_Post = () => {
 
     try {
       setPostStatus("pending");
-      const res = await axios.post("http://localhost:8080/api/feed/create", form, {
+      const res = await axios.post("https://surge-oyqw.onrender.com/api/feed/create", form, {
         withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",

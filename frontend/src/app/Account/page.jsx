@@ -41,7 +41,7 @@ const UserAccount = () => {
   const handleImage_upload = () => {
     const form = new FormData();
     if (!imageRef.current.files[0]) {
-      alert("Please select an image first");
+      // alert("Please select an image first");
       return;
     }
     form.append("image", imageRef.current.files[0]);
@@ -53,7 +53,7 @@ const UserAccount = () => {
   const handleInputChange = () => {
     const file = imageRef.current.files[0];
     if (!file) {
-      alert("Please select an image first");
+      // alert("Please select an image first");
       return;
     }
     const reader = new FileReader();

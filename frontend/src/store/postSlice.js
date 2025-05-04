@@ -7,7 +7,7 @@ export const UpdateReaction = createAsyncThunk(
     async (Post_id, thunkAPI) => {
         const token = localStorage.getItem("auth_token");
         try {
-            const response = await axios.put(`http://localhost:8080/api/feed/Reaction/${Post_id}`,{},
+            const response = await axios.put(`https://surge-oyqw.onrender.com/api/feed/Reaction/${Post_id}`,{},
                 {
                     withCredentials: true,
                     headers: {
@@ -28,7 +28,7 @@ export const Add_Comment = createAsyncThunk(
         const token = localStorage.getItem("auth_token");
         console.log(comment);
         try {
-            const response = await axios.post(`http://localhost:8080/api/feed/post/comment/${post_id}`, { comment: comment }, {
+            const response = await axios.post(`https://surge-oyqw.onrender.com/api/feed/post/comment/${post_id}`, { comment: comment }, {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -51,7 +51,7 @@ export const GetComments = createAsyncThunk(
         const token = localStorage.getItem("auth_token");
 
         try {
-            const response = await axios.get(`http://localhost:8080/api/feed/post/Allcomments/${Post_id}`, {
+            const response = await axios.get(`https://surge-oyqw.onrender.com/api/feed/post/Allcomments/${Post_id}`, {
                 withCredentials: true,
                 headers: {
                     "authorization": `Bearer ${token}`
@@ -69,7 +69,7 @@ export const DeletPost = createAsyncThunk(
     async(post_id,thunkAPI)=>{
         const token = localStorage.getItem("auth_token");
         try{
-         const response = await axios.post(`http://localhost:8080/api/feed/delete/post/${post_id}`,{},{
+         const response = await axios.post(`https://surge-oyqw.onrender.com/api/feed/delete/post/${post_id}`,{},{
             withCredentials:true,
             headers:{
                 "Authorization":`Bearer ${token}`

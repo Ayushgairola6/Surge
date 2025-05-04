@@ -125,7 +125,7 @@ const DetailedPost = ({ id }) => {
             const token = localStorage.getItem('auth_token')
 
             try {
-                const res = await axios.get(`http://localhost:8080/api/feed/post/${id}`, {
+                const res = await axios.get(`https://surge-oyqw.onrender.com/api/feed/post/${id}`, {
                     withCredentials: true,
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -176,7 +176,7 @@ const DetailedPost = ({ id }) => {
         setGetting("pending")
         try {
             const token = localStorage.getItem("auth_token");
-            const response = await axios.post(`http://localhost:8080/api/post/summary/${currPost[0].id}`, { lang: language.current.value }, {
+            const response = await axios.post(`https://surge-oyqw.onrender.com/api/post/summary/${currPost[0].id}`, { lang: language.current.value }, {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Bearer ${token}`
