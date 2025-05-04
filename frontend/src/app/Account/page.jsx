@@ -93,7 +93,7 @@ const UserAccount = () => {
               if (imageRef.current) {
                 imageRef.current.click();
               }
-            }} className="absolute top-3 right-3 "><FaUserEdit className="cursor-pointer" size={20} /></ul>
+            }} className="absolute top-3 right-3 p-4"><FaUserEdit className="cursor-pointer" size={23} /></ul>
             {/* <label className="absolute top-5 right-7 bg-black py-1 px-3 rounded-xl" htmlFor="edit">Edit profile</label> */}
             <div className="relative">
               <Image

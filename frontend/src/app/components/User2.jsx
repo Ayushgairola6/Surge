@@ -113,7 +113,7 @@ const User2 = ({ id }) => {
         </div>
       </div>
     ) : (
-      <div onClick={() => console.log(Connection)} className="min-h-screen flex items-center justify-center">
+      <div  className="min-h-screen bg-black flex items-center justify-center">
         <AccountLoader />
       </div>
     )}
