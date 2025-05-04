@@ -118,7 +118,7 @@ const Login = () => {
                         {/* Post Content */}
                         <div className="p-4">
                             <div className="flex items-center justify-start gap-2 px-4 w-full">
-                                <Image src="https://images.pexels.com/photos/1468379/pexels-photo-1468379.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" height={25} width={25} className="rounded-full" />
+                                <Image src="/female.jpg" alt="" height={25} width={25} className="rounded-full" />
                                 <span className="font-serif text-md text-transparent 
                   bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700
                   ">Bonita_bitch</span>

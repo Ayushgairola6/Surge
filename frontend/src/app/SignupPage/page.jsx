@@ -34,7 +34,7 @@ const Signup = () => {
 
     return (
         <div className="min-h-screen w-full flex flex-col sm:flex-row items-center justify-center
-        gap-4 font-mono px-4 bg-black text-white py-4">
+        gap-10 font-mono px-4 bg-black text-white py-4">
             {/* Image Section */}
             <div className="hidden sm:flex items-center justify-center  w-[30rem] p-6">
 
@@ -55,7 +55,7 @@ const Signup = () => {
                     {/* Post Content */}
                     <div className="p-4">
                         <div className="flex items-center justify-start gap-2 px-4 w-full">
-                            <Image src="https://avatar.iran.liara.run/public/43" alt="" height={25} width={25} className="rounded-full" />
+                            <Image src="/male.jpg" alt="" height={25} width={25} className="rounded-full" />
                             <span className="font-serif text-md text-transparent 
                   bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700
                   ">Desruptive_daddy</span>
