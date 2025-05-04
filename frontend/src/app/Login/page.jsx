@@ -37,7 +37,7 @@ const Login = () => {
 
             {/* Login Form */}
             <form
-                onSubmit={(e)=>handle_Login(e)}
+                onSubmit={(e) => handle_Login(e)}
                 className="w-full sm:w-1/2 max-w-md flex flex-col justify-center gap-5 p-6 bg-gradient-to-br from-white/15 to-white/5 rounded-xl "
             >
                 <h1 className="text-xl sm:text-2xl font-bold text-center
@@ -78,7 +78,7 @@ const Login = () => {
                 {/* Login Button or Loader */}
                 {status === "loading" ? (
                     <div className="flex items-center justify-center">
-                    <CicularLoader />
+                        <CicularLoader />
                     </div>
                 ) : (
                     <button
@@ -99,15 +99,15 @@ const Login = () => {
 
             {/* Side Image Section */}
             <div className="hidden sm:flex items-center justify-center w-1/2 p-6">
-                 <div className="hidden sm:flex items-center justify-center  w-[30rem] p-6">
-          
-            <div              
-              className="relative bg-gradient-to-r from-white/5 to-black rounded-xl 
+                <div className="hidden sm:flex items-center justify-center  w-[30rem] p-6">
+
+                    <div
+                        className="relative bg-gradient-to-r from-white/5 to-black rounded-xl 
               shadow-lg overflow-hidden transition-transform
                duration-300 "
-            >
-              {/* Post Image */}
-              {/*<div className="h-48 w-full relative">
+                    >
+                        {/* Post Image */}
+                        {/*<div className="h-48 w-full relative">
                 <img
                   src={ "/NoImage.jpg"}
                   alt="/"
@@ -115,26 +115,28 @@ const Login = () => {
                 />
                 <div className="absolute inset-0 bg-black opacity-20"></div>
               </div>*/}
-              {/* Post Content */}
-              <div className="p-4">
-                <div className="flex items-center justify-start gap-2 px-4 w-full">
-                <Image src="/images.jpeg" alt="" height={25} width={25} className="rounded-full" />
-                  <span className="font-serif text-md text-transparent 
+                        {/* Post Content */}
+                        <div className="p-4">
+                            <div className="flex items-center justify-start gap-2 px-4 w-full">
+                                <Image src="https://images.pexels.com/photos/1468379/pexels-photo-1468379.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" height={25} width={25} className="rounded-full" />
+                                <span className="font-serif text-md text-transparent 
                   bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700
                   ">Bonita_bitch</span>
+                            </div>
+                            <h3 className="text-lg font-mono uppercase font-bold text-gray-300 mb-2">
+                                He is the one
+                            </h3>
+                            <p className="text-gray-300 text-sm line-clamp-3">
+                                We met on Tinder. From the moment I saw him—tall, effortless charm, that confident smirk—I just knew. Not in the cliché way, but in the kind of way that makes your pulse race like you’re stepping into something dangerous and delicious.
+                                The way he greets people, the way he makes everyone feel seen, the way he carries himself like the world was made to watch him move... He is the one.
+                                No opinion, no warning, no red flag in the future could ever shake that certainty in me because—
+                                ...well, you’ll understand soon enough
+                            </p>
+                        </div>
+
+
+                    </div>
                 </div>
-                <h3 className="text-lg font-mono uppercase font-bold text-gray-300 mb-2">
-                    He is the one
-                  </h3>
-                <p className="text-gray-300 text-sm line-clamp-3">
-                  loremfdjskfljdskfjdskjfdsjcds9iudsifjdsiojfidjsfoidsjfio
-                  dsjdkcd-0dsacid-sifdsfkljsdfkldjsflk;djslfkdjslfjdslafjds;jfdkl;sajfdlskfdksfjlk;dsjfkd
-                </p>
-              </div>
-               
-              
-        </div>
-            </div>
             </div>
 
         </div>

@@ -37,14 +37,14 @@ const Signup = () => {
         gap-4 font-mono px-4 bg-black text-white py-4">
             {/* Image Section */}
             <div className="hidden sm:flex items-center justify-center  w-[30rem] p-6">
-          
-            <div              
-              className="relative bg-gradient-to-r from-white/5 to-black rounded-xl 
+
+                <div
+                    className="relative bg-gradient-to-r from-white/5 to-black rounded-xl 
               shadow-lg overflow-hidden transition-transform
                duration-300 "
-            >
-              {/* Post Image */}
-              {/*<div className="h-48 w-full relative">
+                >
+                    {/* Post Image */}
+                    {/*<div className="h-48 w-full relative">
                 <img
                   src={ "/NoImage.jpg"}
                   alt="/"
@@ -52,25 +52,27 @@ const Signup = () => {
                 />
                 <div className="absolute inset-0 bg-black opacity-20"></div>
               </div>*/}
-              {/* Post Content */}
-              <div className="p-4">
-                <div className="flex items-center justify-start gap-2 px-4 w-full">
-                <Image src="/images.jpeg" alt="" height={25} width={25} className="rounded-full" />
-                  <span className="font-serif text-md text-transparent 
+                    {/* Post Content */}
+                    <div className="p-4">
+                        <div className="flex items-center justify-start gap-2 px-4 w-full">
+                            <Image src="https://avatar.iran.liara.run/public/43" alt="" height={25} width={25} className="rounded-full" />
+                            <span className="font-serif text-md text-transparent 
                   bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700
                   ">Desruptive_daddy</span>
+                        </div>
+                        <h3 className="text-lg font-mono uppercase font-bold text-gray-300 mb-2">
+                            "She Likes It Rough." Not in the way most people assume.
+                        </h3>
+                        <p className="text-gray-300 text-sm line-clamp-3">
+                            She thrives in chaos—the kind that tests you, pushes you, shapes you into something stronger. She doesn’t flinch when things get messy, doesn’t back down when life demands more from her. She knows exactly who she is, and she moves through the world like nothing can break her.
+                            That’s the first thing I noticed about her. Not just the confidence—the fire.
+                            The way she speaks, the way she laughs with that unshaken certainty, like she already knows how the story ends. The way she treats people—never cold, never careless—but always real. She doesn’t sugarcoat, doesn’t pretend. She takes life as it is. And she takes you as you are.
+                            
+                        </p>
+                    </div>
+
+
                 </div>
-                <h3 className="text-lg font-mono uppercase font-bold text-gray-300 mb-2">
-                    She likes it rough
-                  </h3>
-                <p className="text-gray-300 text-sm line-clamp-3">
-                  loremfdjskfljdskfjdskjfdsjcds9iudsifjdsiojfidjsfoidsjfio
-                  dsjdkcd-0dsacid-sifdsfkljsdfkldjsflk;djslfkdjslfjdslafjds;jfdkl;sajfdlskfdksfjlk;dsjfkd
-                </p>
-              </div>
-               
-              
-        </div>
             </div>
 
 
@@ -82,7 +84,7 @@ const Signup = () => {
                 <h1 className="text-xl sm:text-2xl font-bold text-center
                  text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700 ">Create an account!</h1>
                 <span className="text-sm text-center font-semibold text-gray-300">
-                   Be the first one's to get early riser features
+                    Be the first one's to get early riser features
                 </span>
 
                 {/* Username */}
