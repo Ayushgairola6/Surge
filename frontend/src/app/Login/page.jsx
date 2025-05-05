@@ -42,7 +42,7 @@ const Login = () => {
             >
                 <h1 className="text-xl sm:text-2xl font-bold text-center
                  text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700">
-                    Welcome back! Ready spill that secret?
+                    Welcome back! Ready to spill that secret?
                 </h1>
                 <p className="text-sm text-center text-gray-300">
                     Enter your email below to login to your account
