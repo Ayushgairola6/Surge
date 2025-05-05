@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem("auth_token");
         if (!token || isLoggedIn === false) return;
-        socket.current = io("http://localhost:8080", {
+        socket.current = io("https://surge-oyqw.onrender.com", {
             auth: { token },
             withCredentials: true
         });
